@@ -88,3 +88,33 @@ while True:
 # https://docs.python.org/3/library/threading.html
 # Python_Socket小實作 : 
 # https://ithelp.ithome.com.tw/articles/10205819
+
+
+
+
+
+# 指令
+# command 進入SDK命令模式
+# takeoff 起飛
+# land 降落
+# streamon / streamoff  開 / 關 視頻流
+# emergency  停止電機轉動
+# -------------------------------------------------
+# up x      向上飛x
+# down x    向下
+# left      左
+# right     右
+# forward   前
+# back      後
+# x = 20 ~ 500
+# 
+# cw x       順時針轉
+# ccw x      逆時針轉
+# x = 1 ~ 360
+# 
+# 
+# 
+# 
+# 
+# 
+# 
