@@ -21,3 +21,5 @@ myTello.back(80)
 # myTello.forward(80)
 myTello.land()
 myTello.streamoff() #關閉影像串流
+
+
