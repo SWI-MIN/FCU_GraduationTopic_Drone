@@ -4,7 +4,7 @@ import cv2
 tello = Tello()
 
 tello.connect()
-tello.stream_on()
+tello.streamon()
 
 while True:
     img = tello.get_frame_read().frame
