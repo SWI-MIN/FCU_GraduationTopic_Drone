@@ -3,6 +3,7 @@ import DJIKeyPressModule as kp
 from time import sleep
 
 # 透過按鍵對飛機下指令
+# 36:29
 
 kp.init()
 tello = Tello()
