@@ -21,3 +21,8 @@ cv2.aruco.drawDetectedMarkers(frame, corners,ids)
 cv2.imshow("frame",frame)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
+# cv2.aruco.detectMarkers(gray,aruco_dict,parameters=parameters)
+# 第一个参数是待检测marker的图像。
+# 第二个参数是字典对象，在这一例子中是之前定义的字典 (DICT_6X6_250).
