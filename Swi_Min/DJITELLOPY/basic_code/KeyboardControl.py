@@ -1,6 +1,3 @@
-import logging
-import time
-import cv2
 from djitellopy import Tello
 import KeyPressModule as kp
 from time import sleep

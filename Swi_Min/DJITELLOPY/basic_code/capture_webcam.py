@@ -1,3 +1,4 @@
+# 擷取 webcam 的畫面
 import cv2
 
 while 1:
