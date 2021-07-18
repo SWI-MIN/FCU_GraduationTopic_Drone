@@ -36,10 +36,11 @@ def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0
     speed = 50
 
-    # q 是起飛 e 是降落
+    if kp.getKey("q"): return True
+
+    # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
     if kp.getKey("f"): yv = tello.land()
-    if kp.getKey("q"): return True
     
     # control tello
     # 上下左右鍵對飛機下前後左右指令
@@ -56,6 +57,7 @@ def getKeyboardInput():
     if kp.getKey("a"): yv = speed
     elif kp.getKey("d"): yv = -speed
 
+    # 在畫面中顯示飛機的資訊
     battery, height, get_time = get_info()
     InfoText = ("battery: {battery}%, height: {height}cm, time:{get_time}"
                 .format(battery = battery, height = height, get_time = get_time))
