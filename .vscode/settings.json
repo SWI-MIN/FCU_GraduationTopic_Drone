@@ -3,7 +3,11 @@
 // }
 {
     "python.autoComplete.extraPaths": [
-        "./KeyPressModule"
+
     ],
-    "python.analysis.extraPaths": []
+    "python.analysis.extraPaths": [
+        "./",
+        "./Swi_Min/DJITELLOPY",
+        "./penny/Basic"
+    ]
 }

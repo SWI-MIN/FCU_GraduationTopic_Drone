@@ -76,3 +76,6 @@ while True:
     cv2.waitKey(1)
 
     if quit == True: break
+
+
+# 退出的部分還要改善改善，目前雖然會break出來，但是畫面依然會卡住，應該要把相關東西憶起停掉
