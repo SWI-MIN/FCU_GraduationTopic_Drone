@@ -1,13 +1,10 @@
-// {
-//     "python.pythonPath": "C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
-// }
 {
     "python.autoComplete.extraPaths": [
-
     ],
     "python.analysis.extraPaths": [
         "./",
         "./Swi_Min/DJITELLOPY",
         "./penny/Basic"
-    ]
+    ],
+    "python.pythonPath": "C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
 }
