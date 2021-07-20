@@ -43,7 +43,10 @@ def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0
     speed = 50
 
-    if kp.getKey("q"): return True
+    if kp.getKey("q"): quit = True
+
+    if kp.getKey("e"): 
+        cv2.imwrite("./capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
 
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
@@ -78,7 +81,7 @@ def getKeyboardInput():
 while True:
     img = tello.get_frame_read().frame
     img = cv2.resize(img, (720, 480))
-    quit = getKeyboardInput()
+    getKeyboardInput()
     cv2.imshow("Drone Control Centre", img)
     cv2.waitKey(1)
 
