@@ -9,7 +9,7 @@ tello.connect()
 tello.streamon()
 # tello.LOGGER.setLevel(logging.ERROR)    # 只顯示錯誤訊息
 kp.init()                                 # 初始化按鍵模塊
-sleep(3)
+sleep(5)
 quit = False
 
 # 初始化顯示文字
@@ -25,11 +25,18 @@ font_width = 1
 font_type = cv2.LINE_AA
 
 def get_info():
-    battery = tello.get_battery().replace("\n", "").replace("\r", "")
-    height = tello.get_height().replace("\n", "").replace("\r", "").replace("dm", "")
-    height = int(height) * 10
-    height = str(height)
+    battery = tello.get_battery()
+    if type(battery) != bool:
+        battery = battery.replace("\n", "").replace("\r", "")
+
+    height = tello.get_height()
+    if type(height) != bool:
+        # 1dm = 10cm 
+        # 因為每次出問題都是這段，應該是返回值與我預期不同導致，所以我決定保留 dm 不換成 cm
+        height = height.replace("\n", "").replace("\r", "")
+
     get_time = time.strftime("%H:%M:%S",time.localtime())
+
     return battery, height, get_time
 
 def getKeyboardInput():
@@ -59,8 +66,8 @@ def getKeyboardInput():
 
     # 在畫面中顯示飛機的資訊
     battery, height, get_time = get_info()
-    InfoText = ("battery: {battery}%, height: {height}cm, time:{get_time}"
-                .format(battery = battery, height = height, get_time = get_time))
+    InfoText = ("battery: {b}%, height: {h}, time:{t}"
+                .format(b = battery, h = height, t = get_time))
     cv2.putText(img, InfoText, (10, 20), font, font_size, font_colour, font_width, font_type)
     InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}"
                 .format(lr = lr, fb = fb, ud = ud, yv = yv))
@@ -75,7 +82,10 @@ while True:
     cv2.imshow("Drone Control Centre", img)
     cv2.waitKey(1)
 
-    if quit == True: break
-
-
-# 退出的部分還要改善改善，目前雖然會break出來，但是畫面依然會卡住，應該要把相關東西憶起停掉
+    if quit == True: 
+        tello.land()
+        sleep(0.5)
+        tello.streamoff()
+        sleep(0.5)
+        tello.end()
+        break
