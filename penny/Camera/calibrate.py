@@ -46,7 +46,7 @@ for fname in images:
         cv2.waitKey( 200 ) 
         cv2.destroyAllWindows() #%%標定
         print( '正在計算' ) #標定
-        ret, mtx, dist, rvecs, tvecs = \     
+        ret, mtx, dist, rvecs, tvecs = \
         cv2.calibrateCamera(objpoints, imgpoints, gray.shape[:: -1], None , None )
 
 
