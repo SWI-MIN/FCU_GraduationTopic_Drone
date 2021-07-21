@@ -4,12 +4,6 @@ from djitellopy import Tello
 import KeyPressModule as kp
 from time import sleep
 
-kp.init() # 初始化按鍵模塊
-tello = Tello()
-tello.connect()
-tello.streamon()
-sleep(5)
-
 def get_info():
     battery = tello.get_battery()
     if type(battery) != bool:
@@ -32,7 +26,7 @@ def getKeyboardInput():
 
     # e 拍照
     if kp.getKey("e"): 
-        cv2.imwrite(".//capture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
+        cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
 
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
@@ -62,15 +56,28 @@ def getKeyboardInput():
 
     tello.send_rc_control(lr, fb, ud, yv)
 
-while True:
-    img = tello.get_frame_read().frame
-    img = cv2.resize(img, (720, 480))
-    if getKeyboardInput() == True: 
-        tello.land()    # 因為end()裡面的land()沒有作用
-        tello.end()
-        break
-    cv2.imshow("Drone Control Centre", img)
-    cv2.waitKey(1)
+
+# if __name__ == '__main__' 是用於判斷此程式是否正在被做為主程式來執行
+# 若是，則將會執行此 if 底下的程式碼，若否，則視 else 的有無來決定。
+if __name__ == '__main__':
+    kp.init() # 初始化按鍵模塊
+    tello = Tello()
+    tello.connect()
+    tello.streamon()
+    sleep(5)
+
+    while True:
+        img = tello.get_frame_read().frame
+        img = cv2.resize(img, (720, 480))
+        if getKeyboardInput() == True: 
+            tello.land()    # 因為end()裡面的land()沒有作用
+            tello.end()
+            break
+        cv2.imshow("Drone Control Centre", img)
+        cv2.waitKey(1)
+else:
+    print("我才是主程式")
+
 
 # control tello
 # q 退出
