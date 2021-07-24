@@ -25,9 +25,9 @@ def getKeyboardInput():
     if kp.getKey("q"): return True
 
     # e 拍照
-    if kp.getKey("e"): 
+    if kp.getKey("c"): 
         cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
-
+    
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
     if kp.getKey("f"): yv = tello.land()
@@ -57,31 +57,32 @@ def getKeyboardInput():
     tello.send_rc_control(lr, fb, ud, yv)
 
 
-# if __name__ == '__main__' 是用於判斷此程式是否正在被做為主程式來執行
-# 若是，則將會執行此 if 底下的程式碼，若否，則視 else 的有無來決定。
 if __name__ == '__main__':
+    # main()
     kp.init() # 初始化按鍵模塊
     tello = Tello()
     tello.connect()
     tello.streamon()
     sleep(5)
+    # video_On = 0
 
     while True:
         img = tello.get_frame_read().frame
-        img = cv2.resize(img, (720, 480))
+        # img = cv2.resize(img, (720, 480))
         if getKeyboardInput() == True: 
             tello.land()    # 因為end()裡面的land()沒有作用
             tello.end()
             break
         cv2.imshow("Drone Control Centre", img)
         cv2.waitKey(1)
-else:
-    print("我才是主程式")
+# else:
+#     print("我才是主程式")
 
 
 # control tello
 # q 退出
-# e 拍照
+# c 拍照
+# v 錄影
 # r 起飛 f 降落
 # 上下左右 --> 前後左右
 # wsad --> 升降轉向
