@@ -5,16 +5,16 @@ from threading import Thread
 import KeyPressModule as kp
 from time import sleep
 
-# def videoRecorder():
-#     # create a VideoWrite object, recoring to ./video.avi
-#     height, width, _ = img.shape
-#     video = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
+def videoRecorder():
+    # create a VideoWrite object, recoring to ./video.avi
+    height, width, _ = img.shape
+    video = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
 
-#     while video_On == 1:
-#         video.write(img)
-#         time.sleep(1 / 30)
+    while video_On:
+        video.write(img)
+        time.sleep(1 / 30)
 
-#     video.release()
+    video.release()
 
 def get_info():
     battery = tello.get_battery()
@@ -39,13 +39,13 @@ def getKeyboardInput():
     # e 拍照
     if kp.getKey("c"): 
         cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
-    # if kp.getKey("v"): 
-    #     video_On = 1
-    #     recorder = Thread(target=videoRecorder)
-    #     recorder.start()
-    # if kp.getKey("b"): 
-    #     video_On = 0
-    #     # recorder.join()
+    if kp.getKey("v"): 
+        video_On = True
+        recorder = Thread(target=videoRecorder)
+        recorder.start()
+    if kp.getKey("b"): 
+        video_On = False
+        recorder.join()
     
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
@@ -73,16 +73,12 @@ def getKeyboardInput():
     InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = lr, fb = fb, ud = ud, yv = yv))
     cv2.putText(img, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
-    # if video_On == 1:
+    # if video_On == True:
     #     InfoText = ("錄影中!!!")
     #     cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
     tello.send_rc_control(lr, fb, ud, yv)
 
-
-# if __name__ == '__main__' 是用於判斷此程式是否正在被做為主程式來執行
-# 若是，則將會執行此 if 底下的程式碼，若否，則視 else 的有無來決定。
-    
 # def main():
 #     kp.init() # 初始化按鍵模塊
 #     tello = Tello()
@@ -110,7 +106,7 @@ if __name__ == '__main__':
     tello.connect()
     tello.streamon()
     sleep(5)
-    # video_On = 0
+    video_On = False
 
     while True:
         img = tello.get_frame_read().frame

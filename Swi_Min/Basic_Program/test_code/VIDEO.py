@@ -8,23 +8,23 @@ tello.connect()
 
 video_On = False
 tello.streamon()
-img = tello.get_frame_read()
+img = tello.get_frame_read().frame
 
 def videoRecorder():
     # create a VideoWrite object, recoring to ./video.avi
-    height, width, _ = img.frame.shape
+    height, width, _ = img.shape
     video = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
 
     while video_On:
-        video.write(img.frame)
+        video.write(img)
         time.sleep(1 / 30)
 
     video.release()
 
 # we need to run the recorder in a seperate thread, otherwise blocking options
 #  would prevent frames from getting added to the video
-recorder = Thread(target=videoRecorder)
-recorder.start()
+# recorder = Thread(target=videoRecorder)
+# recorder.start()
 while 1:
     img = tello.get_frame_read().frame
     cv2.imshow("Drone Control Centre", img)
