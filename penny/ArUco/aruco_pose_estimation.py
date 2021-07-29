@@ -28,6 +28,8 @@ import numpy as np
 import cv2
 import cv2.aruco as aruco
 import sys, time, math
+from djitellopy import Tello
+
 
 #--- Define Tag
 id_to_find  = 72
@@ -72,8 +74,8 @@ def rotationMatrixToEulerAngles(R):
 
 #--- Get the camera calibration path
 calib_path  = ""
-camera_matrix   = np.loadtxt(calib_path+'cameraMatrix_webcam.txt', delimiter=',')
-camera_distortion   = np.loadtxt(calib_path+'cameraDistortion_webcam.txt', delimiter=',')
+camera_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   #  鏡頭焦距, 電光傳感器
+camera_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   #  失真係數向量
 
 #--- 180 deg rotation matrix around the x axis
 R_flip  = np.zeros((3,3), dtype=np.float32)
@@ -95,17 +97,26 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 #-- Font for the text in the image
 font = cv2.FONT_HERSHEY_PLAIN
 
+# 需要改成開啟tello
+tello = Tello()
+tello.connect()
+global img
+tello.streamon()
+
 while True:
 
     #-- Read the camera frame
-    ret, frame = cap.read()
+    ret = True
+    frame = tello.get_frame_read().frame
+
+    
 
     #-- Convert in gray scale
-    gray    = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
+    gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
 
     #-- Find all the aruco markers in the image
     corners, ids, rejected = aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
-                              cameraMatrix=camera_matrix, distCoeff=camera_distortion)
+                              cameraMatrix=camera_matrix, distCoeff=camera_distortion) # 對maker做檢測，尋找畫面裡是否有maker
     
     if ids is not None and ids[0] == id_to_find:
         
