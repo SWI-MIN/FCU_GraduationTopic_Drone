@@ -39,5 +39,5 @@ while 1:
         recorder.start()
     elif key == ord('b'):
         video_On = False
-        recorder.join()
+        # recorder.join()
 # recorder.join()

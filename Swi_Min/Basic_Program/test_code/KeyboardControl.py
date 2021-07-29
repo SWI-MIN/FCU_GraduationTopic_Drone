@@ -9,11 +9,9 @@ def videoRecorder():
     # create a VideoWrite object, recoring to ./video.avi
     height, width, _ = img.shape
     video = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
-
     while video_On:
         video.write(img)
         time.sleep(1 / 30)
-
     video.release()
 
 def get_info():
@@ -33,8 +31,12 @@ def get_info():
 def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0
     speed = 50
+    global video_On
 
-    if kp.getKey("q"): return True
+    if kp.getKey("q"): 
+        if video_On:
+            video_On = False
+        return True
 
     # e 拍照
     if kp.getKey("c"): 
@@ -45,7 +47,7 @@ def getKeyboardInput():
         recorder.start()
     if kp.getKey("b"): 
         video_On = False
-        recorder.join()
+        # recorder.join()
     
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
@@ -73,9 +75,9 @@ def getKeyboardInput():
     InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = lr, fb = fb, ud = ud, yv = yv))
     cv2.putText(img, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
-    # if video_On == True:
-    #     InfoText = ("錄影中!!!")
-    #     cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+    if video_On == True:
+        InfoText = ("video On!!!")
+        cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
     tello.send_rc_control(lr, fb, ud, yv)
 
@@ -106,6 +108,7 @@ if __name__ == '__main__':
     tello.connect()
     tello.streamon()
     sleep(5)
+    global video_On
     video_On = False
 
     while True:
@@ -124,7 +127,7 @@ if __name__ == '__main__':
 # control tello
 # q 退出
 # c 拍照
-# v 錄影
+# v 錄影 b 結束錄影
 # r 起飛 f 降落
 # 上下左右 --> 前後左右
 # wsad --> 升降轉向
