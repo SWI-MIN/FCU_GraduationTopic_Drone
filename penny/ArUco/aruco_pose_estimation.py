@@ -7,7 +7,7 @@ from djitellopy import Tello
 
 
 #--- Define Tag
-id_to_find  = 22
+id_to_find  = 72
 marker_size  = 10 #- [cm]
 
 
@@ -48,9 +48,11 @@ def rotationMatrixToEulerAngles(R):
 
 
 #--- Get the camera calibration path
+#  camera_matrix 鏡頭焦距, 電光傳感器
+#  camera_distortion 失真係數向量
 calib_path  = ""
-camera_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   #  鏡頭焦距, 電光傳感器
-camera_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   #  失真係數向量
+camera_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
+camera_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
 
 #--- 180 deg rotation matrix around the x axis
 R_flip  = np.zeros((3,3), dtype=np.float32)
@@ -62,13 +64,14 @@ R_flip[2,2] =-1.0
 aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
 parameters  = cv2.aruco.DetectorParameters_create()
 
-
+'''''
+也許是這個部分導致方位錯誤
 #--- Capture the videocamera (this may also be a video or a picture)
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 #-- Set the camera size as the one it was calibrated with
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-
+# cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+# cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+'''
 #-- Font for the text in the image
 font = cv2.FONT_HERSHEY_PLAIN
 
@@ -83,13 +86,14 @@ while True:
     #-- Read the camera frame
     ret = True
     frame = tello.get_frame_read().frame
-
+    frame = cv2.resize(frame, (1280, 720))
+    
     #-- Convert in gray scale
     gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
 
     #-- Find all the aruco markers in the image
     corners, ids, rejected = cv2.aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
-                              cameraMatrix=camera_matrix, distCoeff=camera_distortion) # 對maker做檢測，尋找畫面裡是否有maker
+                              cameraMatrix=camera_matrix, distCoeff=camera_distortion) #  對maker做檢測，尋找畫面裡是否有maker
     
     if ids is not None and ids[0] == id_to_find:
         
@@ -146,7 +150,7 @@ while True:
     #--- use 'q' to quit
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
-        cap.release()
+        # cap.release()
         cv2.destroyAllWindows()
         break
 
