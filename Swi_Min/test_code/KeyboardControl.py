@@ -1,8 +1,29 @@
+# 目前有個 BUG 就是錄出來的影片有時會夾雜著，飛機顯示的資訊
+'''
+control tello
+q 退出
+c 拍照
+v 錄影 b 結束錄影
+r 起飛 f 降落
+上下左右 --> 前後左右
+wsad --> 升降轉向
+'''
 import time
 import cv2
 from djitellopy import Tello
+from threading import Thread
 import KeyPressModule as kp
 from time import sleep
+
+def videoRecorder():
+    # create a VideoWrite object, recoring to ./video.avi
+    height, width, _ = img.shape
+    video = cv2.VideoWriter(".//Film//video-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
+                             cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
+    while video_On:
+        video.write(img)
+        time.sleep(1 / 30)
+    video.release()
 
 def get_info():
     battery = tello.get_battery()
@@ -21,12 +42,23 @@ def get_info():
 def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0
     speed = 50
+    global video_On
 
-    if kp.getKey("q"): return True
+    if kp.getKey("q"): 
+        if video_On:
+            video_On = False
+        return True
 
     # e 拍照
     if kp.getKey("c"): 
         cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
+    if kp.getKey("v"): 
+        video_On = True
+        recorder = Thread(target=videoRecorder)
+        recorder.start()
+    if kp.getKey("b"): 
+        video_On = False
+        # recorder.join()
     
     # r 是起飛 f 是降落
     if kp.getKey("r"): yv = tello.takeoff()
@@ -54,9 +86,32 @@ def getKeyboardInput():
     InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = lr, fb = fb, ud = ud, yv = yv))
     cv2.putText(img, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
+    if video_On == True:
+        InfoText = ("video On!!!")
+        cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+
     tello.send_rc_control(lr, fb, ud, yv)
 
+# def main():
+#     kp.init() # 初始化按鍵模塊
+#     tello = Tello()
+#     tello.connect()
+#     tello.streamon()
+#     sleep(5)
+#     video_On = False
 
+#     while True:
+#         img = tello.get_frame_read().frame
+#         img = cv2.resize(img, (720, 480))
+#         if getKeyboardInput() == True: 
+#             tello.land()    # 因為end()裡面的land()沒有作用
+#             tello.end()
+#             break
+#         cv2.imshow("Drone Control Centre", img)
+#         cv2.waitKey(1)
+
+# if __name__ == '__main__' 是用於判斷此程式是否正在被做為主程式來執行
+# 若是，則將會執行此 if 底下的程式碼，若否，則視 else 的有無來決定。
 if __name__ == '__main__':
     # main()
     kp.init() # 初始化按鍵模塊
@@ -64,7 +119,8 @@ if __name__ == '__main__':
     tello.connect()
     tello.streamon()
     sleep(5)
-    # video_On = 0
+    global video_On
+    video_On = False
 
     while True:
         img = tello.get_frame_read().frame
@@ -79,10 +135,6 @@ if __name__ == '__main__':
 #     print("我才是主程式")
 
 
-# control tello
-# q 退出
-# c 拍照
-# v 錄影
-# r 起飛 f 降落
-# 上下左右 --> 前後左右
-# wsad --> 升降轉向
+
+
+

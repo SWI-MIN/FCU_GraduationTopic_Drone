@@ -18,7 +18,8 @@ from time import sleep
 def videoRecorder():
     # create a VideoWrite object, recoring to ./video.avi
     height, width, _ = img.shape
-    video = cv2.VideoWriter('video.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
+    video = cv2.VideoWriter(".//Film//video-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
+                             cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
     while video_On:
         video.write(img)
         time.sleep(1 / 30)
