@@ -3,7 +3,7 @@
     ],
     "python.analysis.extraPaths": [
         "./",
-        "./Swi_Min/Main",
+        "./Main",
         "./penny/Basic"
     ],
     "python.pythonPath": "C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
