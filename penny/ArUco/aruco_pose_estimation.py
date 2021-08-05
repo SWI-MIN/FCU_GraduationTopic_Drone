@@ -78,7 +78,6 @@ font = cv2.FONT_HERSHEY_PLAIN
 # 需要改成開啟tello
 tello = Tello()
 tello.connect()
-global img
 tello.streamon()
 
 while True:
@@ -86,7 +85,7 @@ while True:
     #-- Read the camera frame
     ret = True
     frame = tello.get_frame_read().frame
-    frame = cv2.resize(frame, (360, 240))
+    frame = cv2.resize(frame, (720, 480))
     
     #-- Convert in gray scale
     gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
