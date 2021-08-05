@@ -86,7 +86,7 @@ while True:
     #-- Read the camera frame
     ret = True
     frame = tello.get_frame_read().frame
-    frame = cv2.resize(frame, (640, 360))
+    frame = cv2.resize(frame, (360, 240))
     
     #-- Convert in gray scale
     gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
