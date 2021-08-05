@@ -49,7 +49,7 @@ def getKeyboardInput():
             video_On = False
         return True
 
-    # e 拍照
+    # c 拍照
     if kp.getKey("c"): 
         cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
     if kp.getKey("v"): 
