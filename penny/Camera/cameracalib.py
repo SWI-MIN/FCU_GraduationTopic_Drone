@@ -1,5 +1,12 @@
 #!/usr/bin/env python
+'''
+    得到相機的校正係數
+    畫面大小 : 1280 x 720(現在使用的)
+    python cameracalib.py Images2 jpg 9 6 25
 
+    Image(360 x 240)
+    Image2(1280 x 720)
+'''
 """
 From https://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html#calibration
 Calling:
