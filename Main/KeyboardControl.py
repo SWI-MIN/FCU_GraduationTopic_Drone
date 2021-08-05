@@ -1,19 +1,18 @@
 # 目前有個 BUG 就是錄出來的影片有時會夾雜著，飛機顯示的資訊
 '''
 control tello
-q 退出
-c 拍照
-v 錄影 b 結束錄影
-r 起飛 f 降落
-上下左右 --> 前後左右
-wsad --> 升降轉向
+    q 退出
+    c 拍照
+    v 錄影 b 結束錄影
+    r 起飛 f 降落
+    上下左右 --> 前後左右
+    wsad --> 升降轉向
 '''
 import time
 import cv2
+import KeyPressModule as kp
 from djitellopy import Tello
 from threading import Thread
-import KeyPressModule as kp
-from time import sleep
 
 def videoRecorder():
     # create a VideoWrite object, recoring to ./video.avi
@@ -97,7 +96,7 @@ def getKeyboardInput():
 #     tello = Tello()
 #     tello.connect()
 #     tello.streamon()
-#     sleep(5)
+#     time.sleep(5)
 #     video_On = False
 
 #     while True:
@@ -118,7 +117,7 @@ if __name__ == '__main__':
     tello = Tello()
     tello.connect()
     tello.streamon()
-    sleep(5)
+    time.sleep(5)
     global video_On
     video_On = False
 
