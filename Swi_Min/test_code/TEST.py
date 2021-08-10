@@ -1,5 +1,4 @@
-# 目前video_on 有問題，會抓不到，原因目前不詳，正在檢查ING
-# AttributeError: 'ControlTello' object has no attribute 'video_on'
+# 錄影畫面仍會偶爾跳出顯示資訊，目前思路是 建立取得 img 的先後順序，以改善此問題
 '''
 control tello
     q 退出
@@ -17,11 +16,20 @@ from threading import Thread
 
 
 class ControlTello(Tello):
+    # Class Level : Class層的參數是被所有有初始化 Class 的 Instances 使用，
+    # 也就是說當數值改變時其他的 Instance 裡的 Class Level 參數也會跟著改變
+    # video_On = False
+    img = None
     def __init__(self):
-        super().__init__()        
-        self.video_On = False
+        super().__init__()      
+        # Instance Level : Instance 作用域只會在初始化後的那個物件身上 
+        self.video_On = False 
 
     def get_info(self):
+        '''
+            get battery, height, time
+            Will only be referenced internally
+        '''
         battery = self.get_battery()
         if type(battery) != bool:
             battery = battery.replace("\n", "").replace("\r", "")
@@ -35,32 +43,42 @@ class ControlTello(Tello):
 
         return battery, height, get_time
 
-    def videoRecorder(self, img):
+    def videoRecorder(self):
+        '''
+            啟用錄影功能
+            Will only be referenced internally
+        '''            
         # create a VideoWrite object, recoring to ./video.avi
-        height, width, _ = img.shape
+        height, width, _ = self.img.shape
         video = cv2.VideoWriter(".//Film//video-{}.avi".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
                                 cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
-        while self.video_On:
-            video.write(img)
-            time.sleep(1 / 30)
+        while self.video_On == True:
+            video.write(self.img)
+            time.sleep(1 / 60)
         video.release()
 
-    def getKeyboardInput(self, img):
+    def getKeyboardInput(self):
         lr, fb, ud, yv = 0, 0, 0, 0
         speed = 50
 
         if kp.getKey("q"): 
-            if self.video_on:
-                self.video_on = False
+            self.video_On = False
+            self.land()
+            self.end()
             return True
 
         # c 拍照
         if kp.getKey("c"): 
-            cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),img)
+            cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.img)
+
         if kp.getKey("v"): 
-            self.video_On = True
-            recorder = Thread(target=self.videoRecorder(img))
-            recorder.start()
+            if self.video_On == True:
+                print("video is open")
+            else:
+                self.video_On = True
+                recorder = Thread(target=self.videoRecorder)
+                recorder.start()
+
         if kp.getKey("b"): 
             self.video_On = False
 
@@ -85,14 +103,14 @@ class ControlTello(Tello):
         # 在畫面中顯示飛機的資訊
         battery, height, get_time = self.get_info()
         InfoText = ("battery: {b}%, height: {h}, time:{t}".format(b = battery, h = height, t = get_time))
-        cv2.putText(img, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.img, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
         InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = lr, fb = fb, ud = ud, yv = yv))
-        cv2.putText(img, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.img, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
-        if self.video_On:
-            InfoText = ("video On!!!")
-            cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        # if self.video_On:
+        #     InfoText = ("video On!!!")
+        #     cv2.putText(img, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
 
         self.send_rc_control(lr, fb, ud, yv)
@@ -107,9 +125,8 @@ def main():
     while True:
         img = tello.get_frame_read().frame
         # img = cv2.resize(img, (720, 480))
-        if tello.getKeyboardInput(img) == True: 
-            tello.land()    # 因為end()裡面的land()沒有作用，原因不明
-            tello.end()
+        tello.img = img
+        if tello.getKeyboardInput() == True: 
             break
         cv2.imshow("Drone Control Centre", img)
         cv2.waitKey(1)
