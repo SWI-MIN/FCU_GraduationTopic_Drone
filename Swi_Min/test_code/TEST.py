@@ -18,7 +18,6 @@ from threading import Thread
 class ControlTello(Tello):
     # Class Level : Class層的參數是被所有有初始化 Class 的 Instances 使用，
     # 也就是說當數值改變時其他的 Instance 裡的 Class Level 參數也會跟著改變
-    # video_On = False
     img = None
     def __init__(self):
         super().__init__()      
@@ -52,7 +51,7 @@ class ControlTello(Tello):
         height, width, _ = self.img.shape
         video = cv2.VideoWriter(".//Film//video-{}.avi".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
                                 cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
-        while self.video_On == True:
+        while self.video_On:
             video.write(self.img)
             time.sleep(1 / 60)
         video.release()
@@ -72,7 +71,7 @@ class ControlTello(Tello):
             cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.img)
 
         if kp.getKey("v"): 
-            if self.video_On == True:
+            if self.video_On:
                 print("video is open")
             else:
                 self.video_On = True
@@ -126,7 +125,7 @@ def main():
         img = tello.get_frame_read().frame
         # img = cv2.resize(img, (720, 480))
         tello.img = img
-        if tello.getKeyboardInput() == True: 
+        if tello.getKeyboardInput(): 
             break
         cv2.imshow("Drone Control Centre", img)
         cv2.waitKey(1)
