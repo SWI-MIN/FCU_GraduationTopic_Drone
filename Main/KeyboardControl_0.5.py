@@ -1,3 +1,4 @@
+# 目前有個 BUG 就是錄出來的影片有時會夾雜著，飛機顯示的資訊
 '''
 control tello
     q 退出
@@ -126,7 +127,7 @@ def main():
 
     while True:
         tello.IMG = tello.get_frame_read().frame
-        
+
         if tello.video_On:
             tello.VIDEO = tello.get_frame_read().frame
             
