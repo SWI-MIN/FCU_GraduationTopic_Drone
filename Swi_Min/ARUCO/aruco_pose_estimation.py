@@ -1,47 +1,31 @@
-"""
-This demo calculates multiple things for different scenarios.
-Here are the defined reference frames:
-TAG:
-                A y
-                |
-                |
-                |tag center
-                O---------> x
-CAMERA:
-                X--------> x
-                | frame center
-                |
-                |
-                V y
-F1: Flipped (180 deg) tag frame around x axis
-F2: Flipped (180 deg) camera frame around x axis
-The attitude of a generic frame 2 respect to a frame 1 can obtained by calculating euler(R_21.T)
-We are going to obtain the following quantities:
-    > from aruco library we obtain tvec and Rct, position of the tag in camera frame and attitude of the tag
-    > position of the Camera in Tag axis: -R_ct.T*tvec
-    > Transformation of the camera, respect to f1 (the tag flipped frame): R_cf1 = R_ct*R_tf1 = R_cf*R_f
-    > Transformation of the tag, respect to f2 (the camera flipped frame): R_tf2 = Rtc*R_cf2 = R_tc*R_f
-    > R_tf1 = R_cf2 an symmetric = R_f
+'''
+    得到 ArUco 與 Camera 間的資訊
+    MARKER Position : maker 對於 camera 的前後距離
+    MARKER Attitude : maker 對於 camera 的角度
+    CAMERA Position = camera 對於 maker 的前後距離
+    CAMERA Attitude : camera 對於 maker 的角度
 
-對於上述的理解:
-    > 由於 TAG 與 CAMERA 的坐標系不同，因此在調進行定位之前需要將 "其中一種" 坐標系進行轉換，以進行匹配
-    > 但是我看不懂哪個是改變標籤，哪個是改變相機
-"""
+    在同一層的資料夾必需要有兩個檔案 : cameraMatrix.txt, cameraDistortion.txt(1280 x 720)
+    cameraMatrix.txt : 鏡頭焦距, 電光傳感器
+    cameraDistortion.txt : 失真係數向量
+    對maker做偵測時畫面大小是 720 x 480
+
+'''
 
 import numpy as np
 import cv2
-# import cv2.aruco as aruco
 import sys, time, math
+from djitellopy import Tello
+
 
 #--- Define Tag
 id_to_find  = 72
 marker_size  = 10 #- [cm]
 
-
 #------------------------------------------------------------------------------
 #------- ROTATIONS https://www.learnopencv.com/rotation-matrix-to-euler-angles/
 #------------------------------------------------------------------------------
-# Checks if a matrix is a valid rotation matrix. 檢查矩陣是否是有效的旋轉矩陣。
+# Checks if a matrix is a valid rotation matrix.
 def isRotationMatrix(R):
     Rt = np.transpose(R)
     shouldBeIdentity = np.dot(Rt, R)
@@ -50,9 +34,9 @@ def isRotationMatrix(R):
     return n < 1e-6
 
 
-# Calculates rotation matrix to euler angles 計算旋轉矩陣到歐拉角
-# The result is the same as MATLAB except the order 結果與 MATLAB 相同，只是順序不同
-# of the euler angles ( x and z are swapped ). 的歐拉角（x 和 z 交換）。
+# Calculates rotation matrix to euler angles
+# The result is the same as MATLAB except the order
+# of the euler angles ( x and z are swapped ).
 def rotationMatrixToEulerAngles(R):
     assert (isRotationMatrix(R))
 
@@ -74,12 +58,15 @@ def rotationMatrixToEulerAngles(R):
 
 
 
-#--- Get the camera calibration path 獲取相機標定路徑
+#--- Get the camera calibration path
+#  camera_matrix 鏡頭焦距, 電光傳感器
+#  camera_distortion 失真係數向量
 calib_path  = ""
-camera_matrix   = np.loadtxt(calib_path+'cameraMatrix_webcam.txt', delimiter=',')
-camera_distortion   = np.loadtxt(calib_path+'cameraDistortion_webcam.txt', delimiter=',')
+camera_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
+camera_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
 
 #--- 180 deg rotation matrix around the x axis
+# y, z (camera 與 maker相反); x (同向)
 R_flip  = np.zeros((3,3), dtype=np.float32)
 R_flip[0,0] = 1.0
 R_flip[1,1] =-1.0
@@ -89,27 +76,28 @@ R_flip[2,2] =-1.0
 aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
 parameters  = cv2.aruco.DetectorParameters_create()
 
-
-#--- Capture the videocamera (this may also be a video or a picture)
-cap = cv2.VideoCapture(0)
-#-- Set the camera size as the one it was calibrated with
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-
 #-- Font for the text in the image
 font = cv2.FONT_HERSHEY_PLAIN
+
+# 開啟tello
+tello = Tello()
+tello.connect()
+tello.streamon()
 
 while True:
 
     #-- Read the camera frame
-    ret, frame = cap.read()
-
+    ret = True
+    frame = tello.get_frame_read().frame
+    # frame = cv2.resize(frame, (1280, 720))
+    
     #-- Convert in gray scale
-    gray    = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
+    gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #-- remember, OpenCV stores color images in Blue, Green, Red
 
     #-- Find all the aruco markers in the image
+    #  對maker做檢測，尋找畫面裡是否有maker
     corners, ids, rejected = cv2.aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
-                              cameraMatrix=camera_matrix, distCoeff=camera_distortion)
+                              cameraMatrix=camera_matrix, distCoeff=camera_distortion) 
     
     if ids is not None and ids[0] == id_to_find:
         
@@ -120,17 +108,21 @@ while True:
         ret = cv2.aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, camera_distortion)
 
         #-- Unpack the output, get only the first
+        # 未來會有多個maker需要對這裡做改動
         rvec, tvec = ret[0][0,0,:], ret[1][0,0,:]
 
         #-- Draw the detected marker and put a reference frame over it
+        # 在畫面中標示maker的三軸
         cv2.aruco.drawDetectedMarkers(frame, corners)
         cv2.aruco.drawAxis(frame, camera_matrix, camera_distortion, rvec, tvec, 10)
 
         #-- Print the tag position in camera frame
+        # maker 對於 camera 的前後距離
         str_position = "MARKER Position x=%4.0f  y=%4.0f  z=%4.0f"%(tvec[0], tvec[1], tvec[2])
         cv2.putText(frame, str_position, (0, 100), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         #-- Obtain the rotation matrix tag->camera
+        # 旋轉矩陣
         R_ct    = np.matrix(cv2.Rodrigues(rvec)[0])
         R_tc    = R_ct.T
 
@@ -138,6 +130,7 @@ while True:
         roll_marker, pitch_marker, yaw_marker = rotationMatrixToEulerAngles(R_flip*R_tc)
 
         #-- Print the marker's attitude respect to camera frame
+        # maker 對於 camera 的角度
         str_attitude = "MARKER Attitude r=%4.0f  p=%4.0f  y=%4.0f"%(math.degrees(roll_marker),math.degrees(pitch_marker),
                             math.degrees(yaw_marker))
         cv2.putText(frame, str_attitude, (0, 150), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
@@ -146,10 +139,12 @@ while True:
         #-- Now get Position and attitude f the camera respect to the marker
         pos_camera = -R_tc*np.matrix(tvec).T
 
+        # camera 對於 maker 的前後距離
         str_position = "CAMERA Position x=%4.0f  y=%4.0f  z=%4.0f"%(pos_camera[0], pos_camera[1], pos_camera[2])
         cv2.putText(frame, str_position, (0, 200), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         #-- Get the attitude of the camera respect to the frame
+        # camera 對於 maker 的角度
         roll_camera, pitch_camera, yaw_camera = rotationMatrixToEulerAngles(R_flip*R_tc)
         str_attitude = "CAMERA Attitude r=%4.0f  p=%4.0f  y=%4.0f"%(math.degrees(roll_camera),math.degrees(pitch_camera),
                             math.degrees(yaw_camera))
@@ -166,6 +161,10 @@ while True:
     #--- use 'q' to quit
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
-        cap.release()
+        
         cv2.destroyAllWindows()
         break
+
+
+
+

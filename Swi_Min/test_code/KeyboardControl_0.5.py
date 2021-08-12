@@ -132,6 +132,7 @@ def main():
             tello.VIDEO = tello.get_frame_read().frame
             
         if tello.getKeyboardInput(): 
+            cv2.destroyAllWindows()
             break
         cv2.imshow("Drone Control Centre1", tello.IMG)
         cv2.imshow("Drone Control Centre2", tello.VIDEO)
