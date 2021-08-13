@@ -1,12 +1,11 @@
-# 目前有個 BUG 就是錄出來的影片有時會夾雜著，飛機顯示的資訊
 '''
-control tello
-    q 退出
-    c 拍照
-    v 錄影 b 結束錄影
-    r 起飛 f 降落
-    上下左右 --> 前後左右
-    wsad --> 升降轉向
+    control tello
+        q 退出
+        c 拍照
+        v 錄影 b 結束錄影
+        r 起飛 f 降落
+        上下左右 --> 前後左右
+        wsad --> 升降轉向
 '''
 import cv2
 import time
@@ -18,14 +17,14 @@ from threading import Thread
 class ControlTello(Tello):
     # Class Level : Class層的參數是被所有有初始化 Class 的 Instances 使用，
     # 也就是說當數值改變時其他的 Instance 裡的 Class Level 參數也會跟著改變
-    # IMG = None
+    # img = None
     # VIDEO = None
     def __init__(self):
         super().__init__()      
         # Instance Level : Instance 作用域只會在初始化後的那個物件身上 
         self.video_On = False 
-        self.IMG = np.zeros((720, 960, 3))
-        self.VIDEO = self.IMG
+        self.img = None
+        self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
 
     def get_info(self):
         '''
@@ -51,12 +50,12 @@ class ControlTello(Tello):
             Will only be referenced internally
         '''            
         # create a VideoWrite object, recoring to ./video.avi
-        height, width, _ = self.VIDEO.shape
+        height, width, _ = self.img.shape
         print(height, width,"+++++++++++++++++++++++++++++++++++++++++++++++++")
         video = cv2.VideoWriter(".//Film//video-{}.avi".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
                                 cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
         while self.video_On:
-            video.write(self.VIDEO)
+            video.write(self.img)
             time.sleep(1 / 60)
         video.release()
 
@@ -72,7 +71,7 @@ class ControlTello(Tello):
 
         # c 拍照
         if kp.getKey("c"): 
-            cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.IMG)
+            cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.img)
 
         if kp.getKey("v"): 
             if self.video_On:
@@ -106,14 +105,14 @@ class ControlTello(Tello):
         # 在畫面中顯示飛機的資訊
         battery, height, get_time = self.get_info()
         InfoText = ("battery: {b}%, height: {h}, time:{t}".format(b = battery, h = height, t = get_time))
-        cv2.putText(self.IMG, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.tello_info, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
         InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = lr, fb = fb, ud = ud, yv = yv))
-        cv2.putText(self.IMG, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.tello_info, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
         if self.video_On:
             InfoText = ("video On!!!")
-            cv2.putText(self.IMG, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+            cv2.putText(self.tello_info, InfoText, (10, 60), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
 
         self.send_rc_control(lr, fb, ud, yv)
@@ -126,16 +125,16 @@ def main():
     # time.sleep(5)
 
     while True:
-        tello.IMG = tello.get_frame_read().frame
-
-        if tello.video_On:
-            tello.VIDEO = tello.get_frame_read().frame
+        tello.img = tello.get_frame_read().frame
+        tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8)
+        # if tello.video_On:
+        #     tello.VIDEO = tello.get_frame_read().frame
             
         if tello.getKeyboardInput(): 
             cv2.destroyAllWindows()
             break
-        cv2.imshow("Drone Control Centre1", tello.IMG)
-        cv2.imshow("Drone Control Centre2", tello.VIDEO)
+        cv2.imshow("Drone Control Centre1", tello.img)
+        cv2.imshow("Drone Control Centre2", tello.tello_info)
         cv2.waitKey(1)
 
 if __name__ == '__main__':

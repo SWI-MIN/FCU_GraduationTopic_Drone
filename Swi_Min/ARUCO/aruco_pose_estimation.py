@@ -25,7 +25,7 @@ marker_size  = 10 #- [cm]
 #------------------------------------------------------------------------------
 #------- ROTATIONS https://www.learnopencv.com/rotation-matrix-to-euler-angles/
 #------------------------------------------------------------------------------
-# Checks if a matrix is a valid rotation matrix.
+# Checks if a matrix is a valid rotation matrix.  檢查矩陣是否是有效的旋轉矩陣
 def isRotationMatrix(R):
     Rt = np.transpose(R)
     shouldBeIdentity = np.dot(Rt, R)
@@ -34,9 +34,9 @@ def isRotationMatrix(R):
     return n < 1e-6
 
 
-# Calculates rotation matrix to euler angles
-# The result is the same as MATLAB except the order
-# of the euler angles ( x and z are swapped ).
+# Calculates rotation matrix to euler angles   計算旋轉矩陣到歐拉角
+# The result is the same as MATLAB except the order of the euler angles ( x and z are swapped ).
+# 除了歐拉角的順序（x 和 z 交換）之外，結果與 MATLAB 相同。
 def rotationMatrixToEulerAngles(R):
     assert (isRotationMatrix(R))
 
