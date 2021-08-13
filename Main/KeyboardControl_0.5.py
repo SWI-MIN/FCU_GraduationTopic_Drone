@@ -16,12 +16,16 @@ from threading import Thread
 
 class ControlTello(Tello):
     def __init__(self):
+        '''
+            super().__init__() : 初始化父輩 (Tello)
+            lr, fb, ud, yv, speed : 控制飛機的參數 (上下轉彎，前後左右，速度)
+        '''
         super().__init__()
         self.lr = self.fb = self.ud = self.yv = 0
         self.speed = 50
-        self.video_On = False 
         self.img = None
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
+        self.video_On = False 
 
     def get_info(self):
         '''
@@ -62,7 +66,6 @@ class ControlTello(Tello):
             啟用錄影功能
             Will only be referenced internally
         '''            
-        # create a VideoWrite object, recoring to ./video.avi
         height, width, _ = self.img.shape
         print(height, width,"+++++++++++++++++++++++++++++++++++++++++++++++++")
         video = cv2.VideoWriter(".//Film//video-{}.avi".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
@@ -118,14 +121,11 @@ def main():
     tello = ControlTello()
     tello.connect()
     tello.streamon()
-    # time.sleep(5)
 
     while True:
         tello.img = tello.get_frame_read().frame
         tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8)
-        # if tello.video_On:
-        #     tello.VIDEO = tello.get_frame_read().frame
-            
+
         if tello.getKeyboardInput(): 
             cv2.destroyAllWindows()
             break
