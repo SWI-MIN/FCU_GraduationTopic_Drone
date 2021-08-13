@@ -67,7 +67,6 @@ class ControlTello(Tello):
             Will only be referenced internally
         '''            
         height, width, _ = self.img.shape
-        print(height, width,"+++++++++++++++++++++++++++++++++++++++++++++++++")
         video = cv2.VideoWriter(".//Film//video-{}.avi".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),
                                 cv2.VideoWriter_fourcc(*'XVID'), 30, (width, height))
         while self.video_On:
