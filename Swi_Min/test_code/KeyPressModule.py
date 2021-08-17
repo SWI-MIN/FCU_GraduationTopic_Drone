@@ -6,6 +6,7 @@ import pygame
 
 def init():
     pygame.init()
+    pygame.set_caption("Tello")
     win = pygame.display.set_mode((400, 400))
 
 def getKey(keyName):
