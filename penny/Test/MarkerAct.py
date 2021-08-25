@@ -21,7 +21,7 @@ class TargetDefine():
                 break
 
         print(selected + " marker")
-
+                                                    # vx, vy, vz, yaw
         switcher={
                 'Origin':                np.array([[0., 0., DIST, 0.]]),
                 'Right sideways':        np.array([[0., 0., DIST, -40.]]),
@@ -33,8 +33,9 @@ class TargetDefine():
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
                 'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
                 'End':                   np.array([[0., 0., DIST, 0.]]),
-                'Land':                  -1
+                'Land':                  np.array([[0., 0., DIST, -1.]])
              }
+        print("test")
         return switcher.get(selected, "Invalid marker type")
 
 
@@ -65,7 +66,10 @@ def main():
             parameters  = cv2.aruco.DetectorParameters_create()
             corners, ids, rejected = cv2.aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
                               cameraMatrix=cam_matrix, distCoeff=cam_distortion)
-            if target.changeTarget(ids) == -1 :
+
+            # (平)左右, (平)前後, (垂)上下, 轉向
+            # tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+            if target.changeTarget(ids)[0][3] ==  -1:
                 tello.land()
             break
 
