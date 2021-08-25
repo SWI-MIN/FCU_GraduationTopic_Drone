@@ -17,7 +17,9 @@ font = cv2.FONT_HERSHEY_DUPLEX
 font_size = 0.5
 # 顏色 BGR
 # font_colour = (255, 255, 0) # 藍綠色
-font_colour = (0, 170, 255) # 銘黃色
+font_colour = (10, 20, 255)
+# font_colour = (0, 255, 100) # 亮綠色
+# font_colour = (0, 170, 255) # 銘黃色
 # 線條寬度
 line_width = 1
 # 線條種類
