@@ -83,12 +83,9 @@ class TargetDefine():
             self.marker_nav = list(reader)
 
     def changeTarget(self, ID):
-        print(str(ID))
         selected = 'Origin'
         for i in self.marker_nav:
-            
             if i[0] == str(ID):
-                print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                 selected = i[1]
                 break
 
