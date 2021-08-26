@@ -29,16 +29,16 @@ class Camera():
             self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
         
         # 使用OpenCV进行标定（Python）https://blog.csdn.net/u010128736/article/details/52875137
+        # 不確定下方校正是否必要，這段有沒有似乎差別並不會太大
         h, w = frame.shape[:2]
         newcameramtx, roi=cv2.getOptimalNewCameraMatrix(self.cam_matrix,self.cam_distortion,(w,h),1,(w,h))
-        # Undistort
+        # 校正失真
         frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)
-        # Crop image
+        # 去除失真的部分並將畫面進行校正
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]
 
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        
         corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=self.aruco_dict,
                             parameters=self.parameters,cameraMatrix=self.cam_matrix, distCoeff=self.cam_distortion) 
 
