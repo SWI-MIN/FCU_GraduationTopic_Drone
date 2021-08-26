@@ -69,6 +69,7 @@ def main():
 
             # (平)左右, (平)前後, (垂)上下, 轉向
             # tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+            # Target_ID = self.target.changeTarget(ids[i][0])[0][3]
             if target.changeTarget(ids)[0][3] ==  -1:
                 tello.land()
             break
