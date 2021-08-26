@@ -4,7 +4,7 @@ import sys, time, math
 from djitellopy import Tello
 from ControlTello import ControlTello
 import pygame
-
+import csv
 
 # self.angles_tof = [pitch, roll, yaw, tof]
 class Camera():
@@ -61,6 +61,39 @@ class Camera():
 
         return frame
 
+# distance from marker in camera Z coordinates
+DIST = 0.9
+class TargetDefine():
+    def __init__(self):
+        with open('MarkerAction/marker_conf.csv', 'rt', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter=';')
+            self.marker_nav = list(reader)
+
+    def changeTarget(self, ID):
+        selected = 'Origin'
+        for i in self.marker_nav:
+            if i[0] == str(ID):
+                selected = i[1]
+                break
+
+        print(selected + " marker")
+                                                    # vx, vy, vz, yaw
+        switcher={
+                'Origin':                np.array([[0., 0., DIST, 0.]]),
+                'Right sideways':        np.array([[0., 0., DIST, -40.]]),
+                'Left sideways':         np.array([[0., 0., DIST, 40.]]),
+                'Rotate right corner 1': np.array([[0., 0., DIST, 5.]]),
+                'Rotate right corner 2': np.array([[0., 0., DIST, -10.]]),
+                'Rotate right corner 3': np.array([[0., 0., DIST, -20.]]),
+                'Rotate left corner 1':  np.array([[0., 0., DIST, -5.]]),
+                'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
+                'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
+                'End':                   np.array([[0., 0., DIST, 0.]]),
+                'Land':                  np.array([[0., 0., DIST, -1.]])
+             }
+        print("test")
+        return switcher.get(selected, "Invalid marker type")
+
 def main():
     pygame.display.set_caption("Tello")
     pygame.display.set_mode((200, 200)) # 寬 * 高
@@ -69,13 +102,29 @@ def main():
     tello.streamon()
 
     cam = Camera()
-
+    target = TargetDefine()
+    calib_path  = ".\\Camera_Correction\\"
+    cam_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
+    cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
+    
     while True:
         frame = tello.get_frame_read().frame
         tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8)
-        # frame = aruco(frame)
-        frame = cam.aruco(frame)
+        # 這裡是跑 Camera
+        # frame = cam.aruco(frame)
 
+        # 這裡是跑 TargetDefine
+        gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)      # original
+        parameters  = cv2.aruco.DetectorParameters_create()
+        corners, ids, rejected = cv2.aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
+                            cameraMatrix=cam_matrix, distCoeff=cam_distortion)
+
+        if target.changeTarget(ids)[0][3] ==  -1:
+            tello.land()
+            break
+        # TargetDefine 到這
+        
         if tello.getKeyboardInput(): 
             cv2.destroyAllWindows()
             break
