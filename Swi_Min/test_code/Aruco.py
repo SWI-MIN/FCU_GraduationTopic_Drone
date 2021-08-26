@@ -23,30 +23,27 @@ class Camera():
 
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
-        # if self.cam_matrix == None or self.cam_distortion == None:
             calib_path  = ".\\Camera_Correction\\"
             self.cam_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
             self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
         
-        # 使用OpenCV进行标定（Python）https://blog.csdn.net/u010128736/article/details/52875137
-        # 不確定下方校正是否必要，這段有沒有似乎差別並不會太大
+        # 校正失真，去除失真的部分並將畫面進行校正
         h, w = frame.shape[:2]
         newcameramtx, roi=cv2.getOptimalNewCameraMatrix(self.cam_matrix,self.cam_distortion,(w,h),1,(w,h))
-        # 校正失真
-        frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)
-        # 去除失真的部分並將畫面進行校正
+        frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
         x,y,w,h = roi
-        frame = frame[y:y+h, x:x+w]
+        frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
 
+        # 換成黑白，並取得id
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=self.aruco_dict,
                             parameters=self.parameters,cameraMatrix=self.cam_matrix, distCoeff=self.cam_distortion) 
 
-        # list for all currently seen IDs 列出所有當前看到的 ID
-        id_list=[]
+        id_list=[]# 存放當前看到的 ID
 
         if np.all(ids != None):
             ### id found
+            # rvec旋转矩阵、tvec位移矩阵
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners,
                                 self.marker_size, self.cam_matrix, self.cam_distortion)
             
@@ -56,21 +53,19 @@ class Camera():
                 id_list.append(ids[i][0])
 
                 # 測試都看到了哪些ids，並印出來
-                # Print_ids = str(ids[i][0])
                 cv2.putText(frame, str(ids[i][0]), (10, (i*20+40)), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 
-                Target_ID = self.target.changeTarget(ids[i][0])[0][3]
-                cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                if Target_ID ==  -1:
-                    print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                # TargetDefine
+                # Target_ID = self.target.changeTarget(ids[i][0])[0][3]
+                # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                # if Target_ID ==  -1:
+                #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                     
-
             # 標記周圍畫正方形
             cv2.aruco.drawDetectedMarkers(frame, corners)
         else:
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
 
         return frame
 
@@ -128,7 +123,6 @@ def main():
         cv2.imshow('frame', frame)
         cv2.imshow('tello_info', tello.tello_info)
         cv2.waitKey(1)
-
 
 
 if __name__ == '__main__':
