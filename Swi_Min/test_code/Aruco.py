@@ -19,6 +19,8 @@ class Camera():
         # Marker edge length in meters
         self.marker_size = 10
 
+        self.target = TargetDefine()
+
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
         # if self.cam_matrix == None or self.cam_distortion == None:
@@ -52,6 +54,17 @@ class Camera():
             for i in range(0, ids.size):
                 cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 10)  # Draw axis
                 id_list.append(ids[i][0])
+
+                # 測試都看到了哪些ids，並印出來
+                # Print_ids = str(ids[i][0])
+                cv2.putText(frame, str(ids[i][0]), (10, (i*20+40)), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                
+                Target_ID = self.target.changeTarget(ids[i][0])[0][3]
+                cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                if Target_ID ==  -1:
+                    print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                    
+
             # 標記周圍畫正方形
             cv2.aruco.drawDetectedMarkers(frame, corners)
         else:
@@ -70,9 +83,12 @@ class TargetDefine():
             self.marker_nav = list(reader)
 
     def changeTarget(self, ID):
+        print(str(ID))
         selected = 'Origin'
         for i in self.marker_nav:
+            
             if i[0] == str(ID):
+                print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                 selected = i[1]
                 break
 
@@ -91,7 +107,6 @@ class TargetDefine():
                 'End':                   np.array([[0., 0., DIST, 0.]]),
                 'Land':                  np.array([[0., 0., DIST, -1.]])
              }
-        print("test")
         return switcher.get(selected, "Invalid marker type")
 
 def main():
@@ -102,28 +117,12 @@ def main():
     tello.streamon()
 
     cam = Camera()
-    target = TargetDefine()
-    calib_path  = ".\\Camera_Correction\\"
-    cam_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
-    cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
     
     while True:
         frame = tello.get_frame_read().frame
         tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8)
         # 這裡是跑 Camera
-        # frame = cam.aruco(frame)
-
-        # 這裡是跑 TargetDefine
-        gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)      # original
-        parameters  = cv2.aruco.DetectorParameters_create()
-        corners, ids, rejected = cv2.aruco.detectMarkers(image=gray, dictionary=aruco_dict, parameters=parameters,
-                            cameraMatrix=cam_matrix, distCoeff=cam_distortion)
-
-        if target.changeTarget(ids)[0][3] ==  -1:
-            tello.land()
-            break
-        # TargetDefine 到這
+        frame = cam.aruco(frame)
         
         if tello.getKeyboardInput(): 
             cv2.destroyAllWindows()
