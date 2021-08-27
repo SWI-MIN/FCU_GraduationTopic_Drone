@@ -12,6 +12,7 @@ import pygame
 import cv2
 import time
 import numpy as np
+import queue
 from djitellopy import Tello
 from threading import Thread
 
@@ -29,6 +30,8 @@ class ControlTello(Tello):
         self.img = None
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
         self.video_On = False 
+        self.dir_queue=queue.Queue()
+        self.dir_queue.queue.clear()
 
         self.time_s = 0
         self.time_e = 0
@@ -150,6 +153,30 @@ class ControlTello(Tello):
         self.print_info()
 
         self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+        
+
+    def updateMarkerAct(self, directions):
+        # 把新的標籤動作加入queue
+        # print("in update"+ str(directions))
+        self.dir_queue.put(directions)
+        x, y, z, yaw = self.dir_queue.get()
+        print("///////////////////////////////Update directions: ")
+        self.land()
+
+    def TelloAct(self):
+        # 判別標籤動作或鍵盤動作
+        if  not self.dir_queue.empty():                     # queue還有標籤的指令還沒做
+            self.land()
+        else :                                              # 做鍵盤指令
+            self.getKeyboardInput()
+            cv2.destroyAllWindows()
+            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+            
+            
+
+
+
+
 
 if __name__ == '__main__':
     pass

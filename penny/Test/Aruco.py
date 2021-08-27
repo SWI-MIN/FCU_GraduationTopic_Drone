@@ -55,6 +55,7 @@ class Camera():
             ### id found
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners,
                                 self.marker_size, self.cam_matrix, self.cam_distortion)
+            directions = [0., 0., 0., 0.]
             
             # 將所有讀到的 id 加到 id_list 中
             for i in range(0, ids.size):
@@ -65,11 +66,25 @@ class Camera():
                 # Print_ids = str(ids[i][0])
                 cv2.putText(frame, str(ids[i][0]), (10, (i*20+40)), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 
-                Tello_yaw = self.target.changeTarget(ids[i][0])[0][3]
-                cv2.putText(frame, str(Tello_yaw), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                if Tello_yaw ==  -1:
+                # directions[3] = self.target.changeTarget(ids[i][0])[0][3]
+                # cv2.putText(frame, str(directions[3]), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                # if directions[3] ==  -1:
+                #     # tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+                #     # 動作傳到update
+                #     print("Directions: " + directions)
+                #     tello.updateMarkerAct(self.target.changeTarget(ids[i][0]))
+                #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+                directions = self.target.changeTarget(ids[i][0])[0]
+                cv2.putText(frame, str(directions[3]), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                if directions[3] ==  -1:
                     # tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+                    # 動作傳到update
+                    print("Directions: " + str(directions))
+                    tello.updateMarkerAct(directions)
                     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+                
                     
                     
                     
@@ -130,6 +145,7 @@ def main():
         # 這裡是跑 Camera
         frame = cam.aruco(frame)
         
+        # tello.TelloAct()
         if tello.getKeyboardInput(): 
             cv2.destroyAllWindows()
             break
@@ -137,6 +153,8 @@ def main():
         cv2.imshow('frame', frame)
         cv2.imshow('tello_info', tello.tello_info)
         cv2.waitKey(1)
+
+    # tello.end()
 
 
 
