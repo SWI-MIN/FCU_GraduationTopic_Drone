@@ -161,7 +161,10 @@ class ControlTello(Tello):
         self.dir_queue.put(directions)
         x, y, z, yaw = self.dir_queue.get()
         print("///////////////////////////////Update directions: ")
-        self.land()
+        if yaw == -1:
+            self.yv = self.speed
+            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+            # self.land()
 
     def TelloAct(self):
         # 判別標籤動作或鍵盤動作
