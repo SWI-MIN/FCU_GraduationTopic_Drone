@@ -74,13 +74,13 @@ class Camera():
                 #     print("Directions: " + directions)
                 #     tello.updateMarkerAct(self.target.changeTarget(ids[i][0]))
                 #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
+                
+                # 目前會把所有看到的 id 丟到陣列
+                # 之後取主要的那一個 id 的動作就好
                 directions = self.target.changeTarget(ids[i][0])[0]
                 cv2.putText(frame, str(directions[3]), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                if directions[3] ==  -1:
-                    # tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
+                if -40 <= directions[3] and directions[3] <=  40:        # -40 ~ 40
                     # 動作傳到update
-                    print("Directions: " + str(directions))
                     tello.updateMarkerAct(directions)
                     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
@@ -126,7 +126,7 @@ class TargetDefine():
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
                 'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
                 'End':                   np.array([[0., 0., DIST, 0.]]),
-                'Land':                  np.array([[0., 0., DIST, -1.]])
+                'Land':                  np.array([[0., 0., DIST, 20.]])
              }
         return switcher.get(selected, "Invalid marker type")
 

@@ -33,7 +33,7 @@ class TargetDefine():
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
                 'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
                 'End':                   np.array([[0., 0., DIST, 0.]]),
-                'Land':                  np.array([[0., 0., DIST, -1.]])
+                'Land':                  np.array([[0., 0., DIST, 10.]])
              }
         print("test")
         return switcher.get(selected, "Invalid marker type")

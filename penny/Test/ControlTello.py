@@ -156,15 +156,17 @@ class ControlTello(Tello):
         
 
     def updateMarkerAct(self, directions):
-        # 把新的標籤動作加入queue
-        # print("in update"+ str(directions))
+        # 把新的標籤動作加入queue, 不斷執行(好像有點失去queue的意義)
+        # 直到主要的 id 變了, 把 queue 清空
         self.dir_queue.put(directions)
         x, y, z, yaw = self.dir_queue.get()
-        print("///////////////////////////////Update directions: ")
-        if yaw == -1:
-            self.yv = self.speed
-            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
-            # self.land()
+        print("///////////////////////////////Update directions: "+ str(x), str(y), str(z), str(yaw))
+        self.send_rc_control(int(x), int(y), int(z), int(yaw))
+        
+        # if yaw == -1:
+        #     self.yv = self.speed
+        #     self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+        #     # self.land()
 
     def TelloAct(self):
         # 判別標籤動作或鍵盤動作
