@@ -17,6 +17,7 @@ import cv2
 import sys, time, math
 from djitellopy import Tello
 
+
 #--- Define Tag
 id_to_find  = 72
 marker_size  = 10 #- [cm]
@@ -118,9 +119,9 @@ while True:
         # maker 對於 camera 的前後距離
         # str_position = "MARKER Position x=%4.0f  y=%4.0f  z=%4.0f"%(tvec[0], tvec[1], tvec[2])
         # cv2.putText(frame, str_position, (0, 100), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
-        distance = (tvec[0]**2 + tvec[1]**2 + tvec[2]**2)**0.5
-        p_distance = "Position : %4.0f cm"%(distance)
-        cv2.putText(frame, p_distance, (0, 120), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        # distance = (tvec[0]**2 + tvec[1]**2 + tvec[2]**2)**0.5
+        # p_distance = "Position : %4.0f cm"%(distance)
+        # cv2.putText(frame, p_distance, (0, 120), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         #-- Obtain the rotation matrix tag->camera
         # 旋轉矩陣
@@ -128,7 +129,7 @@ while True:
         R_tc    = R_ct.T
 
         #-- Get the attitude in terms of euler 321 (Needs to be flipped first)
-        # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
+        # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度  ，這裡算出來好像是弧度，所以下面用math.degrees()傳換成角度
         roll_marker, pitch_marker, yaw_marker = rotationMatrixToEulerAngles(R_flip*R_tc)
 
         #-- Print the marker's attitude respect to camera frame

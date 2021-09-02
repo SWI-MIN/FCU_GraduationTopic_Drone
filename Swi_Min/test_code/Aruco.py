@@ -5,6 +5,7 @@ from djitellopy import Tello
 from ControlTello import ControlTello
 import pygame
 import csv
+import Conversion
 
 # self.angles_tof = [pitch, roll, yaw, tof]
 class Aruco():
@@ -45,7 +46,7 @@ class Aruco():
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
 
-        # 換成黑白，並取得id
+        # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=self.aruco_dict,
                             parameters=self.parameters,cameraMatrix=self.cam_matrix, distCoeff=self.cam_distortion) 
@@ -70,9 +71,21 @@ class Aruco():
                 # 將讀到的 marker id 存到 sort_id 中
                 id_list.append(ids[i][0])
                 sort_id[i][0] = ids[i][0]
+
                 # 求出各別 marker 到飛機的距離
                 sort_id[i][1] = (tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5
-            
+
+                # 求出各別 marker 與飛機的角度關係
+                # 旋轉矩陣
+                R_ct    = np.matrix(cv2.Rodrigues(rvecs[i][0])[0])
+                R_tc    = R_ct.T
+                # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
+                roll_marker, pitch_marker, yaw_marker = Conversion.rotationMatrixToEulerAngles(self.R_flip*R_tc)
+                # 弧度傳換成角度，並存入 sort_id
+                sort_id[i][2] = math.degrees(roll_marker)
+                sort_id[i][3] = math.degrees(pitch_marker)
+                sort_id[i][4] = math.degrees(yaw_marker)
+
             # 將 sort_id 距離 由短到近優先，id 由小到大次之排序
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
 
@@ -104,7 +117,7 @@ class Aruco():
                     self.navigation(sort_id)
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
-                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡 )
+                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
                     pass
                     # 取得非main marker 中最近的一個，並且不能用過
                     for i in range(0, ids.size):
@@ -122,10 +135,13 @@ class Aruco():
 
     def navigation(self, sort_id):
         if self.main_marker not in sort_id:
+            # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
             pass
         # 在這裡做完相應動作並且無人機的位置相對於marker已經在指定範圍內以後
         # 記得要在某些情況下開啟find_new_marker的狀態，才能尋找下一個marker
         # self.find_new_marker = True
+        else:
+            pass
 
 
         # TargetDefine
