@@ -162,7 +162,10 @@ class ControlTello(Tello):
         x, y, z, yaw = self.dir_queue.get()
         print("///////////////////////////////Update directions: "+ str(x), str(y), str(z), str(yaw))
         self.send_rc_control(int(x), int(y), int(z), int(yaw))
-        
+        # while True:                             # 持續做同一個動作直到傳進下一個標籤動作，需要注意鍵盤能不能動
+        #     if yaw == -1 :
+        #         break
+
         # if yaw == -1:
         #     self.yv = self.speed
         #     self.send_rc_control(self.lr, self.fb, self.ud, self.yv)

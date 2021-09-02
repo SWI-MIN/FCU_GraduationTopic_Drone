@@ -17,7 +17,8 @@ class Camera():
         self.cam_matrix = None
         self.cam_distortion = None
         # self.frame = None
-        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        # self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_100)
         # self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
@@ -125,8 +126,10 @@ class TargetDefine():
                 'Rotate left corner 1':  np.array([[0., 0., DIST, -5.]]),
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
                 'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
+                'Forward':               np.array([[0., 20., DIST, 0.]]),
+                'Backward':               np.array([[0., -10., DIST, 0.]]),
                 'End':                   np.array([[0., 0., DIST, 0.]]),
-                'Land':                  np.array([[0., 0., DIST, 20.]])
+                'Land':                  np.array([[0., -20., DIST, 0.]])
              }
         return switcher.get(selected, "Invalid marker type")
 
