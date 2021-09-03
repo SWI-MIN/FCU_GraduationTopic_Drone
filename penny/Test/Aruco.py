@@ -117,19 +117,16 @@ class TargetDefine():
         print(selected + " marker")
                                         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
         switcher={
-                'Origin':                np.array([[0., 0., DIST, 0.]]),
-                'Right sideways':        np.array([[0., 0., DIST, -40.]]),
-                'Left sideways':         np.array([[0., 0., DIST, 40.]]),
-                'Rotate right corner 1': np.array([[0., 0., DIST, 5.]]),
-                'Rotate right corner 2': np.array([[0., 0., DIST, -10.]]),
-                'Rotate right corner 3': np.array([[0., 0., DIST, -20.]]),
-                'Rotate left corner 1':  np.array([[0., 0., DIST, -5.]]),
-                'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
-                'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
-                'Forward':               np.array([[0., 20., DIST, 0.]]),
-                'Backward':               np.array([[0., -10., DIST, 0.]]),
-                'End':                   np.array([[0., 0., DIST, 0.]]),
-                'Land':                  np.array([[0., -20., DIST, 0.]])
+                'Origin':                np.array([[0., 0., DIST, 0.]]),            # 0
+                'Right sideways':        np.array([[0., 0., DIST, -40.]]),          # 1 - 5 
+                'Left sideways':         np.array([[0., 0., DIST, 40.]]),           # 6 - 10 
+                'Rotate right corner 1': np.array([[0., 0., DIST, -10.]]),          # 11 - 15 
+                'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
+                'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
+                'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30
+                'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 
+                'Backward':              np.array([[0., -10., DIST, 0.]]),          # 36 - 40
+                'Land':                  np.array([[0., 0., DIST, -1.]])            #41
              }
         return switcher.get(selected, "Invalid marker type")
 

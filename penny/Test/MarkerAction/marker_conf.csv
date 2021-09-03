@@ -19,35 +19,24 @@
 18;Rotate right corner 2
 19;Rotate right corner 2
 20;Rotate right corner 2
-21;Rotate right corner 3
-22;Rotate right corner 3
-23;Rotate right corner 3
-24;Rotate right corner 3
-25;Rotate right corner 3
-26;Rotate left corner 1
-27;Rotate left corner 1
-28;Rotate left corner 1
-29;Rotate left corner 1
-30;Rotate left corner 1
-31;Rotate left corner 2
-32;Rotate left corner 2
-33;Rotate left corner 2
-34;Rotate left corner 2
-35;Rotate left corner 2
-36;Rotate left corner 3
-37;Rotate left corner 3
-38;Rotate left corner 3
-39;Rotate left corner 3
-40;Rotate left corner 3
-41;Forward
-42;Forward
-43;Forward
-44;Forward
-45;Forward
-46;Backward
-47;Backward
-48;Backward
-49;Backward
-50;Backward
-51;End
-72;Land
+21;Rotate left corner 1
+22;Rotate left corner 1
+23;Rotate left corner 1
+24;Rotate left corner 1
+25;Rotate left corner 1
+26;Rotate left corner 2
+27;Rotate left corner 2
+28;Rotate left corner 2
+29;Rotate left corner 2
+30;Rotate left corner 2
+31;Forward
+32;Forward
+33;Forward
+34;Forward
+35;Forward
+36;Backward
+37;Backward
+38;Backward
+39;Backward
+40;Backward
+41;Land
