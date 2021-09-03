@@ -141,6 +141,7 @@ class Aruco():
         # 記得要在某些情況下開啟find_new_marker的狀態，才能尋找下一個marker
         # self.find_new_marker = True
         else:
+            directions = [0., 0., 0., 0.]
             # adjust attitude
             if sort_id[0][1] > 60 :
                 adj_d = sort_id[0][1] - 60              # 距離大於60，前進(+)
