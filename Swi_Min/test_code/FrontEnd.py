@@ -14,21 +14,26 @@ import time
 import numpy as np
 from djitellopy import Tello
 from ControlTello import ControlTello
+from Aruco import Camera
 import threading
+import queue
 
 class FrontEnd(ControlTello):
     def __init__(self):
-        self.tello = ControlTello()
+
+        self.control_queue = queue.Queue()
+        self.tello = ControlTello(self.control_queue)
+
         pygame.display.set_caption("Tello")
         self.win = pygame.display.set_mode((960, 720)) # 寬 * 高
         '''
             目前設想就是將其餘的功能通通在這層呼叫(以threading的方式建立)，
             因此在實作其他所有功能的時候，通通要做成 class 的形式
         '''        
-        # self.navigate = threading.Event()
-        # self.navigate.clear()
+        self.navigation_start = threading.Event()
+        self.navigation_start.clear()
 
-        # self.aruco = Camera()
+        self.aruco = Camera(self.navigation_start)
 
     def update_display(self):
         if (self.tello.img.shape[1] != self.tello.width) or (self.tello.img.shape[0] != self.tello.height):
@@ -47,10 +52,16 @@ class FrontEnd(ControlTello):
             self.tello.img = self.tello.get_frame_read().frame
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
+            self.tello.img = self.aruco.aruco(self.tello.img)
+
             if self.tello.getKeyboardInput(): 
                 cv2.destroyAllWindows()
                 break
             
+            if not self.control_queue.empty():
+                control = self.control_queue.get()
+                if control == "n":
+                    self.navigation_start.set()
 
 
             self.update_display()

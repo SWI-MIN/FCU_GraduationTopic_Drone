@@ -8,8 +8,8 @@ import csv
 import Conversion
 
 # self.angles_tof = [pitch, roll, yaw, tof]
-class Aruco():
-    def __init__(self) -> None:
+class Camera():
+    def __init__(self, navigation_start) -> None:
         self.cam_matrix = None
         self.cam_distortion = None
         # self.frame = None
@@ -28,10 +28,13 @@ class Aruco():
         self.R_flip[2,2] = -1.0
 
         # about navigation
-        self.navigation_start = False # 這裡需要主程式傳送thread event ，來決定導航狀態是否開啟
+        self.navigation_start = navigation_start # 這裡需要主程式傳送thread event ，來決定導航狀態是否開啟
         self.main_marker = None # 記錄誰是主要
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
+
+        # 測試時計時用
+        self.start = 0
 
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
@@ -95,8 +98,8 @@ class Aruco():
                 cv2.putText(frame, "X : {:+.2f}"  .format(sort_id[i][2]) , (200, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "Y : {:+.2f}"  .format(sort_id[i][3]) , (300, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "Z : {:+.2f}"  .format(sort_id[i][4]) , (400, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-            
-            if self.navigation_start == True:  # 導航開始
+
+            if self.navigation_start.is_set():  # 導航開始
                 # 如果 main marker == None，就把最接近飛機的 marker 作為 main
                 # 如果 main marker != None，判斷main_marker是否在used_marker裡面，沒有就加進去
                 if self.main_marker != None:
@@ -105,10 +108,24 @@ class Aruco():
                 else:
                     self.main_marker = sort_id[0][0]
 
+                # 計時 改變find_new_marker
+                Timing = 5
+                if self.start == 0:
+                    self.start = time.time()
+                if time.time() - self.start >= Timing:
+                    self.find_new_marker = True
+                    self.start = 0
+                if time.time() - self.start < Timing:
+                    cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, "used_marker : {}"  .format(self.used_marker) , (10, (440)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                ############################
+                
                 # 判斷是否需要找新 marker， 不找就畫黃色標示線，並且做動作
                 if not self.find_new_marker:
                     if self.main_marker not in sort_id[0:,0:1]:
-                        pass
+                        cv2.putText(frame, "main_marker not in sort_id", (10, (460)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                     else:
                         id_index = id_list.index(self.main_marker)
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
@@ -118,7 +135,7 @@ class Aruco():
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
                     # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
-                    pass
+                    
                     # 取得非main marker 中最近的一個，並且不能用過
                     for i in range(0, ids.size):
                         new_marker = sort_id[i][0]
@@ -132,16 +149,17 @@ class Aruco():
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
         return frame
-
     def navigation(self, sort_id):
-        if self.main_marker not in sort_id:
-            # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
-            pass
+        pass
+        # print("navigation++++++++++++++++++++++++++++++++++++++++")
+        # if self.main_marker not in sort_id:
+        #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
+        #     pass
         # 在這裡做完相應動作並且無人機的位置相對於marker已經在指定範圍內以後
         # 記得要在某些情況下開啟find_new_marker的狀態，才能尋找下一個marker
         # self.find_new_marker = True
-        else:
-            pass
+        # else:
+        #     pass
 
 
         # TargetDefine
@@ -184,6 +202,7 @@ class TargetDefine():
              }
         return switcher.get(selected, "Invalid marker type")
 
+
 def main():
     pygame.display.set_caption("Tello")
     pygame.display.set_mode((200, 200)) # 寬 * 高
@@ -191,7 +210,7 @@ def main():
     tello.connect()
     tello.streamon()
 
-    cam = Aruco()
+    cam = Camera()
     
     while True:
         frame = tello.get_frame_read().frame

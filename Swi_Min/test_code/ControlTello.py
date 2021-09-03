@@ -14,9 +14,10 @@ import time
 import numpy as np
 from djitellopy import Tello
 from threading import Thread
+import queue
 
 class ControlTello(Tello):
-    def __init__(self):
+    def __init__(self, control_queue):
         '''
             super().__init__() : 初始化父輩 (Tello)
             lr, fb, ud, yv, speed : 控制飛機的參數 (上下轉彎，前後左右，速度)
@@ -30,6 +31,9 @@ class ControlTello(Tello):
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
         self.video_On = False 
 
+        self.control_queue = control_queue
+
+        # 測試錄影時間用，完成後可刪
         self.time_s = 0
         self.time_e = 0
 
@@ -108,6 +112,9 @@ class ControlTello(Tello):
     def getKeyboardInput(self):
         self.lr = self.fb = self.ud = self.yv = 0
 
+        if self.getKey("n"):
+            self.control_queue.put("n")
+        
         if self.getKey("q"): 
             self.video_On = False
             self.land()
