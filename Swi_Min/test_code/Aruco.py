@@ -167,7 +167,9 @@ class Camera():
         # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
         # if Target_ID ==  -1:
         #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
+    def reset():
+        pass
+        # 如果要重新開始導航時功能相關的變數必須重置
 
 
 # distance from marker in camera Z coordinates

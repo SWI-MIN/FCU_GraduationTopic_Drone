@@ -58,6 +58,8 @@ class FrontEnd(ControlTello):
                 cv2.destroyAllWindows()
                 break
             
+            # 我認為需要做強制接管的程式，以防巡航時出問題
+            # 目前是覺得可以設置一個狀態,當導航開始的時候需要將其設定為某一狀態，當我按下操作飛機的任意按鍵時必須轉換狀態，令導航功能暫停執行
             if not self.control_queue.empty():
                 control = self.control_queue.get()
                 if control == "n":
