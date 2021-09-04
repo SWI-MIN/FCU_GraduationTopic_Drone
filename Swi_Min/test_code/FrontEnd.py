@@ -21,9 +21,10 @@ import queue
 # 這裡其實可以不用繼承 ControlTello
 class FrontEnd(ControlTello):
     def __init__(self):
-
+        self.take_over = threading.Event()
+        self.take_over.set()  # 預設接管狀態，當導航開啟時設為 clear()
         self.control_queue = queue.Queue()
-        self.tello = ControlTello(self.control_queue)
+        self.tello = ControlTello(self.control_queue, self.take_over)
 
         pygame.display.set_caption("Tello")
         self.win = pygame.display.set_mode((960, 720)) # 寬 * 高
@@ -31,7 +32,7 @@ class FrontEnd(ControlTello):
             目前設想就是將其餘的功能通通在這層呼叫(以threading的方式建立)，
             因此在實作其他所有功能的時候，通通要做成 class 的形式
         '''        
-        
+
         # 處理aruco 相關的
         self.navigation_start = threading.Event()
         self.navigation_start.clear()
@@ -67,7 +68,14 @@ class FrontEnd(ControlTello):
                 control = self.control_queue.get()
                 if control == "n":
                     self.navigation_start.set()
-
+                    self.take_over.clear()
+            # 飛機如果在導航時要判斷是否要接管飛機
+            if self.navigation_start.is_set():
+                if self.take_over.is_set():
+                    self.navigation_start.clear()
+                    self.aruco.reset()
+                else:
+                    pass
 
             self.update_display()
 
