@@ -9,19 +9,16 @@ import Conversion
 
 # self.angles_tof = [pitch, roll, yaw, tof]
 class Camera():
-    def __init__(self, navigation_start) -> None:
+    def __init__(self, navigation_start, marker_act_queue) -> None:
         self.cam_matrix = None
         self.cam_distortion = None
-        # self.frame = None
-        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
-        # self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)# self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
         # Marker edge length in meters
         self.marker_size = 10
 
-        self.target = TargetDefine()
-
+        # 計算旋轉的角度用的矩陣
         self.R_flip  = np.zeros((3,3), dtype=np.float32)
         self.R_flip[0,0] =  1.0
         self.R_flip[1,1] = -1.0
@@ -32,6 +29,10 @@ class Camera():
         self.main_marker = None # 記錄誰是主要
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
+        self.marker_act_queue = marker_act_queue
+
+        # 取得自己定義的marker，以及參考動作
+        self.target = TargetDefine()
 
         # 測試時計時用
         self.start = 0
@@ -149,6 +150,7 @@ class Camera():
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
         return frame
+
     def navigation(self, sort_id):
         pass
         # print("navigation++++++++++++++++++++++++++++++++++++++++")
@@ -167,6 +169,7 @@ class Camera():
         # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
         # if Target_ID ==  -1:
         #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
     def reset():
         pass
         # 如果要重新開始導航時功能相關的變數必須重置

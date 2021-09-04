@@ -18,6 +18,7 @@ from Aruco import Camera
 import threading
 import queue
 
+# 這裡其實可以不用繼承 ControlTello
 class FrontEnd(ControlTello):
     def __init__(self):
 
@@ -30,10 +31,12 @@ class FrontEnd(ControlTello):
             目前設想就是將其餘的功能通通在這層呼叫(以threading的方式建立)，
             因此在實作其他所有功能的時候，通通要做成 class 的形式
         '''        
+        
+        # 處理aruco 相關的
         self.navigation_start = threading.Event()
         self.navigation_start.clear()
-
-        self.aruco = Camera(self.navigation_start)
+        self.marker_act_queue = queue.Queue()
+        self.aruco = Camera(self.navigation_start, self.marker_act_queue)
 
     def update_display(self):
         if (self.tello.img.shape[1] != self.tello.width) or (self.tello.img.shape[0] != self.tello.height):
