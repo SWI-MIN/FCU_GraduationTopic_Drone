@@ -171,14 +171,14 @@ class Camera():
 
         if sort_id[0][2] > 5:                       # 垂直上下
             adj_x = sort_id[0][2] - 5               # 飛機位置太低，往上(+)
-        elif sort_id[0][2] < 5:
-            adj_x = sort_id[0][2] - 5               # 飛機位置太高，往下(-)
+        elif sort_id[0][2] < -5:
+            adj_x = sort_id[0][2] + 5               # 飛機位置太高，往下(-)
 
         if sort_id[0][3] > 30:                      # 水平角度
             adj_yaw = sort_id[0][3] - 30            # 飛機向左轉(+)
             adj_y = 10                              # 微向右走(+)
-        elif sort_id[0][3] < 30:
-            adj_yaw = sort_id[0][3] - 30            # 飛機向右轉(-)
+        elif sort_id[0][3] < -30:
+            adj_yaw = sort_id[0][3] + 30            # 飛機向右轉(-)
             adj_y = -10                             # 微向右走(-)
             
         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
