@@ -149,15 +149,15 @@ class Aruco():
                 adj_d = sort_id[0][1] - 40              # 距離小於40，往後(-)
 
             if sort_id[0][2] > 5:
-                adj_x = sort_id[0][2] - 5              # 飛機位置太低，往上(+)
+                adj_x = sort_id[0][2] - 5               # 飛機位置太低，往上(+)
             elif sort_id[0][2] < 5:
-                adj_x = sort_id[0][2] - 5              # 飛機位置太高，往下(-)
+                adj_x = sort_id[0][2] - 5               # 飛機位置太高，往下(-)
 
-            if sort_id[0][3] > 30:      
+            if sort_id[0][3] > 30:                      # 角度
                 adj_y = sort_id[0][3] - 30              # 飛機位置太左，往右(+)
             elif sort_id[0][3] < 30:
                 adj_y = sort_id[0][3] - 30              # 飛機位置太右，往左(-)
-
+            
             # 旋轉沒調整
             print("Adjust attitude Dist: %d;X: %d; Y: %d", adj_d, adj_x, adj_y)
             # return id Action

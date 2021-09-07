@@ -122,7 +122,7 @@ while True:
         cv2.putText(frame, str_position, (0, 100), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
         #-- Obtain the rotation matrix tag->camera
-        # 旋轉矩陣
+        # 旋轉矩陣(怎麼旋轉) 向量轉矩陣3x3
         R_ct    = np.matrix(cv2.Rodrigues(rvec)[0])
         R_tc    = R_ct.T
 
