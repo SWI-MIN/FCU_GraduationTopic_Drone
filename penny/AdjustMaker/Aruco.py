@@ -155,6 +155,7 @@ class Camera():
         return frame
 
     def navigation(self, sort_id):
+        # 之後轉換成speed
         directions = [0., 0., 0., 0.]
         adj_d = 0
         adj_x = 0
@@ -174,11 +175,11 @@ class Camera():
         elif sort_id[0][2] < -5:
             adj_x = sort_id[0][2] + 5               # 飛機位置太高，往下(-)
 
-        if sort_id[0][3] > 30:                      # 水平角度
-            adj_yaw = sort_id[0][3] - 30            # 飛機向左轉(+)
+        if sort_id[0][3] > 50:                      # 水平角度
+            adj_yaw = sort_id[0][3] - 50            # 飛機向左轉(+)
             adj_y = 10                              # 微向右走(+)
-        elif sort_id[0][3] < -30:
-            adj_yaw = sort_id[0][3] + 30            # 飛機向右轉(-)
+        elif sort_id[0][3] < -40:
+            adj_yaw = sort_id[0][3] + 40            # 飛機向右轉(-)
             adj_y = -10                             # 微向右走(-)
             
         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向

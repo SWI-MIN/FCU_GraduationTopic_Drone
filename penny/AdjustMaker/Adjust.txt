@@ -1,326 +1,1064 @@
-Y: 37, Dis: 63, X: -5
-Adjust left+/right-: 10; forward+/backward-: 3;  up+/down-: 0;  Yaw: 7
-Y: 39, Dis: 61, X: -2
-Adjust left+/right-: 10; forward+/backward-: 1;  up+/down-: 0;  Yaw: 9
-Y: 41, Dis: 60, X: 3
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 11
-Y: 44, Dis: 61, X: 1
-Adjust left+/right-: 10; forward+/backward-: 1;  up+/down-: 0;  Yaw: 14
-Y: 44, Dis: 61, X: 0
-Adjust left+/right-: 10; forward+/backward-: 1;  up+/down-: 0;  Yaw: 14
-Y: 43, Dis: 61, X: -3
-Adjust left+/right-: 10; forward+/backward-: 1;  up+/down-: 0;  Yaw: 13
-Y: 45, Dis: 60, X: -7
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 15
-Y: 47, Dis: 58, X: -8
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 17
-Y: 48, Dis: 56, X: -10
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 18
-Y: 50, Dis: 55, X: -10
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 20
-Y: 50, Dis: 55, X: -8
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 20
-Y: 51, Dis: 54, X: -7
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 21
-Y: 50, Dis: 54, X: -5
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 20
-Y: 49, Dis: 54, X: -7
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 19
-Y: 48, Dis: 53, X: -9
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 18
-Y: 44, Dis: 52, X: -9
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 14
-Y: 41, Dis: 51, X: -9
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 11
-Y: 38, Dis: 50, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 8
-Y: 37, Dis: 49, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 7
-Y: 38, Dis: 49, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 8
-Y: 37, Dis: 48, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 7
-Y: 37, Dis: 47, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 7
-Y: 36, Dis: 47, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 6
-Y: 34, Dis: 46, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 4
-Y: 31, Dis: 45, X: -9
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 1
-Y: 32, Dis: 43, X: -10
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 2
-Y: 39, Dis: 41, X: -13
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -8;  Yaw: 9
-Y: 45, Dis: 42, X: -3
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 15
-Y: 44, Dis: 42, X: -4
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 14
-Y: 46, Dis: 40, X: -5
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 16
-Y: 48, Dis: 38, X: -8
-Adjust left+/right-: 10; forward+/backward-: -1;  up+/down-: -3;  Yaw: 18
-Y: 51, Dis: 37, X: -9
-Adjust left+/right-: 10; forward+/backward-: -2;  up+/down-: -4;  Yaw: 21
-Y: 51, Dis: 36, X: -7
-Adjust left+/right-: 10; forward+/backward-: -3;  up+/down-: -2;  Yaw: 21
-Y: 51, Dis: 35, X: -8
-Adjust left+/right-: 10; forward+/backward-: -4;  up+/down-: -3;  Yaw: 21
-Y: 51, Dis: 34, X: -10
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -5;  Yaw: 21
-Y: 52, Dis: 34, X: -12
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -7;  Yaw: 22
-Y: 54, Dis: 34, X: -12
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -7;  Yaw: 24
-Y: 54, Dis: 34, X: -12
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -7;  Yaw: 24
-Y: 55, Dis: 34, X: -11
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -6;  Yaw: 25
-Y: 55, Dis: 34, X: -11
-Adjust left+/right-: 10; forward+/backward-: -5;  up+/down-: -6;  Yaw: 25
-Y: 55, Dis: 35, X: -12
-Adjust left+/right-: 10; forward+/backward-: -4;  up+/down-: -7;  Yaw: 25
-Y: 51, Dis: 36, X: -7
-Adjust left+/right-: 10; forward+/backward-: -3;  up+/down-: -2;  Yaw: 21
-Y: 43, Dis: 38, X: -9
-Adjust left+/right-: 10; forward+/backward-: -1;  up+/down-: -4;  Yaw: 13
-Y: 41, Dis: 39, X: -9
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 11
-Y: 31, Dis: 40, X: -5
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 1
-Y: -42, Dis: 32, X: -7
-Adjust left+/right-: -10; forward+/backward-: -7;  up+/down-: -2;  Yaw: -12
-Y: -41, Dis: 32, X: -8
-Adjust left+/right-: -10; forward+/backward-: -7;  up+/down-: -3;  Yaw: -11
-Y: -40, Dis: 33, X: -9
-Adjust left+/right-: -10; forward+/backward-: -6;  up+/down-: -4;  Yaw: -10
-Y: -40, Dis: 32, X: -10
-Adjust left+/right-: -10; forward+/backward-: -7;  up+/down-: -5;  Yaw: -10
-Y: -40, Dis: 33, X: -10
-Adjust left+/right-: -10; forward+/backward-: -6;  up+/down-: -5;  Yaw: -10
-Y: -39, Dis: 33, X: -10
-Adjust left+/right-: -10; forward+/backward-: -6;  up+/down-: -5;  Yaw: -9
-Y: -39, Dis: 33, X: -10
-Adjust left+/right-: -10; forward+/backward-: -6;  up+/down-: -5;  Yaw: -9
-Y: -36, Dis: 35, X: -11
-Adjust left+/right-: -10; forward+/backward-: -4;  up+/down-: -6;  Yaw: -6
-Y: -36, Dis: 37, X: -12
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -7;  Yaw: -6
-Y: -36, Dis: 37, X: -12
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -7;  Yaw: -6
-Y: -36, Dis: 37, X: -13
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -8;  Yaw: -6
-Y: -36, Dis: 37, X: -12
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -7;  Yaw: -6
-Y: -35, Dis: 37, X: -11
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -6;  Yaw: -5
-Y: -31, Dis: 39, X: -11
-Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: -6;  Yaw: -1
-Y: -26, Dis: 44, X: -14
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -9;  Yaw: 0
-Y: -25, Dis: 48, X: -13
+Y: -38, Dis: 56, X: -13
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -8;  Yaw: 0
-Y: -24, Dis: 53, X: -8
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
-Y: -26, Dis: 57, X: -4
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -27, Dis: 61, X: -1
-Adjust left+/right-: 0; forward+/backward-: 1;  up+/down-: 0;  Yaw: 0
-Y: -29, Dis: 63, X: 0
-Adjust left+/right-: 0; forward+/backward-: 3;  up+/down-: 0;  Yaw: 0
-Y: -29, Dis: 66, X: 0
-Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
-Y: -31, Dis: 68, X: 0
-Adjust left+/right-: -10; forward+/backward-: 8;  up+/down-: 0;  Yaw: -1
-Y: -31, Dis: 70, X: -1
-Adjust left+/right-: -10; forward+/backward-: 10;  up+/down-: 0;  Yaw: -1
-Y: -34, Dis: 71, X: -2
-Adjust left+/right-: -10; forward+/backward-: 11;  up+/down-: 0;  Yaw: -4
-Y: -35, Dis: 72, X: -3
-Adjust left+/right-: -10; forward+/backward-: 12;  up+/down-: 0;  Yaw: -5
-Y: -35, Dis: 73, X: -3
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -5
-Y: -36, Dis: 73, X: -5
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -6
-Y: -37, Dis: 73, X: -4
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -7
-Y: -38, Dis: 73, X: -2
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -8
-Y: -37, Dis: 73, X: -1
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -7
-Y: -38, Dis: 73, X: -1
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -8
-Y: -38, Dis: 73, X: 0
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -8
-Y: -38, Dis: 74, X: -1
-Adjust left+/right-: -10; forward+/backward-: 14;  up+/down-: 0;  Yaw: -8
-Y: -39, Dis: 73, X: 0
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 74, X: 0
-Adjust left+/right-: -10; forward+/backward-: 14;  up+/down-: 0;  Yaw: -9
-Y: -37, Dis: 76, X: 0
-Adjust left+/right-: -10; forward+/backward-: 16;  up+/down-: 0;  Yaw: -7
-Y: -38, Dis: 76, X: -1
-Adjust left+/right-: -10; forward+/backward-: 16;  up+/down-: 0;  Yaw: -8
-Y: -38, Dis: 77, X: 0
-Adjust left+/right-: -10; forward+/backward-: 17;  up+/down-: 0;  Yaw: -8
-Y: -38, Dis: 77, X: -1
-Adjust left+/right-: -10; forward+/backward-: 17;  up+/down-: 0;  Yaw: -8
-Y: -39, Dis: 77, X: -1
-Adjust left+/right-: -10; forward+/backward-: 17;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 77, X: -3
-Adjust left+/right-: -10; forward+/backward-: 17;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 78, X: -2
-Adjust left+/right-: -10; forward+/backward-: 18;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 79, X: -3
-Adjust left+/right-: -10; forward+/backward-: 19;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 79, X: -4
-Adjust left+/right-: -10; forward+/backward-: 19;  up+/down-: 0;  Yaw: -9
-Y: -40, Dis: 79, X: -5
-Adjust left+/right-: -10; forward+/backward-: 19;  up+/down-: 0;  Yaw: -10
-Y: -40, Dis: 80, X: -3
-Adjust left+/right-: -10; forward+/backward-: 20;  up+/down-: 0;  Yaw: -10
-Y: -38, Dis: 82, X: -3
-Adjust left+/right-: -10; forward+/backward-: 22;  up+/down-: 0;  Yaw: -8
-Y: -39, Dis: 82, X: -5
-Adjust left+/right-: -10; forward+/backward-: 22;  up+/down-: 0;  Yaw: -9
-Y: -39, Dis: 81, X: -5
-Adjust left+/right-: -10; forward+/backward-: 21;  up+/down-: 0;  Yaw: -9
-Y: -40, Dis: 81, X: -4
-Adjust left+/right-: -10; forward+/backward-: 21;  up+/down-: 0;  Yaw: -10
-Y: -38, Dis: 82, X: -4
-Adjust left+/right-: -10; forward+/backward-: 22;  up+/down-: 0;  Yaw: -8
-Y: -39, Dis: 83, X: -4
-Adjust left+/right-: -10; forward+/backward-: 23;  up+/down-: 0;  Yaw: -9
-Y: -40, Dis: 82, X: -5
-Adjust left+/right-: -10; forward+/backward-: 22;  up+/down-: 0;  Yaw: -10
-Y: -40, Dis: 81, X: -5
-Adjust left+/right-: -10; forward+/backward-: 21;  up+/down-: 0;  Yaw: -10
-Y: -38, Dis: 81, X: -4
-Adjust left+/right-: -10; forward+/backward-: 21;  up+/down-: 0;  Yaw: -8
-Y: -37, Dis: 80, X: -5
-Adjust left+/right-: -10; forward+/backward-: 20;  up+/down-: 0;  Yaw: -7
-Y: -37, Dis: 76, X: -4
-Adjust left+/right-: -10; forward+/backward-: 16;  up+/down-: 0;  Yaw: -7
-Y: -37, Dis: 73, X: -3
-Adjust left+/right-: -10; forward+/backward-: 13;  up+/down-: 0;  Yaw: -7
-Y: -37, Dis: 71, X: -3
-Adjust left+/right-: -10; forward+/backward-: 11;  up+/down-: 0;  Yaw: -7
-Y: -36, Dis: 69, X: -2
-Adjust left+/right-: -10; forward+/backward-: 9;  up+/down-: 0;  Yaw: -6
-Y: -34, Dis: 69, X: -2
-Adjust left+/right-: -10; forward+/backward-: 9;  up+/down-: 0;  Yaw: -4
-Y: -35, Dis: 67, X: -2
-Adjust left+/right-: -10; forward+/backward-: 7;  up+/down-: 0;  Yaw: -5
-Y: -34, Dis: 66, X: -1
-Adjust left+/right-: -10; forward+/backward-: 6;  up+/down-: 0;  Yaw: -4
-Y: -33, Dis: 68, X: 0
-Adjust left+/right-: -10; forward+/backward-: 8;  up+/down-: 0;  Yaw: -3
-Y: -33, Dis: 72, X: -1
-Adjust left+/right-: -10; forward+/backward-: 12;  up+/down-: 0;  Yaw: -3
-Y: -34, Dis: 75, X: -4
-Adjust left+/right-: -10; forward+/backward-: 15;  up+/down-: 0;  Yaw: -4
-Y: -36, Dis: 78, X: -5
-Adjust left+/right-: -10; forward+/backward-: 18;  up+/down-: 0;  Yaw: -6
-Y: -37, Dis: 80, X: -4
-Adjust left+/right-: -10; forward+/backward-: 20;  up+/down-: 0;  Yaw: -7
-Y: -36, Dis: 84, X: -5
-Adjust left+/right-: -10; forward+/backward-: 24;  up+/down-: 0;  Yaw: -6
-Y: -39, Dis: 88, X: -8
-Adjust left+/right-: -10; forward+/backward-: 28;  up+/down-: -3;  Yaw: -9
-Y: 41, Dis: 86, X: -18
-Adjust left+/right-: 10; forward+/backward-: 26;  up+/down-: -13;  Yaw: 11
-Y: -40, Dis: 83, X: -5
-Adjust left+/right-: -10; forward+/backward-: 23;  up+/down-: 0;  Yaw: -10
-Y: -38, Dis: 80, X: -3
-Adjust left+/right-: -10; forward+/backward-: 20;  up+/down-: 0;  Yaw: -8
-Y: -36, Dis: 77, X: -2
-Adjust left+/right-: -10; forward+/backward-: 17;  up+/down-: 0;  Yaw: -6
-Y: 44, Dis: 72, X: -5
-Adjust left+/right-: 10; forward+/backward-: 12;  up+/down-: 0;  Yaw: 14
-Y: -37, Dis: 68, X: -1
-Adjust left+/right-: -10; forward+/backward-: 8;  up+/down-: 0;  Yaw: -7
-Y: -36, Dis: 65, X: 0
-Adjust left+/right-: -10; forward+/backward-: 5;  up+/down-: 0;  Yaw: -6
-Y: 42, Dis: 63, X: -4
-Adjust left+/right-: 10; forward+/backward-: 3;  up+/down-: 0;  Yaw: 12
-Y: 42, Dis: 61, X: -5
-Adjust left+/right-: 10; forward+/backward-: 1;  up+/down-: 0;  Yaw: 12
-Y: -34, Dis: 58, X: 0
-Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -4
-Y: -34, Dis: 56, X: 0
-Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -4
-Y: -35, Dis: 52, X: 0
-Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -5
-Y: -33, Dis: 50, X: 2
-Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -3
-Y: 44, Dis: 48, X: -1
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 14
-Y: -30, Dis: 46, X: 2
+Y: -40, Dis: 52, X: -11
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: -6;  Yaw: 0
+Y: -41, Dis: 52, X: -7
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: -2;  Yaw: -1
+Y: -45, Dis: 49, X: -8
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: -3;  Yaw: -5
+Y: -42, Dis: 51, X: -1
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -2
+Y: -40, Dis: 52, X: -1
 Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -28, Dis: 44, X: 2
+Y: -41, Dis: 51, X: -1
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: -1
+Y: -40, Dis: 51, X: 0
+Adjust left+/right-: -10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -38, Dis: 52, X: 0
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: 47, Dis: 42, X: -1
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 17
-Y: -28, Dis: 40, X: -2
+Y: -38, Dis: 51, X: -1
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -28, Dis: 39, X: -5
+Y: -37, Dis: 51, X: 0
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -30, Dis: 38, X: -5
-Adjust left+/right-: -10; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
-Y: -30, Dis: 37, X: -6
-Adjust left+/right-: -10; forward+/backward-: -2;  up+/down-: -1;  Yaw: 0
-Y: -27, Dis: 38, X: -8
-Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: -3;  Yaw: 0
-Y: -26, Dis: 38, X: -9
-Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: -4;  Yaw: 0
-Y: -21, Dis: 41, X: -11
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -6;  Yaw: 0
-Y: -21, Dis: 43, X: -8
+Y: -36, Dis: 51, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 51, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 51, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 52, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 52, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 52, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 51, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 48, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 47, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 45, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 44, Dis: 45, X: -14
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -9;  Yaw: 0
+Y: -32, Dis: 44, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 44, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 43, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 43, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 43, X: -8
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
-Y: -11, Dis: 50, X: -10
+Y: -33, Dis: 42, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -33, Dis: 42, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -34, Dis: 41, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 41, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 40, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 39, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 39, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 39, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 46, Dis: 38, X: -11
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: -6;  Yaw: 0
+Y: 45, Dis: 38, X: -9
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: -4;  Yaw: 0
+Y: -33, Dis: 38, X: -1
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 38, X: -1
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 38, X: -1
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: -1
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 37, X: 0
+Adjust left+/right-: 0; forward+/backward-: -2;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 37, X: 0
+Adjust left+/right-: 0; forward+/backward-: -2;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 37, X: 0
+Adjust left+/right-: 0; forward+/backward-: -2;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 37, X: 0
+Adjust left+/right-: 0; forward+/backward-: -2;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 37, X: 0
+Adjust left+/right-: 0; forward+/backward-: -2;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 38, X: 0
+Adjust left+/right-: 0; forward+/backward-: -1;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 40, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 43, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 45, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 47, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 51, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 54, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 55, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 56, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 56, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 56, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 57, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 57, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 57, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 58, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 58, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 59, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 59, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 58, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 58, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 55, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 54, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 53, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 52, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 51, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 51, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 51, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 53, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 57, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 59, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 60, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 61, X: -3
+Adjust left+/right-: 0; forward+/backward-: 1;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 63, X: -3
+Adjust left+/right-: 0; forward+/backward-: 3;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 64, X: -4
+Adjust left+/right-: 0; forward+/backward-: 4;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 64, X: -4
+Adjust left+/right-: 0; forward+/backward-: 4;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 65, X: -5
+Adjust left+/right-: 0; forward+/backward-: 5;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 66, X: -5
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 66, X: -5
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 66, X: -5
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 67, X: -5
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 67, X: -4
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 67, X: -4
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 67, X: -4
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 67, X: -4
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 66, X: -4
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 67, X: -3
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 67, X: -4
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -37, Dis: 66, X: -4
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 67, X: -3
+Adjust left+/right-: 0; forward+/backward-: 7;  up+/down-: 0;  Yaw: 0
+Y: -36, Dis: 66, X: -4
+Adjust left+/right-: 0; forward+/backward-: 6;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 65, X: -3
+Adjust left+/right-: 0; forward+/backward-: 5;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 64, X: -4
+Adjust left+/right-: 0; forward+/backward-: 4;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 62, X: -4
+Adjust left+/right-: 0; forward+/backward-: 2;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 61, X: -5
+Adjust left+/right-: 0; forward+/backward-: 1;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 60, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 60, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -35, Dis: 59, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 58, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 58, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 57, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 57, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 57, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 57, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 56, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 55, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 56, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 55, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 55, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 55, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 42, Dis: 57, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 57, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 41, Dis: 57, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 57, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 57, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 40, Dis: 58, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 39, Dis: 58, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 39, Dis: 58, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 39, Dis: 58, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 40, Dis: 57, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 40, Dis: 57, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: 39, Dis: 58, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: 39, Dis: 58, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: 39, Dis: 58, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: 39, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: 39, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: 38, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: 38, Dis: 58, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: 38, Dis: 58, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: 37, Dis: 58, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: 37, Dis: 58, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: 37, Dis: 58, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: 36, Dis: 59, X: 10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 5;  Yaw: 0
+Y: 37, Dis: 58, X: 10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 5;  Yaw: 0
+Y: 36, Dis: 58, X: 11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 6;  Yaw: 0
+Y: 35, Dis: 59, X: 11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 6;  Yaw: 0
+Y: 35, Dis: 59, X: 11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 6;  Yaw: 0
+Y: 35, Dis: 59, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 35, Dis: 59, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 35, Dis: 59, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 35, Dis: 59, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 35, Dis: 59, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 36, Dis: 58, X: 13
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 8;  Yaw: 0
+Y: 36, Dis: 58, X: 14
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 9;  Yaw: 0
+Y: -29, Dis: 58, X: 10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 5;  Yaw: 0
+Y: -28, Dis: 58, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -28, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -28, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -29, Dis: 58, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -28, Dis: 58, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -29, Dis: 57, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -29, Dis: 57, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -30, Dis: 57, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -29, Dis: 57, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 57, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 57, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 41, Dis: 57, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -28, Dis: 56, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 56, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 57, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 57, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 42, Dis: 57, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -29, Dis: 56, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 56, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 56, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 56, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 56, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 40, Dis: 56, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: 40, Dis: 56, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: 41, Dis: 56, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: 40, Dis: 56, X: 9
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 4;  Yaw: 0
+Y: -28, Dis: 56, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 40, Dis: 56, X: 10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 5;  Yaw: 0
+Y: 40, Dis: 56, X: 11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 6;  Yaw: 0
+Y: 39, Dis: 57, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 38, Dis: 57, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: 38, Dis: 57, X: 12
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 7;  Yaw: 0
+Y: -27, Dis: 57, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -27, Dis: 57, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: 38, Dis: 57, X: 14
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 9;  Yaw: 0
+Y: 38, Dis: 57, X: 15
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 10;  Yaw: 0
+Y: -27, Dis: 57, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -27, Dis: 58, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -27, Dis: 57, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: 38, Dis: 57, X: 14
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 9;  Yaw: 0
+Y: -27, Dis: 57, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -27, Dis: 57, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -27, Dis: 57, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -27, Dis: 57, X: 7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 2;  Yaw: 0
+Y: -27, Dis: 56, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -27, Dis: 56, X: 6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 1;  Yaw: 0
+Y: -28, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 56, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 41, Dis: 55, X: 10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 5;  Yaw: 0
+Y: -28, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 54, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 55, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 54, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 54, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 54, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 41, Dis: 54, X: 8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 3;  Yaw: 0
+Y: -29, Dis: 54, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 54, X: 4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 53, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -29, Dis: 53, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 53, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 53, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 52, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 52, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 52, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 52, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 51, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 51, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 51, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -30, Dis: 52, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -30, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -30, Dis: 52, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -30, Dis: 53, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -30, Dis: 53, X: -10
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -5;  Yaw: 0
-Y: -10, Dis: 52, X: -13
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -8;  Yaw: 0
-Y: -7, Dis: 55, X: -14
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -9;  Yaw: 0
-Y: -6, Dis: 58, X: -14
-Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -9;  Yaw: 0
-Y: -1, Dis: 65, X: -15
-Adjust left+/right-: 0; forward+/backward-: 5;  up+/down-: -10;  Yaw: 0
-Y: -1, Dis: 62, X: -12
-Adjust left+/right-: 0; forward+/backward-: 2;  up+/down-: -7;  Yaw: 0
-Y: -2, Dis: 64, X: -11
-Adjust left+/right-: 0; forward+/backward-: 4;  up+/down-: -6;  Yaw: 0
-Y: -2, Dis: 65, X: -11
-Adjust left+/right-: 0; forward+/backward-: 5;  up+/down-: -6;  Yaw: 0
-Y: -3, Dis: 64, X: -9
-Adjust left+/right-: 0; forward+/backward-: 4;  up+/down-: -4;  Yaw: 0
-Y: -5, Dis: 63, X: -8
-Adjust left+/right-: 0; forward+/backward-: 3;  up+/down-: -3;  Yaw: 0
-Y: -5, Dis: 61, X: -6
-Adjust left+/right-: 0; forward+/backward-: 1;  up+/down-: -1;  Yaw: 0
-Y: -7, Dis: 58, X: -5
+Y: -31, Dis: 53, X: -11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -6;  Yaw: 0
+Y: -32, Dis: 59, X: -11
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -6;  Yaw: 0
+Y: -31, Dis: 54, X: -10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -5;  Yaw: 0
+Y: -32, Dis: 54, X: -10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -5;  Yaw: 0
+Y: -33, Dis: 53, X: -10
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -5;  Yaw: 0
+Y: -35, Dis: 53, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -34, Dis: 53, X: -5
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -13, Dis: 53, X: -2
+Y: -34, Dis: 54, X: -4
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: -16, Dis: 51, X: 0
+Y: -34, Dis: 53, X: -4
 Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
-Y: 40, Dis: 49, X: 4
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 10
-Y: 39, Dis: 48, X: -1
+Y: -35, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 53, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 52, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 52, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 52, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 52, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 53, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 53, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 53, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 53, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -32, Dis: 53, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -31, Dis: 53, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -32, Dis: 53, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -31, Dis: 53, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -31, Dis: 53, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -31, Dis: 52, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -31, Dis: 52, X: -8
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: -31, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -31, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 52, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -31, Dis: 52, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -32, Dis: 52, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 52, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -32, Dis: 52, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -31, Dis: 53, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -32, Dis: 52, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 52, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 51, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 50, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 50, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 49, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 48, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -34, Dis: 48, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 47, X: -5
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -33, Dis: 47, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 47, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 47, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -34, Dis: 47, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -33, Dis: 47, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 47, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 47, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 46, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 46, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -33, Dis: 46, X: -7
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -2;  Yaw: 0
+Y: -32, Dis: 46, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -29, Dis: 46, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -28, Dis: 46, X: -6
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: -1;  Yaw: 0
+Y: -27, Dis: 46, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 46, X: -4
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 46, X: -3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 47, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 46, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -23, Dis: 47, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -23, Dis: 46, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -21, Dis: 47, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 59, Dis: 48, X: 0
 Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 9
-Y: 40, Dis: 46, X: -6
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 10
-Y: 40, Dis: 45, X: -10
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 10
-Y: 41, Dis: 44, X: -10
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 11
-Y: 43, Dis: 43, X: -12
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -7;  Yaw: 13
-Y: 44, Dis: 42, X: -13
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -8;  Yaw: 14
-Y: 43, Dis: 42, X: -15
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -10;  Yaw: 13
-Y: 45, Dis: 42, X: -18
-Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -13;  Yaw: 15
+Y: 59, Dis: 48, X: -3
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 9
+Y: 59, Dis: 52, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 9
+Y: 60, Dis: 47, X: -12
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -7;  Yaw: 10
+Y: 60, Dis: 48, X: -14
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -9;  Yaw: 10
+Y: 61, Dis: 44, X: -15
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -10;  Yaw: 11
+Y: 60, Dis: 44, X: -15
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -10;  Yaw: 10
+Y: 60, Dis: 44, X: -13
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -8;  Yaw: 10
+Y: 58, Dis: 45, X: -11
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -6;  Yaw: 8
+Y: 57, Dis: 45, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 7
+Y: 55, Dis: 45, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 5
+Y: 53, Dis: 45, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 52, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 2
+Y: 51, Dis: 46, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 1
+Y: 50, Dis: 46, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 0
+Y: 51, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 1
+Y: 51, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 1
+Y: 51, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 1
+Y: 51, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 1
+Y: 51, Dis: 46, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 1
+Y: 52, Dis: 46, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 2
+Y: 52, Dis: 46, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 2
+Y: 51, Dis: 46, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 1
+Y: 52, Dis: 46, X: -10
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 2
+Y: 52, Dis: 46, X: -10
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 2
+Y: 52, Dis: 47, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 2
+Y: 52, Dis: 47, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 2
+Y: 52, Dis: 47, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 2
+Y: 53, Dis: 47, X: -10
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 3
+Y: 53, Dis: 47, X: -10
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -5;  Yaw: 3
+Y: 53, Dis: 47, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 3
+Y: 53, Dis: 47, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 3
+Y: 53, Dis: 48, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 48, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 3
+Y: 53, Dis: 48, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 48, X: -9
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -4;  Yaw: 3
+Y: 53, Dis: 48, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 48, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 54, Dis: 48, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 4
+Y: 53, Dis: 48, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 48, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 53, Dis: 49, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 53, Dis: 49, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 49, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 49, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 53, Dis: 49, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 53, Dis: 49, X: -8
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -3;  Yaw: 3
+Y: 53, Dis: 49, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 3
+Y: 54, Dis: 48, X: -7
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -2;  Yaw: 4
+Y: 54, Dis: 49, X: -6
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 4
+Y: 54, Dis: 48, X: -6
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: -1;  Yaw: 4
+Y: 53, Dis: 49, X: -5
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 3
+Y: 54, Dis: 48, X: -4
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: 54, Dis: 49, X: -4
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: -25, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 54, Dis: 49, X: -4
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: -25, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 54, Dis: 49, X: -3
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: -25, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: 53, Dis: 49, X: -2
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 3
+Y: 54, Dis: 49, X: -3
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: 54, Dis: 49, X: -3
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 4
+Y: 53, Dis: 49, X: -3
+Adjust left+/right-: 10; forward+/backward-: 0;  up+/down-: 0;  Yaw: 3
+Y: -25, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -27, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 50, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -26, Dis: 49, X: -1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 49, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 48, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -25, Dis: 48, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 47, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 47, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 47, X: 3
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -23, Dis: 47, X: 2
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -23, Dis: 47, X: 1
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 47, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
+Y: -24, Dis: 47, X: 0
+Adjust left+/right-: 0; forward+/backward-: 0;  up+/down-: 0;  Yaw: 0
