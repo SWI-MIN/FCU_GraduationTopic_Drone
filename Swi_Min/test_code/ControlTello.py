@@ -6,6 +6,8 @@
         r 起飛 f 降落
         上下左右 --> 前後左右
         wsad --> 升降轉向
+        n 開始導航
+        m 取消導航，接管飛機
     畫面大小 : (960, 720)  寬 * 高 OR (720, 960)  高 * 寬
 '''
 import pygame
@@ -17,7 +19,7 @@ from threading import Thread
 import queue
 
 class ControlTello(Tello):
-    def __init__(self, control_queue):
+    def __init__(self, control_queue, take_over):
         '''
             super().__init__() : 初始化父輩 (Tello)
             lr, fb, ud, yv, speed : 控制飛機的參數 (上下轉彎，前後左右，速度)
@@ -31,7 +33,9 @@ class ControlTello(Tello):
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
         self.video_On = False 
 
+        # 與 FrontEnd 之間通訊與傳值
         self.control_queue = control_queue
+        self.take_over = take_over
 
         # 測試錄影時間用，完成後可刪
         self.time_s = 0
@@ -114,6 +118,8 @@ class ControlTello(Tello):
 
         if self.getKey("n"):
             self.control_queue.put("n")
+        if self.getKey("m"):
+            self.take_over.set()
         
         if self.getKey("q"): 
             self.video_On = False

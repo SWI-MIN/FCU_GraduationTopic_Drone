@@ -170,9 +170,12 @@ class Camera():
         # if Target_ID ==  -1:
         #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
-    def reset():
-        pass
+    def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
+        self.main_marker = None # 記錄誰是主要
+        self.find_new_marker = False # 標記是否需要找尋下一個marker
+        self.used_marker = [] # 存放用過的marker
+        
 
 
 # distance from marker in camera Z coordinates
