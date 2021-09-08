@@ -120,7 +120,7 @@ class TargetDefine():
                 'Origin':                np.array([[0., 0., DIST, 0.]]),            # 0
                 'Right sideways':        np.array([[0., 0., DIST, -40.]]),          # 1 - 5 
                 'Left sideways':         np.array([[0., 0., DIST, 40.]]),           # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., DIST, -10.]]),          # 11 - 15 
+                'Rotate right corner 1': np.array([[0., 0., DIST, -5.]]),          # 11 - 15 
                 'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
                 'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30

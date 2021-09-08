@@ -156,6 +156,7 @@ class Camera():
 
     def navigation(self, sort_id):
         # 之後轉換成speed
+        # 可以取 n 比算平均做為調整，目前只使用一筆(v 或每十秒收一次)(用flag擋起來只收一筆)
         directions = [0., 0., 0., 0.]
         adj_d = 0
         adj_x = 0
@@ -187,8 +188,11 @@ class Camera():
         print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = f)
         f.close()
         # return id Action
-        # directions = self.target.changeTarget(self.main_marker)
-        # return  adj_d, adj_x, adj_y, directions
+        # adjToSpeed(adj_y, adj_d, adj_x, adj_yaw)
+        adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
+        print(adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3])
+        directions = self.target.changeTarget(self.main_marker)
+        return  adj_directions, directions
 
         # print("navigation++++++++++++++++++++++++++++++++++++++++")
         # if self.main_marker not in sort_id:
@@ -206,7 +210,10 @@ class Camera():
         # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
         # if Target_ID ==  -1:
         #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
+    def adjToSpeed(self,adj_y, adj_d, adj_x, adj_yaw):
+        # 把距離,角度轉換成速度
+        # adj_y(平)左右, adj_d(平)前後, adj_x(垂)上下, adj_yaw轉向
+        pass
     def reset():
         pass
         # 如果要重新開始導航時功能相關的變數必須重置

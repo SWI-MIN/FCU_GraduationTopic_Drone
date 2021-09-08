@@ -57,6 +57,14 @@ class FrontEnd(ControlTello):
 
             self.tello.img = self.aruco.aruco(self.tello.img)
 
+            # 每十秒接收一次調整
+            # Timing = 10
+            # if self.start == 0:
+            #     self.start = time.time()
+            # if time.time() - self.start >= Timing:
+            #     self.aruco.navigation
+            #     self.start = 0
+
             if self.tello.getKeyboardInput(): 
                 cv2.destroyAllWindows()
                 break
