@@ -100,8 +100,10 @@ class Camera():
                 cv2.putText(frame, "Y : {:+.2f}"  .format(sort_id[i][3]) , (300, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "Z : {:+.2f}"  .format(sort_id[i][4]) , (400, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
-            self.navigation(sort_id)
-
+            adj_directions, marker_directions = self.navigation(sort_id)
+            print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
+            print("Marker Action: " , marker_directions[0], marker_directions[1], marker_directions[2], marker_directions[3])
+        
             if self.navigation_start.is_set():  # 導航開始
                 # 如果 main marker == None，就把最接近飛機的 marker 作為 main
                 # 如果 main marker != None，判斷main_marker是否在used_marker裡面，沒有就加進去
@@ -157,42 +159,45 @@ class Camera():
     def navigation(self, sort_id):
         # 之後轉換成speed
         # 可以取 n 比算平均做為調整，目前只使用一筆(v 或每十秒收一次)(用flag擋起來只收一筆)
+        print("--------------------in navigation---------------------")
         directions = [0., 0., 0., 0.]
         adj_d = 0
         adj_x = 0
         adj_y = 0
         adj_yaw = 0
         f = open("Adjust.txt", "a")
-        # f.write("Y: ", int(sort_id[0][3]), "Distance: ", int(sort_id[0][1]), "X: \n", int(sort_id[0][2]))
-        print("Y: %d, Dis: %d, X: %d" % (sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = f)
+        print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = f)
+        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]))
         # adjust attitude
         if sort_id[0][1] > 60 :                     # 水平前進後退
-            adj_d = sort_id[0][1] - 60              # 距離大於60，前進(+)
+            adj_d = round(sort_id[0][1]) - 60              # 距離大於60，前進(+)
         elif sort_id[0][1] < 40 :
-            adj_d = sort_id[0][1] - 40              # 距離小於40，往後(-)
+            adj_d = round(sort_id[0][1]) - 40              # 距離小於40，往後(-)
 
         if sort_id[0][2] > 5:                       # 垂直上下
-            adj_x = sort_id[0][2] - 5               # 飛機位置太低，往上(+)
+            adj_x = round(sort_id[0][2]) - 5               # 飛機位置太低，往上(+)
         elif sort_id[0][2] < -5:
-            adj_x = sort_id[0][2] + 5               # 飛機位置太高，往下(-)
+            adj_x = round(sort_id[0][2]) + 5               # 飛機位置太高，往下(-)
 
         if sort_id[0][3] > 50:                      # 水平角度
-            adj_yaw = sort_id[0][3] - 50            # 飛機向左轉(+)
+            adj_yaw = round(sort_id[0][3]) - 50     # 飛機向左轉(+)
             adj_y = 10                              # 微向右走(+)
         elif sort_id[0][3] < -40:
-            adj_yaw = sort_id[0][3] + 40            # 飛機向右轉(-)
+            adj_yaw = round(sort_id[0][3]) + 40     # 飛機向右轉(-)
             adj_y = -10                             # 微向右走(-)
             
         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
         
         print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = f)
+        # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
         f.close()
         # return id Action
         # adjToSpeed(adj_y, adj_d, adj_x, adj_yaw)
         adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
-        print(adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3])
-        directions = self.target.changeTarget(self.main_marker)
-        return  adj_directions, directions
+        marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+        # print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
+        # print("Marker Action: " , str(marker_directions[0]), marker_directions[1], int(marker_directions[2]), int(marker_directions[3]))
+        return  adj_directions, marker_directions
 
         # print("navigation++++++++++++++++++++++++++++++++++++++++")
         # if self.main_marker not in sort_id:
@@ -210,10 +215,12 @@ class Camera():
         # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
         # if Target_ID ==  -1:
         #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
     def adjToSpeed(self,adj_y, adj_d, adj_x, adj_yaw):
         # 把距離,角度轉換成速度
         # adj_y(平)左右, adj_d(平)前後, adj_x(垂)上下, adj_yaw轉向
         pass
+
     def reset():
         pass
         # 如果要重新開始導航時功能相關的變數必須重置
@@ -244,7 +251,7 @@ class TargetDefine():
                 'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
                 'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30
-                'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 
+                'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 ; 72
                 'Backward':              np.array([[0., -10., DIST, 0.]]),          # 36 - 40
                 'Land':                  np.array([[0., 0., DIST, -1.]])            #41
              }
