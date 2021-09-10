@@ -49,6 +49,7 @@ class Camera():
         frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
+        navigation_times = 0
 
         # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -137,6 +138,7 @@ class Camera():
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
+                    # 需要多一個bool, 判斷是不是調整過了, 調整過不再調整
                     self.navigation(sort_id)
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
@@ -157,8 +159,12 @@ class Camera():
         return frame
 
     def navigation(self, sort_id):
+        # 會取得那個當下的飛機姿態
+        # 141 需要多一個bool, 判斷是不是調整過了, 調整過不再調整 / 
         # 之後轉換成speed
-        # 可以取 n 比算平均做為調整，目前只使用一筆(v 或每十秒收一次)(用flag擋起來只收一筆)
+        # 當按下開始導航對main_marker取 10 筆算平均做為調整
+        # isAvgDirection = False                          # 當True才是取完平均姿態
+        # self.navigation += 1
         print("--------------------in navigation---------------------")
         directions = [0., 0., 0., 0.]
         adj_d = 0
@@ -173,6 +179,7 @@ class Camera():
             adj_d = round(sort_id[0][1]) - 60              # 距離大於60，前進(+)
         elif sort_id[0][1] < 40 :
             adj_d = round(sort_id[0][1]) - 40              # 距離小於40，往後(-)
+
 
         if sort_id[0][2] > 5:                       # 垂直上下
             adj_x = round(sort_id[0][2]) - 5               # 飛機位置太低，往上(+)
@@ -191,7 +198,13 @@ class Camera():
         print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = f)
         # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
         f.close()
+
+        
         # return id Action
+        # if self.navigation == 10 :
+
+
+        #     self.navigation = 0
         # adjToSpeed(adj_y, adj_d, adj_x, adj_yaw)
         adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
         marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
