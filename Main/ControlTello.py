@@ -6,6 +6,8 @@
         r 起飛 f 降落
         上下左右 --> 前後左右
         wsad --> 升降轉向
+        n 開始導航
+        m 取消導航，接管飛機
     畫面大小 : (960, 720)  寬 * 高 OR (720, 960)  高 * 寬
 '''
 import pygame
@@ -14,9 +16,10 @@ import time
 import numpy as np
 from djitellopy import Tello
 from threading import Thread
+import queue
 
 class ControlTello(Tello):
-    def __init__(self):
+    def __init__(self, control_queue, take_over):
         '''
             super().__init__() : 初始化父輩 (Tello)
             lr, fb, ud, yv, speed : 控制飛機的參數 (上下轉彎，前後左右，速度)
@@ -30,6 +33,11 @@ class ControlTello(Tello):
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
         self.video_On = False 
 
+        # 與 FrontEnd 之間通訊與傳值
+        self.control_queue = control_queue
+        self.take_over = take_over
+
+        # 測試錄影時間用，完成後可刪
         self.time_s = 0
         self.time_e = 0
 
@@ -57,9 +65,18 @@ class ControlTello(Tello):
             Will only be referenced internally
         '''
         battery, height, get_time = self.get_info()
-        InfoText = ("battery: {b}%, height: {h}, time:{t}".format(b = battery, h = height, t = get_time))
-        cv2.putText(self.tello_info, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
+        InfoText = ("height: {h}, time:{t}".format(h = height, t = get_time))
+        cv2.putText(self.tello_info, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
+        
+        InfoText = ("battery: {b}%".format(b = battery))
+        if int(battery) <= 20:
+            cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (10, 20, 255), 1, cv2.LINE_AA)
+        elif int(battery) > 20 and int(battery) <= 50:
+            cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 215, 255), 1, cv2.LINE_AA)
+        else:
+            cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 255, 100), 1, cv2.LINE_AA)
+        
         InfoText = ("Command: lr:{lr} fb:{fb} ud:{ud} yv:{yv}".format(lr = self.lr, fb = self.fb, ud = self.ud, yv = self.yv))
         cv2.putText(self.tello_info, InfoText, (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
 
@@ -99,6 +116,11 @@ class ControlTello(Tello):
     def getKeyboardInput(self):
         self.lr = self.fb = self.ud = self.yv = 0
 
+        if self.getKey("n"):
+            self.control_queue.put("n")
+        if self.getKey("m"):
+            self.take_over.set()
+        
         if self.getKey("q"): 
             self.video_On = False
             self.land()
@@ -142,48 +164,7 @@ class ControlTello(Tello):
 
         self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
 
-class FrontEnd(ControlTello):
-    def __init__(self):
-        self.tello = ControlTello()
-        pygame.init()
-        pygame.display.set_caption("Tello")
-        self.win = pygame.display.set_mode((960, 720)) # 寬 * 高
-        '''
-            目前設想就是將其餘的功能通通在這層呼叫(以threading的方式建立)，
-            因此在實作其他所有功能的時候，通通要做成 class 的形式
-        '''
-
-    def update_display(self):
-        if (self.tello.img.shape[1] != self.tello.width) or (self.tello.img.shape[0] != self.tello.height):
-                self.screen=pygame.display.set_mode((self.tello.img.shape[1], self.tello.img.shape[0]))
-        frame = cv2.cvtColor(self.tello.img, cv2.COLOR_BGR2RGB)
-        frame = np.rot90(frame)
-        frame = np.flipud(frame)
-        frame = pygame.surfarray.make_surface(frame)
-        self.win.blit(frame, (0, 0))
-        pygame.display.update()
-
-    def run(self):
-        self.tello.connect()
-        self.tello.streamon()
-        while True:
-            self.tello.img = self.tello.get_frame_read().frame
-            self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
-
-            if self.tello.getKeyboardInput(): 
-                cv2.destroyAllWindows()
-                break
-            
-            self.update_display()
-
-            # cv2.imshow("Drone Control Centre1", self.tello.img)
-            cv2.imshow("Drone Control Centre2", self.tello.tello_info)
-            cv2.waitKey(1)
-
-def main():
-    tello = FrontEnd()
-    tello.run()
-
 if __name__ == '__main__':
-    main()
-
+    pass
+else:
+    pygame.init()
