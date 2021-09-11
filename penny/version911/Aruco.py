@@ -30,6 +30,7 @@ class Camera():
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
         self.marker_act_queue = marker_act_queue
+        self.adjust_flag = False
 
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
@@ -154,54 +155,79 @@ class Camera():
         return frame, adj_directions
 
     def navigation(self, sort_id):
+        # if self.main_marker not in sort_id:
+        #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
+        #     pass
+        # else:
+        #     pass
+        directions = [0., 0., 0., 0.] # [adj_y, adj_d, adj_x, adj_yaw]
+        adjust_speed = 5
+        if not self.adjust_flag:
+            # adjust attitude
+            if sort_id[0][1] > 60 :                     # 水平前進後退
+                directions[1] = adjust_speed *2
+                # adj_d = 10                              # 距離大於60，前進(+)
+            elif sort_id[0][1] < 40 :
+                directions[1] = -adjust_speed *2
+                # adj_d = -10                             # 距離小於40，往後(-)
+
+            if sort_id[0][2] > 5:                       # 垂直上下  
+                directions[2] = adjust_speed
+                # adj_x = 5                               # 飛機位置太低，往上(+)
+            elif sort_id[0][2] < -5:
+                directions[2] = -adjust_speed
+                # adj_x = -5                              # 飛機位置太高，往下(-)
+
+            if sort_id[0][3] > 50:                      # 水平角度
+                directions[0] = adjust_speed *2
+                directions[3] = adjust_speed
+                # adj_yaw = 5                             # 飛機向左轉(+)
+                # adj_y = 10                              # 微向右走(+)
+            elif sort_id[0][3] < -40:   
+                directions[0] = -adjust_speed *2
+                directions[3] = -adjust_speed 
+                # adj_yaw = -5                            # 飛機向右轉(-)
+                # adj_y = -10                             # 微向右走(-)
+            # if directions 裡面都是0
+                # self.adjust_flag = True
+            # else: # 裡面有東西不等於0的時候
+                # self.marker_act_queue.put[directions]
+                # 記得在frontend裡面要接收
+        # 調整完畢
+        else:
+            # 做標籤動作
+            marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+            # 做完標籤動作
+            # self.adjust_flag = False
+            # self.find_new_marker = True
+
+
+
         # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位
         # 之後轉換成speed
         # 到什麼條件叫調整結束
-        print("--------------------in navigation---------------------")
-        adjustfile = open("Adjust.txt", "a")
-        directions = [0., 0., 0., 0.]
-        adj_d = 0
-        adj_x = 0
-        adj_y = 0
-        adj_yaw = 0
-        f = open("Adjust.txt", "a")
-        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
-        print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]))
+        # print("--------------------in navigation---------------------")
+        # adjustfile = open("Adjust.txt", "a")
         
-        # adjust attitude
-        if sort_id[0][1] > 60 :                     # 水平前進後退
-            # adj_d = round(sort_id[0][1]) - 60       
-            adj_d = 10                              # 距離大於60，前進(+)
-        elif sort_id[0][1] < 40 :
-            # adj_d = round(sort_id[0][1]) - 40              
-            adj_d = -10                             # 距離小於40，往後(-)
-
-
-        if sort_id[0][2] > 5:                       # 垂直上下
-            # adj_x = round(sort_id[0][2]) - 5        
-            adj_x = 5                               # 飛機位置太低，往上(+)
-        elif sort_id[0][2] < -5:
-            # adj_x = round(sort_id[0][2]) + 5      
-            adj_x = -5                              # 飛機位置太高，往下(-)
-
-        if sort_id[0][3] > 50:                      # 水平角度
-            # adj_yaw = round(sort_id[0][3]) - 50     
-            adj_yaw = 5                             # 飛機向左轉(+)
-            adj_y = 10                              # 微向右走(+)
-        elif sort_id[0][3] < -40:
-            # adj_yaw = round(sort_id[0][3]) + 40     
-            adj_yaw = -5                            # 飛機向右轉(-)
-            adj_y = -10                             # 微向右走(-)
+        # adj_d = 0
+        # adj_x = 0
+        # adj_y = 0
+        # adj_yaw = 0
+        # f = open("Adjust.txt", "a")
+        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
+        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]))
+        
+        
             
         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
         
         # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = adjustfile)
-        print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
+        # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
         
 
-        adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
-        adjustfile.close()
-        return  adj_directions
+        # adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
+        # adjustfile.close()
+        # return  adj_directions
 
         # print("navigation++++++++++++++++++++++++++++++++++++++++")
         # if self.main_marker not in sort_id:
@@ -214,17 +240,6 @@ class Camera():
         #     pass
 
 
-    def getMarkerAction(self, sort_id):
-        # 取的該標籤的動作
-        marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
-
-        return marker_directions
-
-
-    def adjToSpeed(self,adj_y, adj_d, adj_x, adj_yaw):
-        # 把距離,角度轉換成速度
-        # adj_y(平)左右, adj_d(平)前後, adj_x(垂)上下, adj_yaw轉向
-        pass
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
         self.main_marker = None # 記錄誰是主要

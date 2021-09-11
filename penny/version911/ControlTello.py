@@ -127,12 +127,12 @@ class ControlTello(Tello):
         if self.getKey("q"): 
             if self.video_On:
                 self.video_On = False
-            # self.end()
+            self.end()
             # print("++++++++++++++++++++++")
-            if self.is_flying:
-                self.land()
-            if self.stream_on:
-                self.streamoff()
+            # if self.is_flying:
+            #     self.land()
+            # if self.stream_on:
+            #     self.streamoff()
             self.control_queue.put("q")
             return
             
