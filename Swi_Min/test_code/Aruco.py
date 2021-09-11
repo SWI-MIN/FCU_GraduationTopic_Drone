@@ -155,8 +155,12 @@ class Camera():
         return frame, adj_directions
 
     def navigation(self, sort_id):
-        # [adj_y, adj_d, adj_x, adj_yaw]
-        directions = [0., 0., 0., 0.]
+        # if self.main_marker not in sort_id:
+        #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
+        #     pass
+        # else:
+        #     pass
+        directions = [0., 0., 0., 0.] # [adj_y, adj_d, adj_x, adj_yaw]
         adjust_speed = 5
         if not self.adjust_flag:
             # adjust attitude
@@ -166,7 +170,6 @@ class Camera():
             elif sort_id[0][1] < 40 :
                 directions[1] = -adjust_speed *2
                 # adj_d = -10                             # 距離小於40，往後(-)
-
 
             if sort_id[0][2] > 5:                       # 垂直上下  
                 directions[2] = adjust_speed
@@ -190,12 +193,15 @@ class Camera():
             # else: # 裡面有東西不等於0的時候
                 # self.marker_act_queue.put[directions]
                 # 記得在frontend裡面要接收
-
+        # 調整完畢
         else:
-            pass
-            # 調整完畢
+            # 做標籤動作
+            marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+            # 做完標籤動作
             # self.adjust_flag = False
             # self.find_new_marker = True
+
+
 
         # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位
         # 之後轉換成speed
@@ -234,17 +240,6 @@ class Camera():
         #     pass
 
 
-    def getMarkerAction(self, sort_id):
-        # 取的該標籤的動作
-        marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
-
-        return marker_directions
-
-
-    def adjToSpeed(self,adj_y, adj_d, adj_x, adj_yaw):
-        # 把距離,角度轉換成速度
-        # adj_y(平)左右, adj_d(平)前後, adj_x(垂)上下, adj_yaw轉向
-        pass
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
         self.main_marker = None # 記錄誰是主要
