@@ -63,9 +63,8 @@ class FrontEnd():
 
             # self.tello.img = self.aruco.aruco(self.tello.img)
 
-            self.tello.img, adj_directions = self.aruco.aruco(self.tello.img)
-            print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
-            self.tello.updateMarkerAct(adj_directions)
+            self.tello.img = self.aruco.aruco(self.tello.img)
+            self.tello.updateMarkerAct(self.aruco.marker_act_queue.get())
 
             self.tello.getKeyboardInput()
 

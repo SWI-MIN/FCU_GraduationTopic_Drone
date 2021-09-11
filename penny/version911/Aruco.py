@@ -135,7 +135,7 @@ class Camera():
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
                     # self.navigation(sort_id)
-                    adj_directions = self.navigation(sort_id)
+                    self.navigation(sort_id)
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
                     # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
@@ -152,7 +152,7 @@ class Camera():
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
-        return frame, adj_directions
+        return frame
 
     def navigation(self, sort_id):
         # if self.main_marker not in sort_id:
@@ -160,46 +160,41 @@ class Camera():
         #     pass
         # else:
         #     pass
-        directions = [0., 0., 0., 0.] # [adj_y, adj_d, adj_x, adj_yaw]
+        directions = [0., 0., 0., 0.]                   # [adj_y, adj_d, adj_x, adj_yaw] 
         adjust_speed = 5
         if not self.adjust_flag:
             # adjust attitude
             if sort_id[0][1] > 60 :                     # 水平前進後退
-                directions[1] = adjust_speed *2
-                # adj_d = 10                              # 距離大於60，前進(+)
+                directions[1] = adjust_speed *2         # 距離大於60，前進(+)                
             elif sort_id[0][1] < 40 :
-                directions[1] = -adjust_speed *2
-                # adj_d = -10                             # 距離小於40，往後(-)
+                directions[1] = -adjust_speed *2        # 距離小於40，往後(-)  
 
             if sort_id[0][2] > 5:                       # 垂直上下  
-                directions[2] = adjust_speed
-                # adj_x = 5                               # 飛機位置太低，往上(+)
+                directions[2] = adjust_speed            # 飛機位置太低，往上(+)
             elif sort_id[0][2] < -5:
-                directions[2] = -adjust_speed
-                # adj_x = -5                              # 飛機位置太高，往下(-)
+                directions[2] = -adjust_speed           # 飛機位置太高，往下(-)
 
             if sort_id[0][3] > 50:                      # 水平角度
-                directions[0] = adjust_speed *2
-                directions[3] = adjust_speed
-                # adj_yaw = 5                             # 飛機向左轉(+)
-                # adj_y = 10                              # 微向右走(+)
+                directions[0] = adjust_speed * 2        # 飛機向左轉(+)
+                directions[3] = adjust_speed            # 微向右走(+)                    
             elif sort_id[0][3] < -40:   
-                directions[0] = -adjust_speed *2
-                directions[3] = -adjust_speed 
-                # adj_yaw = -5                            # 飛機向右轉(-)
-                # adj_y = -10                             # 微向右走(-)
-            # if directions 裡面都是0
-                # self.adjust_flag = True
-            # else: # 裡面有東西不等於0的時候
-                # self.marker_act_queue.put[directions]
+                directions[0] = -adjust_speed * 2       # 飛機向右轉(-)
+                directions[3] = -adjust_speed           # 微向右走(-)
+
+            # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
+            if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
+                self.adjust_flag = True
+            # 裡面有東西不等於0的時候, 需要調整
+            else : 
+                self.marker_act_queue.put[directions]
                 # 記得在frontend裡面要接收
         # 調整完畢
         else:
             # 做標籤動作
             marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
             # 做完標籤動作
-            # self.adjust_flag = False
-            # self.find_new_marker = True
+            self.adjust_flag = False
+            self.find_new_marker = True
 
 
 
