@@ -55,15 +55,9 @@ class FrontEnd(ControlTello):
             self.tello.img = self.tello.get_frame_read().frame
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
-            self.tello.img = self.aruco.aruco(self.tello.img)
-
-            # 每十秒接收一次調整
-            # Timing = 10
-            # if self.start == 0:
-            #     self.start = time.time()
-            # if time.time() - self.start >= Timing:
-            #     self.aruco.navigation
-            #     self.start = 0
+            self.tello.img, adj_directions = self.aruco.aruco(self.tello.img)
+            print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
+            self.tello.updateMarkerAct(adj_directions)
 
             if self.tello.getKeyboardInput(): 
                 cv2.destroyAllWindows()
