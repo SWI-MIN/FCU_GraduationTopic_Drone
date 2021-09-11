@@ -170,23 +170,27 @@ class Camera():
 
             if sort_id[0][2] > 5:                       # 垂直上下  
                 directions[2] = adjust_speed
-                adj_x = 5                               # 飛機位置太低，往上(+)
+                # adj_x = 5                               # 飛機位置太低，往上(+)
             elif sort_id[0][2] < -5:
                 directions[2] = -adjust_speed
-                adj_x = -5                              # 飛機位置太高，往下(-)
+                # adj_x = -5                              # 飛機位置太高，往下(-)
 
             if sort_id[0][3] > 50:                      # 水平角度
                 directions[0] = adjust_speed *2
                 directions[3] = adjust_speed
-                adj_yaw = 5                             # 飛機向左轉(+)
-                adj_y = 10                              # 微向右走(+)
+                # adj_yaw = 5                             # 飛機向左轉(+)
+                # adj_y = 10                              # 微向右走(+)
             elif sort_id[0][3] < -40:   
                 directions[0] = -adjust_speed *2
                 directions[3] = -adjust_speed 
-                adj_yaw = -5                            # 飛機向右轉(-)
-                adj_y = -10                             # 微向右走(-)
+                # adj_yaw = -5                            # 飛機向右轉(-)
+                # adj_y = -10                             # 微向右走(-)
             # if directions 裡面都是0
                 # self.adjust_flag = True
+            # else: # 裡面有東西不等於0的時候
+                # self.marker_act_queue.put[directions]
+                # 記得在frontend裡面要接收
+
         else:
             pass
             # 調整完畢
