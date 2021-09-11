@@ -1,0 +1,9 @@
+這個資料夾內的文件是基於以下版本製作
+
+djitellopy	      1.5
+
+python  	      3.7.8
+pygame                2.0.1
+opencv-contrib-python 4.5.3.56
+opencv-python         4.4.0.44
+

@@ -49,7 +49,6 @@ class Camera():
         frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
-        adj_directions = [0, 0, 0, 0]
 
         # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -133,8 +132,7 @@ class Camera():
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
-                    # self.navigation(sort_id)
-                    adj_directions = self.navigation(sort_id)
+                    self.navigation(sort_id)
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
                     # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
@@ -151,58 +149,10 @@ class Camera():
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
-        return frame, adj_directions
+        return frame
 
     def navigation(self, sort_id):
-        # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位
-        # 之後轉換成speed
-        # 到什麼條件叫調整結束
-        print("--------------------in navigation---------------------")
-        adjustfile = open("Adjust.txt", "a")
-        directions = [0., 0., 0., 0.]
-        adj_d = 0
-        adj_x = 0
-        adj_y = 0
-        adj_yaw = 0
-        f = open("Adjust.txt", "a")
-        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
-        print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]))
-        
-        # adjust attitude
-        if sort_id[0][1] > 60 :                     # 水平前進後退
-            # adj_d = round(sort_id[0][1]) - 60       
-            adj_d = 10                              # 距離大於60，前進(+)
-        elif sort_id[0][1] < 40 :
-            # adj_d = round(sort_id[0][1]) - 40              
-            adj_d = -10                             # 距離小於40，往後(-)
-
-
-        if sort_id[0][2] > 5:                       # 垂直上下
-            # adj_x = round(sort_id[0][2]) - 5        
-            adj_x = 5                               # 飛機位置太低，往上(+)
-        elif sort_id[0][2] < -5:
-            # adj_x = round(sort_id[0][2]) + 5      
-            adj_x = -5                              # 飛機位置太高，往下(-)
-
-        if sort_id[0][3] > 50:                      # 水平角度
-            # adj_yaw = round(sort_id[0][3]) - 50     
-            adj_yaw = 5                             # 飛機向左轉(+)
-            adj_y = 10                              # 微向右走(+)
-        elif sort_id[0][3] < -40:
-            # adj_yaw = round(sort_id[0][3]) + 40     
-            adj_yaw = -5                            # 飛機向右轉(-)
-            adj_y = -10                             # 微向右走(-)
-            
-        # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
-        
-        # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = adjustfile)
-        print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
-        
-
-        adj_directions = [adj_y, adj_d, adj_x, adj_yaw]
-        adjustfile.close()
-        return  adj_directions
-
+        pass
         # print("navigation++++++++++++++++++++++++++++++++++++++++")
         # if self.main_marker not in sort_id:
         #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
@@ -214,17 +164,12 @@ class Camera():
         #     pass
 
 
-    def getMarkerAction(self, sort_id):
-        # 取的該標籤的動作
-        marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+        # TargetDefine
+        # Target_ID = self.target.changeTarget(ids[i][0])[0][3]
+        # cv2.putText(frame, str(Target_ID), (10, 500), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+        # if Target_ID ==  -1:
+        #     print("tello.land()+++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
-        return marker_directions
-
-
-    def adjToSpeed(self,adj_y, adj_d, adj_x, adj_yaw):
-        # 把距離,角度轉換成速度
-        # adj_y(平)左右, adj_d(平)前後, adj_x(垂)上下, adj_yaw轉向
-        pass
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
         self.main_marker = None # 記錄誰是主要
@@ -251,16 +196,17 @@ class TargetDefine():
         print(selected + " marker")
                                                     # vx, vy, vz, yaw
         switcher={
-                'Origin':                np.array([[0., 0., DIST, 0.]]),            # 0
-                'Right sideways':        np.array([[0., 0., DIST, -40.]]),          # 1 - 5 
-                'Left sideways':         np.array([[0., 0., DIST, 40.]]),           # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., DIST, -10.]]),          # 11 - 15 
-                'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
-                'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
-                'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30
-                'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 ; 72
-                'Backward':              np.array([[0., -10., DIST, 0.]]),          # 36 - 40
-                'Land':                  np.array([[0., 0., DIST, -1.]])            #41
+                'Origin':                np.array([[0., 0., DIST, 0.]]),
+                'Right sideways':        np.array([[0., 0., DIST, -40.]]),
+                'Left sideways':         np.array([[0., 0., DIST, 40.]]),
+                'Rotate right corner 1': np.array([[0., 0., DIST, 5.]]),
+                'Rotate right corner 2': np.array([[0., 0., DIST, -10.]]),
+                'Rotate right corner 3': np.array([[0., 0., DIST, -20.]]),
+                'Rotate left corner 1':  np.array([[0., 0., DIST, -5.]]),
+                'Rotate left corner 2':  np.array([[0., 0., DIST, 10.]]),
+                'Rotate left corner 3':  np.array([[0., 0., DIST, 20.]]),
+                'End':                   np.array([[0., 0., DIST, 0.]]),
+                'Land':                  np.array([[0., 0., DIST, -1.]])
              }
         return switcher.get(selected, "Invalid marker type")
 

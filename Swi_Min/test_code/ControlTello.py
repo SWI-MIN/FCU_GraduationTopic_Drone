@@ -179,6 +179,15 @@ class ControlTello(Tello):
 
         self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
 
+    def updateMarkerAct(self, directions):
+        # 用來接收標籤調整, 標籤動作
+        # 接收傳送ok，因為還沒寫結束調整的條件，所以還沒飛
+        # 可能改成收queue
+        self.dir_queue.put(directions)
+        x, y, z, yaw = self.dir_queue.get()
+        print("///////////////////////////////Update directions: "+ str(x), str(y), str(z), str(yaw))
+        # self.send_rc_control(int(x), int(y), int(z), int(yaw))
+
 if __name__ == '__main__':
     pass
 else:

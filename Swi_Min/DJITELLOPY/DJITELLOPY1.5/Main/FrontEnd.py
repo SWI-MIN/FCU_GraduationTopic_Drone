@@ -10,7 +10,7 @@
 '''
 import pygame
 import cv2
-import time, sys
+import time
 import numpy as np
 from djitellopy import Tello
 from ControlTello import ControlTello
@@ -19,9 +19,8 @@ import threading
 import queue
 
 # 這裡其實可以不用繼承 ControlTello
-class FrontEnd():
+class FrontEnd(ControlTello):
     def __init__(self):
-        super().__init__()
         self.take_over = threading.Event()
         self.take_over.set()  # 預設接管狀態，當導航開啟時設為 clear()
         self.control_queue = queue.Queue()
@@ -52,23 +51,17 @@ class FrontEnd():
 
     def run(self):
         self.tello.connect()
-        self.tello.set_speed(10)
-        if self.tello.stream_on:
-            self.tello.streamoff()
         self.tello.streamon()
-        
         while True:
             self.tello.img = self.tello.get_frame_read().frame
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
-            # self.tello.img = self.aruco.aruco(self.tello.img)
+            self.tello.img = self.aruco.aruco(self.tello.img)
 
-            self.tello.img, adj_directions = self.aruco.aruco(self.tello.img)
-            print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
-            self.tello.updateMarkerAct(adj_directions)
-
-            self.tello.getKeyboardInput()
-
+            if self.tello.getKeyboardInput(): 
+                cv2.destroyAllWindows()
+                break
+            
             # 我認為需要做強制接管的程式，以防巡航時出問題
             # 目前是覺得可以設置一個狀態,當導航開始的時候需要將其設定為某一狀態，當我按下操作飛機的任意按鍵時必須轉換狀態，令導航功能暫停執行
             if not self.control_queue.empty():
@@ -76,11 +69,6 @@ class FrontEnd():
                 if control == "n":
                     self.navigation_start.set()
                     self.take_over.clear()
-                if control == "q":
-                    cv2.destroyAllWindows()
-                    pygame.quit()
-                    sys.exit("Quit")
-                    
             # 飛機如果在導航時要判斷是否要接管飛機
             if self.navigation_start.is_set():
                 if self.take_over.is_set():
