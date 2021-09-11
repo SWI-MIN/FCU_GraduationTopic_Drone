@@ -47,13 +47,13 @@ class ControlTello(Tello):
             Will only be referenced internally
         '''
         battery = self.get_battery()
-        if type(battery) != bool:
-            battery = battery.replace("\n", "").replace("\r", "")
+        # if type(battery) != bool:
+        #     battery = battery.replace("\n", "").replace("\r", "")
 
         height = self.get_height()
-        if type(height) != bool:
-            # 1dm(公寸) = 10cm 
-            height = height.replace("\n", "").replace("\r", "")
+        # if type(height) != bool:
+        #     # 1dm(公寸) = 10cm 
+        #     height = height.replace("\n", "").replace("\r", "")
 
         get_time = time.strftime("%H:%M:%S",time.localtime())
 
@@ -70,9 +70,9 @@ class ControlTello(Tello):
         cv2.putText(self.tello_info, InfoText, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255), 1, cv2.LINE_AA)
         
         InfoText = ("battery: {b}%".format(b = battery))
-        if int(battery) <= 20:
+        if battery <= 20:
             cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (10, 20, 255), 1, cv2.LINE_AA)
-        elif int(battery) > 20 and int(battery) <= 50:
+        elif battery > 20 and battery <= 50:
             cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 215, 255), 1, cv2.LINE_AA)
         else:
             cv2.putText(self.tello_info, InfoText, (370, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 255, 100), 1, cv2.LINE_AA)
@@ -122,10 +122,17 @@ class ControlTello(Tello):
             self.take_over.set()
         
         if self.getKey("q"): 
-            self.video_On = False
-            self.land()
-            self.end()
-            return True
+            if self.video_On:
+                self.video_On = False
+            # self.end()
+            # print("++++++++++++++++++++++")
+            if self.is_flying:
+                self.land()
+            if self.stream_on:
+                self.streamoff()
+            self.control_queue.put("q")
+            return
+            
 
         if self.getKey("c"): 
             cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.img)
@@ -145,8 +152,16 @@ class ControlTello(Tello):
             self.time_e = time.time()
             print('time cost', (self.time_e - self.time_s), 's  +++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
-        if self.getKey("r"): self.yv = self.takeoff()
-        if self.getKey("f"): self.yv = self.land()
+        if self.getKey("r"): 
+            if self.is_flying:
+                pass
+            else:
+                self.takeoff()
+        if self.getKey("f"): 
+            if self.is_flying:
+                self.land()
+            else:
+                pass
         
         if self.getKey("LEFT"): self.lr = -self.speed
         elif self.getKey("RIGHT"): self.lr = self.speed

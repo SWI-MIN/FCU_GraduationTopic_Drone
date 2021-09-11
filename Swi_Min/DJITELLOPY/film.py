@@ -6,13 +6,16 @@ tello = Tello()
 tello.connect()
 
 print(tello.get_battery())
-tello.streamon()
 
+
+tello.streamon()
+tello.set_speed(10)
 while 1:
     img = tello.get_frame_read().frame
-    img = cv2.resize(img,(360,240))
     cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    key = cv2.waitKey(1)
+    if key == 27: # ESC
+        break
 
 
 
