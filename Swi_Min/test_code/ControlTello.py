@@ -37,6 +37,9 @@ class ControlTello(Tello):
         self.control_queue = control_queue
         self.take_over = take_over
 
+        self.dir_queue=queue.Queue()
+        self.dir_queue.queue.clear()
+
         # 測試錄影時間用，完成後可刪
         self.time_s = 0
         self.time_e = 0
