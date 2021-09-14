@@ -51,6 +51,7 @@ class FrontEnd():
         pygame.display.update()
 
     def run(self):
+        directions = [0, 0, 0, 0]
         self.tello.connect()
         self.tello.set_speed(10)
         if self.tello.stream_on:
@@ -62,9 +63,14 @@ class FrontEnd():
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
             # self.tello.img = self.aruco.aruco(self.tello.img)
-
             self.tello.img = self.aruco.aruco(self.tello.img)
-            self.tello.updateMarkerAct(self.aruco.marker_act_queue.get())
+            directions = self.aruco.marker_act_queue.get()
+            print("in while!!!!!!!!!!!!!!!!!!!"+directions[0]+", "+directions[1]+", "+directions[2]+", "+directions[3])
+            # self.tello.updateMarkerAct(directions)
+
+            # 在導航狀態,把調整跟標籤動作傳過去
+            # if self.navigation_start:
+                # self.tello.updateMarkerAct(self.aruco.marker_act_queue.get())
 
             self.tello.getKeyboardInput()
 
@@ -82,6 +88,7 @@ class FrontEnd():
                     
             # 飛機如果在導航時要判斷是否要接管飛機
             if self.navigation_start.is_set():
+                # self.tello.updateMarkerAct(self.aruco.marker_act_queue.get())
                 if self.take_over.is_set():
                     self.navigation_start.clear()
                     self.aruco.reset()

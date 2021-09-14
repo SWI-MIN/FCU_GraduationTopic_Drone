@@ -6,6 +6,7 @@ from ControlTello import ControlTello
 import pygame
 import csv
 import Conversion
+import queue
 
 # self.angles_tof = [pitch, roll, yaw, tof]
 class Camera():
@@ -31,6 +32,7 @@ class Camera():
         self.used_marker = [] # 存放用過的marker
         self.marker_act_queue = marker_act_queue
         self.adjust_flag = False
+        self.adj_directions = [0, 0, 0, 0]
 
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
@@ -50,7 +52,7 @@ class Camera():
         frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
-        adj_directions = [0, 0, 0, 0]
+        
 
         # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -160,33 +162,38 @@ class Camera():
         #     pass
         # else:
         #     pass
-        directions = [0., 0., 0., 0.]                   # [adj_y, adj_d, adj_x, adj_yaw] 
+        # directions = [0., 0., 0., 0.]                   # [adj_y, adj_d, adj_x, adj_yaw] 
+        self.adj_directions[0] = 0
+        self.adj_directions[1] = 0
+        self.adj_directions[2] = 0
+        self.adj_directions[3] = 0
+
         adjust_speed = 5
         if not self.adjust_flag:
             # adjust attitude
             if sort_id[0][1] > 60 :                     # 水平前進後退
-                directions[1] = adjust_speed *2         # 距離大於60，前進(+)                
+                self.adj_directions[1] = adjust_speed * 2        # 距離大於60，前進(+)                
             elif sort_id[0][1] < 40 :
-                directions[1] = -adjust_speed *2        # 距離小於40，往後(-)  
+                self.adj_directions[1] = -adjust_speed * 2       # 距離小於40，往後(-)  
 
             if sort_id[0][2] > 5:                       # 垂直上下  
-                directions[2] = adjust_speed            # 飛機位置太低，往上(+)
+                self.adj_directions[2] = adjust_speed            # 飛機位置太低，往上(+)
             elif sort_id[0][2] < -5:
-                directions[2] = -adjust_speed           # 飛機位置太高，往下(-)
+                self.adj_directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
             if sort_id[0][3] > 50:                      # 水平角度
-                directions[0] = adjust_speed * 2        # 飛機向左轉(+)
-                directions[3] = adjust_speed            # 微向右走(+)                    
+                self.adj_directions[0] = adjust_speed * 2        # 飛機向左轉(+)
+                self.adj_directions[3] = adjust_speed            # 微向右走(+)                    
             elif sort_id[0][3] < -40:   
-                directions[0] = -adjust_speed * 2       # 飛機向右轉(-)
-                directions[3] = -adjust_speed           # 微向右走(-)
+                self.adj_directions[0] = -adjust_speed * 2       # 飛機向右轉(-)
+                self.adj_directions[3] = -adjust_speed           # 微向右走(-)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
+            if self.adj_directions[0] == 0 and self.adj_directions[1] == 0 and self.adj_directions[2] == 0 and self.adj_directions[3] == 0:
                 self.adjust_flag = True
             # 裡面有東西不等於0的時候, 需要調整
             else : 
-                self.marker_act_queue.put[directions]
+                self.marker_act_queue.put(self.adj_directions)
                 # 記得在frontend裡面要接收
         # 調整完畢
         else:
@@ -196,6 +203,9 @@ class Camera():
             self.adjust_flag = False
             self.find_new_marker = True
 
+        # directions = [0, 0, 0, 0]
+        # directions = self.marker_act_queue.get()
+        # print("in aruco nag'''''''''''''''''''''"+str(directions[0]), str(directions[1]), str(directions[2]), str(directions[3]))
 
 
         # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位

@@ -186,10 +186,10 @@ class ControlTello(Tello):
         # 用來接收標籤調整, 標籤動作
         # 接收傳送ok，因為還沒寫結束調整的條件，所以還沒飛
         # 可能改成收queue
-        self.dir_queue.put(directions)
-        x, y, z, yaw = self.dir_queue.get()
-        print("///////////////////////////////Update directions: "+ str(x), str(y), str(z), str(yaw))
-        # self.send_rc_control(int(x), int(y), int(z), int(yaw))
+        # self.dir_queue.put(directions)
+        # x, y, z, yaw = self.dir_queue.get()
+        print("///////////////////////////////Update directions: "+ str(directions[0]), str(directions[1]), str(directions[2]), str(directions[3]))
+        # self.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
 
 if __name__ == '__main__':
     pass
