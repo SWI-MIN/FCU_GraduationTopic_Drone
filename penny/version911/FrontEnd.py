@@ -64,13 +64,10 @@ class FrontEnd():
 
             # self.tello.img = self.aruco.aruco(self.tello.img)
             self.tello.img = self.aruco.aruco(self.tello.img)
-            directions = self.aruco.marker_act_queue.get()
-            print("in while!!!!!!!!!!!!!!!!!!!"+directions[0]+", "+directions[1]+", "+directions[2]+", "+directions[3])
-            # self.tello.updateMarkerAct(directions)
+            if not self.marker_act_queue.empty():
+                directions = self.marker_act_queue.get()
+                self.tello.updateMarkerAct(directions)
 
-            # 在導航狀態,把調整跟標籤動作傳過去
-            # if self.navigation_start:
-                # self.tello.updateMarkerAct(self.aruco.marker_act_queue.get())
 
             self.tello.getKeyboardInput()
 

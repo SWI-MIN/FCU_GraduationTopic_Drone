@@ -13,7 +13,8 @@ class Camera():
     def __init__(self, navigation_start, marker_act_queue) -> None:
         self.cam_matrix = None
         self.cam_distortion = None
-        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)# self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        # self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)# self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
+        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_100)
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
         # Marker edge length in meters
@@ -114,7 +115,7 @@ class Camera():
                     self.main_marker = sort_id[0][0]
 
                 # 計時 改變find_new_marker
-                Timing = 5
+                Timing = 10
                 if self.start == 0:
                     self.start = time.time()
                 if time.time() - self.start >= Timing:
@@ -168,51 +169,53 @@ class Camera():
         self.adj_directions[2] = 0
         self.adj_directions[3] = 0
 
+        adjustfile = open("Adjust.txt", "a")
+        print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
+
         adjust_speed = 5
         if not self.adjust_flag:
             # adjust attitude
-            if sort_id[0][1] > 60 :                     # 水平前進後退
-                self.adj_directions[1] = adjust_speed * 2        # 距離大於60，前進(+)                
+            if sort_id[0][1] > 60 :                             # 水平前進後退
+                self.adj_directions[1] = adjust_speed * 2       # 距離大於60，前進(+)                
             elif sort_id[0][1] < 40 :
-                self.adj_directions[1] = -adjust_speed * 2       # 距離小於40，往後(-)  
+                self.adj_directions[1] = -adjust_speed * 2      # 距離小於40，往後(-)  
 
-            if sort_id[0][2] > 5:                       # 垂直上下  
-                self.adj_directions[2] = adjust_speed            # 飛機位置太低，往上(+)
+            if sort_id[0][2] > 5:                               # 垂直上下  
+                self.adj_directions[2] = adjust_speed           # 飛機位置太低，往上(+)
             elif sort_id[0][2] < -5:
                 self.adj_directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
-            if sort_id[0][3] > 50:                      # 水平角度
-                self.adj_directions[0] = adjust_speed * 2        # 飛機向左轉(+)
-                self.adj_directions[3] = adjust_speed            # 微向右走(+)                    
+            if sort_id[0][3] > 50:                              # 水平角度
+                self.adj_directions[0] = adjust_speed * 2       # 微向右走(+)
+                self.adj_directions[3] = adjust_speed           # 飛機向左轉(+)                    
             elif sort_id[0][3] < -40:   
-                self.adj_directions[0] = -adjust_speed * 2       # 飛機向右轉(-)
-                self.adj_directions[3] = -adjust_speed           # 微向右走(-)
+                self.adj_directions[0] = -adjust_speed * 2      # 微向左走(-)
+                self.adj_directions[3] = -adjust_speed          # 飛機向左轉(-)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             if self.adj_directions[0] == 0 and self.adj_directions[1] == 0 and self.adj_directions[2] == 0 and self.adj_directions[3] == 0:
                 self.adjust_flag = True
+                print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
             # 裡面有東西不等於0的時候, 需要調整
             else : 
+                print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (self.adj_directions[0], self.adj_directions[1], self.adj_directions[2], self.adj_directions[3]), file = adjustfile)
                 self.marker_act_queue.put(self.adj_directions)
                 # 記得在frontend裡面要接收
         # 調整完畢
         else:
+            print("Doing Marker Action........", +sort_id[0][0], file = adjustfile)
             # 做標籤動作
             marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
             # 做完標籤動作
             self.adjust_flag = False
             self.find_new_marker = True
 
-        # directions = [0, 0, 0, 0]
-        # directions = self.marker_act_queue.get()
-        # print("in aruco nag'''''''''''''''''''''"+str(directions[0]), str(directions[1]), str(directions[2]), str(directions[3]))
-
 
         # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位
         # 之後轉換成speed
         # 到什麼條件叫調整結束
         # print("--------------------in navigation---------------------")
-        # adjustfile = open("Adjust.txt", "a")
+        
         
         # adj_d = 0
         # adj_x = 0
@@ -226,7 +229,7 @@ class Camera():
             
         # vx(平)左右, vy(平)前後, vz(垂)上下, yaw轉向
         
-        # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw), file = adjustfile)
+        
         # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (adj_y, adj_d, adj_x, adj_yaw))
         
 
@@ -272,15 +275,16 @@ class TargetDefine():
                                                     # vx, vy, vz, yaw
         switcher={
                 'Origin':                np.array([[0., 0., DIST, 0.]]),            # 0
-                'Right sideways':        np.array([[0., 0., DIST, -40.]]),          # 1 - 5 
-                'Left sideways':         np.array([[0., 0., DIST, 40.]]),           # 6 - 10 
+                'Right sideways':        np.array([[10., 0., DIST, 0.]]),          # 1 - 5 
+                'Left sideways':         np.array([[-10., 0., DIST, 0.]]),           # 6 - 10 
                 'Rotate right corner 1': np.array([[0., 0., DIST, -10.]]),          # 11 - 15 
                 'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
                 'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
                 'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30
                 'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 ; 72
                 'Backward':              np.array([[0., -10., DIST, 0.]]),          # 36 - 40
-                'Land':                  np.array([[0., 0., DIST, -1.]])            #41
+                'Up':                    np.array([[0., 0., 10, 0.]]),              # 41 - 45
+                'Land':                  np.array([[0., 0., DIST, -1.]])            # 50
              }
         return switcher.get(selected, "Invalid marker type")
 
