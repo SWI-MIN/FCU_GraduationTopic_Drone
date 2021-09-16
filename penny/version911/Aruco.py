@@ -34,6 +34,7 @@ class Camera():
         self.marker_act_queue = marker_act_queue
         self.adjust_flag = False
         self.adj_directions = [0, 0, 0, 0]
+        self.marker_directions = [0, 0, 0, 0]
 
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
@@ -172,25 +173,25 @@ class Camera():
         adjustfile = open("Adjust.txt", "a")
         print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
 
-        adjust_speed = 5
+        adjust_speed = 10
         if not self.adjust_flag:
             # adjust attitude
-            if sort_id[0][1] > 60 :                             # 水平前進後退
-                self.adj_directions[1] = adjust_speed * 2       # 距離大於60，前進(+)                
-            elif sort_id[0][1] < 40 :
-                self.adj_directions[1] = -adjust_speed * 2      # 距離小於40，往後(-)  
+            if sort_id[0][1] > 80 :                             # 水平前進後退
+                self.adj_directions[1] = adjust_speed           # 距離大於80，前進(+)                
+            elif sort_id[0][1] < 50 :
+                self.adj_directions[1] = -adjust_speed          # 距離小於50，往後(-)  
 
-            if sort_id[0][2] > 5:                               # 垂直上下  
+            if sort_id[0][2] > 10:                               # 垂直上下  
                 self.adj_directions[2] = adjust_speed           # 飛機位置太低，往上(+)
-            elif sort_id[0][2] < -5:
+            elif sort_id[0][2] < -10:
                 self.adj_directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
             if sort_id[0][3] > 50:                              # 水平角度
-                self.adj_directions[0] = adjust_speed * 2       # 微向右走(+)
-                self.adj_directions[3] = adjust_speed           # 飛機向左轉(+)                    
+                self.adj_directions[0] = -adjust_speed * 2       # 微向右走(+)
+                self.adj_directions[3] = -adjust_speed * 2      # 飛機向左轉(-)                    
             elif sort_id[0][3] < -40:   
-                self.adj_directions[0] = -adjust_speed * 2      # 微向左走(-)
-                self.adj_directions[3] = -adjust_speed          # 飛機向左轉(-)
+                self.adj_directions[0] = adjust_speed * 2      # 微向左走(-)
+                self.adj_directions[3] = adjust_speed * 2       # 飛機向右轉(+)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             if self.adj_directions[0] == 0 and self.adj_directions[1] == 0 and self.adj_directions[2] == 0 and self.adj_directions[3] == 0:
@@ -203,9 +204,10 @@ class Camera():
                 # 記得在frontend裡面要接收
         # 調整完畢
         else:
-            print("Doing Marker Action........", +sort_id[0][0], file = adjustfile)
+            print("Doing Marker Action.................................ID = ", +sort_id[0][0], file = adjustfile)
             # 做標籤動作
-            marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+            self.marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
+            self.marker_act_queue.put(self.marker_directions)
             # 做完標籤動作
             self.adjust_flag = False
             self.find_new_marker = True
