@@ -116,7 +116,7 @@ class Camera():
                     self.main_marker = sort_id[0][0]
 
                 # 計時 改變find_new_marker
-                Timing = 10
+                Timing = 20
                 if self.start == 0:
                     self.start = time.time()
                 if time.time() - self.start >= Timing:
@@ -181,9 +181,9 @@ class Camera():
             elif sort_id[0][1] < 50 :
                 self.adj_directions[1] = -adjust_speed          # 距離小於50，往後(-)  
 
-            if sort_id[0][2] > 10:                               # 垂直上下  
+            if sort_id[0][2] > 20:                               # 垂直上下  
                 self.adj_directions[2] = adjust_speed           # 飛機位置太低，往上(+)
-            elif sort_id[0][2] < -10:
+            elif sort_id[0][2] < -20:
                 self.adj_directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
             if sort_id[0][3] > 50:                              # 水平角度
@@ -204,7 +204,7 @@ class Camera():
                 # 記得在frontend裡面要接收
         # 調整完畢
         else:
-            print("Doing Marker Action.................................ID = ", +sort_id[0][0], file = adjustfile)
+            print("Doing Marker Action.................................ID = ", sort_id[0][0], file = adjustfile)
             # 做標籤動作
             self.marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
             self.marker_act_queue.put(self.marker_directions)
@@ -276,17 +276,17 @@ class TargetDefine():
         print(selected + " marker")
                                                     # vx, vy, vz, yaw
         switcher={
-                'Origin':                np.array([[0., 0., DIST, 0.]]),            # 0
-                'Right sideways':        np.array([[10., 0., DIST, 0.]]),          # 1 - 5 
-                'Left sideways':         np.array([[-10., 0., DIST, 0.]]),           # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., DIST, -10.]]),          # 11 - 15 
-                'Rotate right corner 2': np.array([[0., 0., DIST, -20.]]),          # 16 - 20 
-                'Rotate left corner 1':  np.array([[0., 0., DIST, 10.]]),           # 21 - 25 
-                'Rotate left corner 2':  np.array([[0., 0., DIST, 20.]]),           # 26 - 30
-                'Forward':               np.array([[0., 10., DIST, 0.]]),           # 31 - 35 ; 72
-                'Backward':              np.array([[0., -10., DIST, 0.]]),          # 36 - 40
+                'Origin':                np.array([[0., 0., 0, 0.]]),            # 0
+                'Right sideways':        np.array([[20., 0., 0, 0.]]),          # 1 - 5 
+                'Left sideways':         np.array([[-20., 0., 0, 0.]]),           # 6 - 10 
+                'Rotate right corner 1': np.array([[0., 0., 0, -10.]]),          # 11 - 15 
+                'Rotate right corner 2': np.array([[0., 0., 0, -20.]]),          # 16 - 20 
+                'Rotate left corner 1':  np.array([[0., 0., 0, 10.]]),           # 21 - 25 
+                'Rotate left corner 2':  np.array([[0., 0., 0, 20.]]),           # 26 - 30
+                'Forward':               np.array([[0., 10., 0, 0.]]),           # 31 - 35 ; 72
+                'Backward':              np.array([[0., -10., 0, 0.]]),          # 36 - 40
                 'Up':                    np.array([[0., 0., 10, 0.]]),              # 41 - 45
-                'Land':                  np.array([[0., 0., DIST, -1.]])            # 50
+                'Land':                  np.array([[0., 0., 0, -1.]])            # 50
              }
         return switcher.get(selected, "Invalid marker type")
 
