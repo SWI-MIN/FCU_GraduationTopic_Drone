@@ -175,7 +175,7 @@ class Camera():
         adjust_speed = 10
         if not self.adjust_flag:
             # adjust attitude
-            if sort_id[0][1] > 150 :                             # 水平前進後退
+            if sort_id[0][1] > 130 :                             # 水平前進後退
                 self.adj_directions[1] = adjust_speed           # 距離大於80，前進(+)                
             elif sort_id[0][1] < 100 :
                 self.adj_directions[1] = -adjust_speed          # 距離小於50，往後(-)  
