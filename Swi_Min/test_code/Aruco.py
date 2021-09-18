@@ -31,15 +31,15 @@ class Camera():
         self.main_marker = None # 記錄誰是主要
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
-        self.marker_act_queue = marker_act_queue
-        self.adjust_flag = False
-        self.adj_directions = [0, 0, 0, 0]
-        self.marker_directions = [0, 0, 0, 0]
+        self.marker_act_queue = marker_act_queue  # 要飛機執行的動作陣列放進這個queue中
+        self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
+        self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
 
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
 
-        # 測試時計時用
+        # 測試時計時用，不用時可刪
         self.start = 0
 
     def aruco(self, frame):
@@ -116,14 +116,14 @@ class Camera():
                     self.main_marker = sort_id[0][0]
 
                 # 計時 改變find_new_marker
-                Timing = 20
-                if self.start == 0:
-                    self.start = time.time()
-                if time.time() - self.start >= Timing:
-                    self.find_new_marker = True
-                    self.start = 0
-                if time.time() - self.start < Timing:
-                    cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                # Timing = 20
+                # if self.start == 0:
+                #     self.start = time.time()
+                # if time.time() - self.start >= Timing:
+                #     self.find_new_marker = True
+                #     self.start = 0
+                # if time.time() - self.start < Timing:
+                #     cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "used_marker : {}"  .format(self.used_marker) , (10, (440)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -133,16 +133,22 @@ class Camera():
                 if not self.find_new_marker:
                     if self.main_marker not in sort_id[0:,0:1]:
                         cv2.putText(frame, "main_marker not in sort_id", (10, (460)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        
+                        # 當 main_marker 消失2s，再執行 lost_main_marker
+                        if time.time() - self.start >= 2: 
+                            self.lost_main_marker()
+                    
                     else:
+                        # 取出 sort_id 中 屬於 main_marker 的那一列，並傳入navigation
+                        main_marker_attitude = np.where(sort_id[:,0] == self.main_marker)
+                        self.navigation(sort_id[main_marker_attitude])
+                        
+                        # 畫線
                         id_index = id_list.index(self.main_marker)
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
-                    # if main_marker in sort_id:
-                        # 取出 sort_id 中 屬於 main_marker 的那一列
-                    # else:
-                        # 執行 lost_main_marker
-                    self.navigation(sort_id)
+                    
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
                     # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
@@ -158,76 +164,70 @@ class Camera():
         else:
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            # 當 main_marker 消失2s，再執行 lost_main_marker
+            if time.time() - self.start >= 2: 
+                self.lost_main_marker()
 
         return frame
 
-    def lost_main_marker():
-        pass
 
-    def navigation(self, sort_id):
-        # if self.main_marker not in sort_id:
-        #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
-        #     pass
-        # else:
-        #     pass 
-        self.adj_directions[0] = 0
-        self.adj_directions[1] = 0
-        self.adj_directions[2] = 0
-        self.adj_directions[3] = 0
+    def lost_main_marker(self):
+        change_sign = self.act_record.get_value()
+        for i in range(4):
+            change_sign[i] = -change_sign[i]
+
+        self.marker_act_queue.put(change_sign)
+
+
+    def navigation(self, main_marker_attitude):
+        # directions = [0, 0, 0, 0]
+        directions = np.array([0, 0, 0, 0])
+        adjust_speed = 10
 
         adjustfile = open("Adjust.txt", "a")
-        print("ID : %d, Y: %d, Dis: %d, X: %d" % (sort_id[0][0],sort_id[0][3], sort_id[0][1], sort_id[0][2]), file = adjustfile)
+        print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
 
-        adjust_speed = 10
         if not self.adjust_flag:
             # adjust attitude
-            if sort_id[0][1] > 130 :                             # 水平前進後退
-                self.adj_directions[1] = adjust_speed           # 距離大於80，前進(+)                
-            elif sort_id[0][1] < 100 :
-                self.adj_directions[1] = -adjust_speed          # 距離小於50，往後(-)  
+            if main_marker_attitude[0][1] > 130 :                             # 水平前進後退
+                directions[1] = adjust_speed           # 距離大於80，前進(+)                
+            elif main_marker_attitude[0][1] < 100 :
+                directions[1] = -adjust_speed          # 距離小於50，往後(-)  
 
-            if sort_id[0][2] > 20:                               # 垂直上下  
-                self.adj_directions[2] = adjust_speed           # 飛機位置太低，往上(+)
-            elif sort_id[0][2] < -20:
-                self.adj_directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
+            if main_marker_attitude[0][2] > 20:                               # 垂直上下  
+                directions[2] = adjust_speed           # 飛機位置太低，往上(+)
+            elif main_marker_attitude[0][2] < -20:
+                directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
-            if sort_id[0][3] > 30:                              # 水平角度
-                self.adj_directions[0] = adjust_speed * 3       # 微向右走(+)
-                self.adj_directions[3] = -adjust_speed      # 飛機向左轉(-)                    
-            elif sort_id[0][3] < -30:   
-                self.adj_directions[0] = -adjust_speed * 3      # 微向左走(-)
-                self.adj_directions[3] = adjust_speed       # 飛機向右轉(+)
+            if main_marker_attitude[0][3] > 30:                              # 水平角度
+                directions[0] = adjust_speed * 3       # 微向右走(+)
+                directions[3] = -adjust_speed      # 飛機向左轉(-)                    
+            elif main_marker_attitude[0][3] < -30:   
+                directions[0] = -adjust_speed * 3      # 微向左走(-)
+                directions[3] = adjust_speed       # 飛機向右轉(+)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            if self.adj_directions[0] == 0 and self.adj_directions[1] == 0 and self.adj_directions[2] == 0 and self.adj_directions[3] == 0:
+            # if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
+            if np.all(directions == 0):
                 self.adjust_flag = True
                 print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
             # 裡面有東西不等於0的時候, 需要調整
             else : 
-                print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (self.adj_directions[0], self.adj_directions[1], self.adj_directions[2], self.adj_directions[3]), file = adjustfile)
-                self.marker_act_queue.put(self.adj_directions)
+                print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
+                self.marker_act_queue.put(directions)
+                self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
                 # 記得在frontend裡面要接收
         # 調整完畢，做標籤動作
         else:
-            print("Doing Marker Action.................................ID = ", sort_id[0][0], file = adjustfile)
-            self.marker_directions = self.target.changeTarget(int(sort_id[0][0]))[0]
-            self.marker_act_queue.put(self.marker_directions)
+            print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
+            directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
+            self.marker_act_queue.put(directions)
+            self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
             # 做完標籤動作
             self.adjust_flag = False
             self.find_new_marker = True
 
-
-        # 會取得那個當下的飛機姿態, 做多次微調, 不用一次調到位
-        # 到什麼條件叫調整結束
-        
-        # if self.main_marker not in sort_id:
-        #     # 如果 marker 丟失則按造X軸旋轉尋找，參考code是以記錄time的方式返回尋找
-        #     pass
-        # 在這裡做完相應動作並且無人機的位置相對於marker已經在指定範圍內以後
-        # 記得要在某些情況下開啟find_new_marker的狀態，才能尋找下一個marker
-        # self.find_new_marker = True
-        # else:
-        #     pass
+        self.lost_time = time.time()
 
 
     def reset(self):
@@ -235,8 +235,39 @@ class Camera():
         self.main_marker = None # 記錄誰是主要
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
+        self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
+        self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
         
+        
+class act_record():
+    ''' 一組 行(column)*列(row) 的動作紀錄
+        replace_act : 只會保留 col * row 大小的紀錄表，col 超過會刪除先進來的動作
+                ---------------------    
+            --> | 1 | 2 | 3 | 4 | 5 | -->
+                ---------------------    
+                ---------------------
+          6 --> | 1 | 2 | 3 | 4 | 5 | -->
+                ---------------------
+                ---------------------
+            --> | 6 | 1 | 2 | 3 | 4 | --> 5
+                ---------------------
+        get_value : 從前面向後取得值，取得後會移除該值
+    '''
+    def __init__(self, col, row) -> None:
+        self.col = col
+        self.row = row
+        self.act_list = np.zeros((0, row), dtype = np.int_)
 
+    def replace_act(self, act): # 更新 act_list
+        self.act_list = np.insert(self.act_list, self.act_list.shape[0], act, axis = 0)
+        if self.act_list.shape[0] > self.col:
+            self.act_list = np.delete(self.act_list, 0, axis = 0)
+
+    def get_value(self):
+        value = self.act_list[self.act_list.shape[0]-1]
+        self.act_list = np.delete(self.act_list, self.act_list.shape[0]-1, axis = 0)
+        return value
 
 # distance from marker in camera Z coordinates
 DIST = 0.9
