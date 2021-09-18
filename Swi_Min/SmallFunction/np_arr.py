@@ -40,8 +40,8 @@ class act_record():
             self.act_list = np.delete(self.act_list, 0, axis = 0)
 
     def get_value(self):
-        value = self.act_list[0]
-        self.act_list = np.delete(self.act_list, 0, axis = 0)
+        value = self.act_list[self.act_list.shape[0]-1]
+        self.act_list = np.delete(self.act_list, self.act_list.shape[0]-1, axis = 0)
         return value
         
 action = act_record(5, 4)
