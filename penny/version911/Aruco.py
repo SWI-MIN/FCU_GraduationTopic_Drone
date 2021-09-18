@@ -116,14 +116,14 @@ class Camera():
                     self.main_marker = sort_id[0][0]
 
                 # 計時 改變find_new_marker
-                Timing = 20
-                if self.start == 0:
-                    self.start = time.time()
-                if time.time() - self.start >= Timing:
-                    self.find_new_marker = True
-                    self.start = 0
-                if time.time() - self.start < Timing:
-                    cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                # Timing = 20
+                # if self.start == 0:
+                #     self.start = time.time()
+                # if time.time() - self.start >= Timing:
+                #     self.find_new_marker = True
+                #     self.start = 0
+                # if time.time() - self.start < Timing:
+                #     cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "used_marker : {}"  .format(self.used_marker) , (10, (440)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -139,7 +139,7 @@ class Camera():
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
                     # self.navigation(sort_id)
-                    self.navigation(sort_id)
+                    # self.navigation(sort_id)
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
                     # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
