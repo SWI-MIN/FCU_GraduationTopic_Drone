@@ -184,29 +184,29 @@ class Camera():
     def navigation(self, main_marker_attitude):
         # directions = [0, 0, 0, 0]
         directions = np.array([0, 0, 0, 0])
-        adjust_speed = 10
+        adjust_speed = 15
 
         adjustfile = open("Adjust.txt", "a")
-        print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
+        # print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
 
         if not self.adjust_flag:
             # adjust attitude
-            if main_marker_attitude[0][1] > 130 :                             # 水平前進後退
-                directions[1] = adjust_speed           # 距離大於80，前進(+)                
+            if main_marker_attitude[0][1] > 130 :                           # 水平前進後退
+                directions[1] = adjust_speed                                # 距離大於80，前進(+)                
             elif main_marker_attitude[0][1] < 100 :
-                directions[1] = -adjust_speed          # 距離小於50，往後(-)  
+                directions[1] = -adjust_speed                               # 距離小於50，往後(-)  
 
-            if main_marker_attitude[0][2] > 20:                               # 垂直上下  
-                directions[2] = adjust_speed           # 飛機位置太低，往上(+)
+            if main_marker_attitude[0][2] > 20:                             # 垂直上下  
+                directions[2] = adjust_speed                                # 飛機位置太低，往上(+)
             elif main_marker_attitude[0][2] < -20:
-                directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
+                directions[2] = -adjust_speed                               # 飛機位置太高，往下(-)
 
-            if main_marker_attitude[0][3] > 30:                              # 水平角度
-                directions[0] = adjust_speed * 3       # 微向右走(+)
-                directions[3] = -adjust_speed      # 飛機向左轉(-)                    
+            if main_marker_attitude[0][3] > 30:                             # 水平角度
+                directions[0] = adjust_speed * 3                            # 微向右走(+)
+                directions[3] = -adjust_speed                               # 飛機向左轉(-)                    
             elif main_marker_attitude[0][3] < -30:   
-                directions[0] = -adjust_speed * 3      # 微向左走(-)
-                directions[3] = adjust_speed       # 飛機向右轉(+)
+                directions[0] = -adjust_speed * 3                           # 微向左走(-)
+                directions[3] = adjust_speed                                # 飛機向右轉(+)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             # if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
@@ -215,13 +215,13 @@ class Camera():
                 print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
             # 裡面有東西不等於0的時候, 需要調整
             else : 
-                print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
+                # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
                 self.marker_act_queue.put(directions)
                 self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
                 # 記得在frontend裡面要接收
         # 調整完畢，做標籤動作
         else:
-            print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
+            # print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
             directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
@@ -290,15 +290,15 @@ class TargetDefine():
                                                     # vx, vy, vz, yaw
         switcher={
                 'Origin':                np.array([[0., 0., 0, 0.]]),            # 0
-                'Right sideways':        np.array([[20., 0., 0, 0.]]),           # 1 - 5 
-                'Left sideways':         np.array([[-20., 0., 0, 0.]]),          # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., 0, -10.]]),          # 11 - 15 
-                'Rotate right corner 2': np.array([[0., 0., 0, -20.]]),          # 16 - 20 
-                'Rotate left corner 1':  np.array([[0., 0., 0, 10.]]),           # 21 - 25 
-                'Rotate left corner 2':  np.array([[0., 0., 0, 20.]]),           # 26 - 30
-                'Forward':               np.array([[0., 10., 0, 0.]]),           # 31 - 35 ; 72
-                'Backward':              np.array([[0., -10., 0, 0.]]),          # 36 - 40
-                'Up':                    np.array([[0., 0., 10, 0.]]),           # 41 - 45
+                'Right sideways':        np.array([[40., 0., 0, 0.]]),           # 1 - 5 
+                'Left sideways':         np.array([[-40., 0., 0, 0.]]),          # 6 - 10 
+                'Rotate right corner 1': np.array([[0., 0., 0, -20.]]),          # 11 - 15 
+                'Rotate right corner 2': np.array([[0., 0., 0, -40.]]),          # 16 - 20 
+                'Rotate left corner 1':  np.array([[0., 0., 0, 20.]]),           # 21 - 25 
+                'Rotate left corner 2':  np.array([[0., 0., 0, 40.]]),           # 26 - 30
+                'Forward':               np.array([[0., 20., 0, 0.]]),           # 31 - 35 ; 72
+                'Backward':              np.array([[0., -20., 0, 0.]]),          # 36 - 40
+                'Up':                    np.array([[0., 0., 50, 0.]]),           # 41 - 45
                 'Land':                  np.array([[0., 0., 0, -1.]])            # 50
              }
         return switcher.get(selected, "Invalid marker type")
