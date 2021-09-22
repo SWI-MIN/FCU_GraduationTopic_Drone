@@ -61,8 +61,6 @@ class Camera():
         corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=self.aruco_dict,
                             parameters=self.parameters,cameraMatrix=self.cam_matrix, distCoeff=self.cam_distortion) 
 
-        print(ids)
-
         if np.all(ids != None):
             ### id found
             id_list = [] # 存放原始 id 順序
@@ -137,7 +135,7 @@ class Camera():
                         cv2.putText(frame, "main_marker not in sort_id", (10, (460)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         
                         # 當 main_marker 消失2s，再執行 lost_main_marker
-                        if time.time() - self.start >= 2: 
+                        if time.time() - self.lost_time >= 2: 
                             self.lost_main_marker()
                     
                     else:
@@ -167,7 +165,7 @@ class Camera():
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             # 當 main_marker 消失2s，再執行 lost_main_marker
-            if time.time() - self.start >= 2: 
+            if time.time() - self.lost_time >= 2: 
                 self.lost_main_marker()
 
         return frame
