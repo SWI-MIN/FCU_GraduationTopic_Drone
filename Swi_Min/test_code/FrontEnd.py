@@ -61,11 +61,11 @@ class FrontEnd():
             self.tello.img = self.tello.get_frame_read().frame
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
-            # self.tello.img = self.aruco.aruco(self.tello.img)
+            self.tello.img = self.aruco.aruco(self.tello.img)
 
-            self.tello.img, adj_directions = self.aruco.aruco(self.tello.img)
-            print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
-            self.tello.updateMarkerAct(adj_directions)
+            # self.tello.img, adj_directions = self.aruco.aruco(self.tello.img)
+            # print("Adjust direction: %d, %d, %d, %d" % (adj_directions[0], adj_directions[1], adj_directions[2], adj_directions[3]))
+            # self.tello.updateMarkerAct(adj_directions)
 
             self.tello.getKeyboardInput()
 

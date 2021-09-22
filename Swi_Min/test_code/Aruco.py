@@ -61,6 +61,8 @@ class Camera():
         corners, ids, _ = cv2.aruco.detectMarkers(image=gray, dictionary=self.aruco_dict,
                             parameters=self.parameters,cameraMatrix=self.cam_matrix, distCoeff=self.cam_distortion) 
 
+        print(ids)
+
         if np.all(ids != None):
             ### id found
             id_list = [] # 存放原始 id 順序
@@ -172,11 +174,14 @@ class Camera():
 
 
     def lost_main_marker(self):
-        change_sign = self.act_record.get_value()
-        for i in range(4):
-            change_sign[i] = -change_sign[i]
+        if self.act_record.act_list.shape[0]-1 >= 0:
+            change_sign = self.act_record.get_value()
+            for i in range(4):
+                change_sign[i] = -change_sign[i]
 
-        self.marker_act_queue.put(change_sign)
+            self.marker_act_queue.put(change_sign)
+        else:
+            pass
 
 
     def navigation(self, main_marker_attitude):
