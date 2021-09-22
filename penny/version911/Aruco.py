@@ -135,7 +135,7 @@ class Camera():
                         cv2.putText(frame, "main_marker not in sort_id", (10, (460)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         
                         # 當 main_marker 消失2s，再執行 lost_main_marker
-                        if time.time() - self.start >= 2: 
+                        if time.time() - self.lost_time >= 2: 
                             self.lost_main_marker()
                     
                     else:
@@ -165,19 +165,21 @@ class Camera():
             ### No id found
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             # 當 main_marker 消失2s，再執行 lost_main_marker
-            if time.time() - self.start >= 2: 
+            if time.time() - self.lost_time >= 2: 
                 self.lost_main_marker()
 
         return frame
 
 
     def lost_main_marker(self):
-        change_sign = self.act_record.get_value()
-        for i in range(4):
-            change_sign[i] = -change_sign[i]
+        if self.act_record.act_list.shape[0]-1 >= 0:
+            change_sign = self.act_record.get_value()
+            for i in range(4):
+                change_sign[i] = -change_sign[i]
 
-        self.marker_act_queue.put(change_sign)
-
+            self.marker_act_queue.put(change_sign)
+        else:
+            pass
 
     def navigation(self, main_marker_attitude):
         # directions = [0, 0, 0, 0]
