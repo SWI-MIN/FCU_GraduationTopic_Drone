@@ -29,6 +29,7 @@ class Camera():
         # about navigation
         self.navigation_start = navigation_start # 這裡需要主程式傳送thread event ，來決定導航狀態是否開啟
         self.main_marker = None # 記錄誰是主要
+        self.main_marker_act = None # main_marker 代表的動作
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
         self.marker_act_queue = marker_act_queue  # 要飛機執行的動作陣列放進這個queue中
@@ -68,6 +69,7 @@ class Camera():
                                 self.marker_size, self.cam_matrix, self.cam_distortion)
             # 標記周圍畫正方形
             cv2.aruco.drawDetectedMarkers(frame, corners)
+
             # Draw axis and 將有需要用到的資訊存入 sort_id 中 
             for i in range(0, ids.size):
                 cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 0.1)  # Draw axis
@@ -112,6 +114,7 @@ class Camera():
                         self.used_marker.append(self.main_marker)
                 else:
                     self.main_marker = sort_id[0][0]
+                    self.main_marker_act = self.target.changeTarget(int(self.main_marker))[0]
 
                 cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -147,6 +150,7 @@ class Camera():
                         new_marker = sort_id[i][0]
                         if new_marker not in self.used_marker:
                             self.main_marker = new_marker
+                            self.main_marker_act = self.target.changeTarget(int(self.main_marker))[0]
                             self.find_new_marker = False
                             break
             
@@ -172,11 +176,10 @@ class Camera():
 
 
     def navigation(self, main_marker_attitude):
-        # directions = [0, 0, 0, 0]
         directions = np.array([0, 0, 0, 0])
-        adjust_speed = 10
-
-        directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
+        adjust_speed = 15
+        # self.main_marker_act # 之後取值要用
+        # directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
 
         if not self.adjust_flag:
             # 這個狀態的切換是否會需要更多的條件才允許切換+++++++++++++++++++++
@@ -204,7 +207,6 @@ class Camera():
                 self.adjust_flag = True
             # 裡面有東西不等於0的時候, 需要調整
             else : 
-                # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
                 self.marker_act_queue.put(directions)
                 self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
                 # 記得在frontend裡面要接收
@@ -215,7 +217,7 @@ class Camera():
         else:
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
-
+            # 此處可能會有 put 多次的問題++++++++++++++++++++++++++++
             # 給予標籤 2s 時間做動作
             if time.time() - self.act_time >= 2: 
                 self.adjust_flag = False
@@ -227,6 +229,7 @@ class Camera():
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
         self.main_marker = None # 記錄誰是主要
+        self.main_marker_act = None # main_marker 代表的動作
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
