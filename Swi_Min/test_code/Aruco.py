@@ -18,7 +18,7 @@ class Camera():
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
         # Marker edge length in meters
-        self.marker_size = 10
+        self.marker_size = 0.1
 
         # 計算旋轉的角度用的矩陣
         self.R_flip  = np.zeros((3,3), dtype=np.float32)
@@ -35,6 +35,7 @@ class Camera():
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
         self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
+        self.act_time = 0   # 給飛機做標籤動作的時間
 
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
@@ -72,7 +73,7 @@ class Camera():
             cv2.aruco.drawDetectedMarkers(frame, corners)
             # Draw axis and 將有需要用到的資訊存入 sort_id 中 
             for i in range(0, ids.size):
-                cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 10)  # Draw axis
+                cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 0.1)  # Draw axis
                 ''' sort_id : 
                         |  id1  |  距離  |  X  |  Y  |  Z  |
                         |  id2  |  距離  |  X  |  Y  |  Z  |
@@ -83,7 +84,7 @@ class Camera():
                 sort_id[i][0] = ids[i][0]
 
                 # 求出各別 marker 到飛機的距離
-                sort_id[i][1] = (tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5
+                sort_id[i][1] = ((tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5)*100
 
                 # 求出各別 marker 與飛機的角度關係
                 # 旋轉矩陣
@@ -190,17 +191,21 @@ class Camera():
         adjustfile = open("Adjust.txt", "a")
         print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
 
+        directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
+
         if not self.adjust_flag:
+            # 這個狀態的切換是否會需要更多的條件才允許切換+++++++++++++++++++++
+            # 現在 
             # adjust attitude
             if main_marker_attitude[0][1] > 130 :                             # 水平前進後退
-                directions[1] = adjust_speed           # 距離大於80，前進(+)                
+                directions[1] = adjust_speed          # 距離大於80，前進(+)                
             elif main_marker_attitude[0][1] < 100 :
-                directions[1] = -adjust_speed          # 距離小於50，往後(-)  
+                directions[1] = -adjust_speed         # 距離小於50，往後(-)  
 
             if main_marker_attitude[0][2] > 20:                               # 垂直上下  
-                directions[2] = adjust_speed           # 飛機位置太低，往上(+)
+                directions[2] = adjust_speed * 2           # 飛機位置太低，往上(+)
             elif main_marker_attitude[0][2] < -20:
-                directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
+                directions[2] = -adjust_speed * 2         # 飛機位置太高，往下(-)
 
             if main_marker_attitude[0][3] > 30:                              # 水平角度
                 directions[0] = adjust_speed * 3       # 微向右走(+)
@@ -220,17 +225,22 @@ class Camera():
                 self.marker_act_queue.put(directions)
                 self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
                 # 記得在frontend裡面要接收
+
+            self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
+
         # 調整完畢，做標籤動作
         else:
             print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
-            directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
+            
             # 做完標籤動作
-            self.adjust_flag = False
-            self.find_new_marker = True
+            # 需要時間或其他條件才能改變狀態++++++++++++++++++++++++++++++
+            if time.time() - self.act_time >= 2: 
+                self.adjust_flag = False
+                self.find_new_marker = True
 
-        self.lost_time = time.time()
+        self.lost_time = time.time()  # 每次進來都會更新lost_time，當進不來的時候就相當於計時
 
 
     def reset(self):
