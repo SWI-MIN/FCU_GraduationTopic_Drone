@@ -212,7 +212,7 @@ class Camera():
             # if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
             if np.all(directions == 0):
                 self.adjust_flag = True
-                print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
+                # print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
             # 裡面有東西不等於0的時候, 需要調整
             else : 
                 # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
