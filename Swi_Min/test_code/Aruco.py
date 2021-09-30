@@ -40,9 +40,6 @@ class Camera():
         # 取得自己定義的marker，以及參考動作
         self.target = TargetDefine()
 
-        # 測試時計時用，不用時可刪
-        self.start = 0
-
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
             calib_path  = ".\\Camera_Correction\\"
@@ -116,15 +113,6 @@ class Camera():
                 else:
                     self.main_marker = sort_id[0][0]
 
-                # 計時 改變find_new_marker
-                # Timing = 20
-                # if self.start == 0:
-                #     self.start = time.time()
-                # if time.time() - self.start >= Timing:
-                #     self.find_new_marker = True
-                #     self.start = 0
-                # if time.time() - self.start < Timing:
-                #     cv2.putText(frame, "{}"  .format((time.time() - self.start)) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                 cv2.putText(frame, "used_marker : {}"  .format(self.used_marker) , (10, (440)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -188,9 +176,6 @@ class Camera():
         directions = np.array([0, 0, 0, 0])
         adjust_speed = 10
 
-        adjustfile = open("Adjust.txt", "a")
-        print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
-
         directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
 
         if not self.adjust_flag:
@@ -215,13 +200,11 @@ class Camera():
                 directions[3] = adjust_speed       # 飛機向右轉(+)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            # if directions[0] == 0 and directions[1] == 0 and directions[2] == 0 and directions[3] == 0:
             if np.all(directions == 0):
                 self.adjust_flag = True
-                print("Adjust is down. Start to do Marker Action!!!", file = adjustfile)
             # 裡面有東西不等於0的時候, 需要調整
             else : 
-                print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
+                # print("Adjust left+/right-: %d; forward+/backward-: %d;  up+/down-: %d;  Yaw: %d" % (directions[0], directions[1], directions[2], directions[3]), file = adjustfile)
                 self.marker_act_queue.put(directions)
                 self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
                 # 記得在frontend裡面要接收
@@ -230,12 +213,10 @@ class Camera():
 
         # 調整完畢，做標籤動作
         else:
-            # print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
-            
-            # 做完標籤動作
-            # 需要時間或其他條件才能改變狀態++++++++++++++++++++++++++++++
+
+            # 給予標籤 2s 時間做動作
             if time.time() - self.act_time >= 2: 
                 self.adjust_flag = False
                 self.find_new_marker = True
@@ -337,7 +318,6 @@ def main():
         cv2.imshow('frame', frame)
         cv2.imshow('tello_info', tello.tello_info)
         cv2.waitKey(1)
-
 
 if __name__ == '__main__':
     main()
