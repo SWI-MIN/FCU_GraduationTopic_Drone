@@ -188,7 +188,7 @@ class Camera():
 
         adjustfile = open("Adjust.txt", "a")
         # print("ID : %d, Y: %d, Dis: %d, X: %d" % (main_marker_attitude[0][0],main_marker_attitude[0][3], main_marker_attitude[0][1], main_marker_attitude[0][2]), file = adjustfile)
-
+        directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
         if not self.adjust_flag:
             # adjust attitude
             if main_marker_attitude[0][1] > 130 :                           # 水平前進後退
@@ -222,12 +222,14 @@ class Camera():
         # 調整完畢，做標籤動作
         else:
             # print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
-            directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
+            # directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
             # 做完標籤動作
-            self.adjust_flag = False
-            self.find_new_marker = True
+            if time.time() - self.act_time >= 2: 
+                self.adjust_flag = False
+                self.find_new_marker = True
+            
 
         self.lost_time = time.time()
 
