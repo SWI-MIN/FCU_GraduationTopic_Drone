@@ -18,7 +18,7 @@ class Camera():
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
         # Marker edge length in meters
-        self.marker_size = 10
+        self.marker_size = 0.1
 
         # 計算旋轉的角度用的矩陣
         self.R_flip  = np.zeros((3,3), dtype=np.float32)
@@ -72,7 +72,7 @@ class Camera():
             cv2.aruco.drawDetectedMarkers(frame, corners)
             # Draw axis and 將有需要用到的資訊存入 sort_id 中 
             for i in range(0, ids.size):
-                cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 10)  # Draw axis
+                cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 0.1)  # Draw axis
                 ''' sort_id : 
                         |  id1  |  距離  |  X  |  Y  |  Z  |
                         |  id2  |  距離  |  X  |  Y  |  Z  |
@@ -83,7 +83,7 @@ class Camera():
                 sort_id[i][0] = ids[i][0]
 
                 # 求出各別 marker 到飛機的距離
-                sort_id[i][1] = (tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5
+                sort_id[i][1] = ((tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5) * 100
 
                 # 求出各別 marker 與飛機的角度關係
                 # 旋轉矩陣
@@ -275,7 +275,7 @@ class act_record():
 DIST = 0.9
 class TargetDefine():
     def __init__(self):
-        with open('MarkerAction/marker_conf.csv', 'rt', encoding='utf-8') as f:
+        with open('MarkerAction/marker_conf2.csv', 'rt', encoding='utf-8') as f:
             reader = csv.reader(f, delimiter=';')
             self.marker_nav = list(reader)
 
