@@ -203,9 +203,9 @@ class Camera():
                 directions[1] = -adjust_speed         # 距離小於50，往後(-)  
 
             if main_marker_attitude[0][2] > 20:                               # 垂直上下  
-                directions[2] = adjust_speed * 2           # 飛機位置太低，往上(+)
+                directions[2] = adjust_speed           # 飛機位置太低，往上(+)
             elif main_marker_attitude[0][2] < -20:
-                directions[2] = -adjust_speed * 2         # 飛機位置太高，往下(-)
+                directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
 
             if main_marker_attitude[0][3] > 30:                              # 水平角度
                 directions[0] = adjust_speed * 3       # 微向右走(+)
@@ -230,7 +230,7 @@ class Camera():
 
         # 調整完畢，做標籤動作
         else:
-            print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
+            # print("Doing Marker Action.................................ID = ", main_marker_attitude[0][0], file = adjustfile)
             self.marker_act_queue.put(directions)
             self.act_record.replace_act(directions)   # 對飛機的做紀錄，當 marker 不見時反向執行
             
