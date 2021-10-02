@@ -35,7 +35,7 @@ def getKeyboardInput():
 
     # 路徑記得改
     if kp.getKey('z'):
-        cv2.imwrite(f'./Resources/Images2/{time.time()}.jpg', img)
+        cv2.imwrite(f'./Resources/Images1002_960720/{time.time()}.jpg', img)
         time.sleep(0.3)
 
     return [lr, fb, ud, yv]
@@ -46,6 +46,6 @@ while True:
     vals = getKeyboardInput()
     tello.send_rc_control(vals[0], vals[1], vals[2], vals[3])
     img = tello.get_frame_read().frame
-    img = cv2.resize(img, (1280, 720))       #small size of frame to be faster
+    img = cv2.resize(img, (960, 720))       #small size of frame to be faster
     cv2.imshow("Image", img)
     cv2.waitKey(1)
