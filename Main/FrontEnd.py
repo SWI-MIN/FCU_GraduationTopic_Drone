@@ -62,7 +62,10 @@ class FrontEnd():
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
             self.tello.img = self.aruco.aruco(self.tello.img)
-
+            if not self.marker_act_queue.empty():
+                directions = self.marker_act_queue.get()
+                self.tello.updateMarkerAct(directions)
+            
             self.tello.getKeyboardInput()
 
             # 我認為需要做強制接管的程式，以防巡航時出問題

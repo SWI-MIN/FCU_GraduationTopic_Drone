@@ -37,6 +37,9 @@ class ControlTello(Tello):
         self.control_queue = control_queue
         self.take_over = take_over
 
+        self.dir_queue=queue.Queue()
+        self.dir_queue.queue.clear()
+
         # 測試錄影時間用，完成後可刪
         self.time_s = 0
         self.time_e = 0
@@ -124,12 +127,12 @@ class ControlTello(Tello):
         if self.getKey("q"): 
             if self.video_On:
                 self.video_On = False
-            # self.end()
+            self.end()
             # print("++++++++++++++++++++++")
-            if self.is_flying:
-                self.land()
-            if self.stream_on:
-                self.streamoff()
+            # if self.is_flying:
+            #     self.land()
+            # if self.stream_on:
+            #     self.streamoff()
             self.control_queue.put("q")
             return
             
@@ -178,6 +181,13 @@ class ControlTello(Tello):
         self.print_info()
 
         self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+
+    def updateMarkerAct(self, directions):
+        # 用來接收標籤調整, 標籤動作
+        # 接收傳送ok，因為還沒寫結束調整的條件，所以還沒飛
+        # 可能改成收queue
+        self.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+
 
 if __name__ == '__main__':
     pass
