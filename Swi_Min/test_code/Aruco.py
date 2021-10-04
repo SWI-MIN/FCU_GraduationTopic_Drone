@@ -140,7 +140,7 @@ class Camera():
 
                         # 取出 sort_id 中 屬於 main_marker 的那一列，並傳入navigation
                         main_marker_attitude = np.where(sort_id[:,0] == self.main_marker)
-                        self.navigation(sort_id[main_marker_attitude])
+                        self.navigation(sort_id[main_marker_attitude], cx-int(w/2), cy-int(h/2))
                     
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
@@ -176,49 +176,50 @@ class Camera():
             pass
 
 
-    def navigation(self, main_marker_attitude):
+    def navigation(self, main_marker_attitude, x_axis, y_axis):
         directions = np.array([0, 0, 0, 0])
-        adjust_speed = 15
-
-        # self.main_marker_act # 之後取值要用
-        # directions = self.target.changeTarget(int(main_marker_attitude[0][0]))[0]
+        adjust_speed = 5
 
         if not self.adjust_flag:
             # 這個狀態的切換是否會需要更多的條件才允許切換+++++++++++++++++++++
-            # 現在 
             # adjust attitude
-            if main_marker_attitude[0][1] > 130 :                             # 水平前進後退
-                directions[1] = adjust_speed          # 距離大於80，前進(+)                
+            if main_marker_attitude[0][1] > 140 :                             # 水平前進後退
+                directions[1] += adjust_speed          # 距離大於80，前進(+)                
             elif main_marker_attitude[0][1] < 100 :
-                directions[1] = -adjust_speed         # 距離小於50，往後(-)  
+                directions[1] -= adjust_speed         # 距離小於50，往後(-)  
 
-            if main_marker_attitude[0][2] > 20:                               # 垂直上下  
-                directions[2] = adjust_speed           # 飛機位置太低，往上(+)
-            elif main_marker_attitude[0][2] < -20:
-                directions[2] = -adjust_speed          # 飛機位置太高，往下(-)
+            if main_marker_attitude[0][2] > 10 or y_axis > 175:      # 垂直上下 (X軸) 
+                directions[2] += adjust_speed * 2           # 飛機位置太低，往上(+)
+            elif main_marker_attitude[0][2] < -10 or y_axis < -175:
+                directions[2] -= adjust_speed * 2          # 飛機位置太高，往下(-)
 
-            if main_marker_attitude[0][3] > 30:                              # 水平角度
-                directions[0] = adjust_speed * 3       # 微向右走(+)
-                directions[3] = -adjust_speed      # 飛機向左轉(-)                    
-            elif main_marker_attitude[0][3] < -30:   
-                directions[0] = -adjust_speed * 3      # 微向左走(-)
-                directions[3] = adjust_speed       # 飛機向右轉(+)
+            if main_marker_attitude[0][3] > 10 or x_axis > 235:   # 水平角度(Y軸) or marker太靠右
+                directions[0] += adjust_speed * 2        # 微向右走(+)
+                directions[3] -= adjust_speed * 2      # 飛機向左轉(-)                    
+            elif main_marker_attitude[0][3] < -10 or x_axis < -235:    # marker太靠右
+                directions[0] -= adjust_speed * 2      # 微向左走(-)
+                directions[3] += adjust_speed * 2       # 飛機向右轉(+)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             if np.all(directions == 0):
-                self.adjust_flag = True
+                if x_axis < 235 and x_axis > -235 and y_axis < 175 and y_axis > -175:
+                    self.adjust_flag = True
             # 裡面有東西不等於0的時候, 需要調整
             else : 
                 self.marker_act_queue.put(directions)
                 self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
-                # 記得在frontend裡面要接收
 
             self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
 
         # 調整完畢，做標籤動作
         else:
-            self.marker_act_queue.put(self.main_marker_act)
-            self.act_record.replace_act(self.main_marker_act)   # 對飛機的做紀錄，當 marker 不見時反向執行
+            # self.marker_act_queue.put(self.main_marker_act)
+            # self.act_record.replace_act(self.main_marker_act)   # 對飛機的做紀錄，當 marker 不見時反向執行
+
+            test_act = [0, 0, 0, 40]
+            self.marker_act_queue.put(test_act)
+            self.act_record.replace_act(test_act)
+
             # 此處可能會有 put 多次的問題++++++++++++++++++++++++++++
             # 給予標籤 2s 時間做動作
             if time.time() - self.act_time >= 10: 
