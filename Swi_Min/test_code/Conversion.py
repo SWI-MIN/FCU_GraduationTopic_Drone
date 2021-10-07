@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from scipy.spatial.transform import Rotation
+# from scipy.spatial.transform import Rotation
 
 # 檢查矩陣是否是有效的旋轉矩陣
 def isRotationMatrix(R):
