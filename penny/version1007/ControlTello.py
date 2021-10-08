@@ -178,6 +178,11 @@ class ControlTello(Tello):
         if self.getKey("d"): self.yv = self.speed
         elif self.getKey("a"): self.yv = -self.speed
 
+        if self.getKey("1"):
+            self.lr = 40
+            self.fb = 40
+            self.yv = -20
+
         self.print_info()
 
         self.send_rc_control(self.lr, self.fb, self.ud, self.yv)

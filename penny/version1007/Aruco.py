@@ -14,7 +14,8 @@ class Camera():
         self.cam_matrix = None
         self.cam_distortion = None
         # self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)# self.aruco_dict  = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
-        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+        # self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+        self.aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_100)
         self.parameters  = cv2.aruco.DetectorParameters_create()
         
         # Marker edge length in meters
