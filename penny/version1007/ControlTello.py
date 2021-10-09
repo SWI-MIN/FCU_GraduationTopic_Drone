@@ -26,7 +26,7 @@ class ControlTello(Tello):
         '''
         super().__init__()
         self.lr = self.fb = self.ud = self.yv = 0
-        self.speed = 50
+        self.speed = 40
         self.width = 960
         self.height = 720
         self.img = None
@@ -182,6 +182,16 @@ class ControlTello(Tello):
             self.lr = 40
             self.fb = 40
             self.yv = -20
+
+        if self.getKey("2"):
+            self.yv = 20
+        elif self.getKey("3"):
+            self.yv = 30
+        elif self.getKey("4"):
+            self.yv = 40
+        elif self.getKey("6"):
+            self.yv = 60
+            
 
         self.print_info()
 

@@ -213,9 +213,9 @@ class Camera():
             #     directions[3] += adjust_speed * 2       # 飛機向右轉(+)
 
             id_index = id_list.index(self.main_marker)  
-            X = tvecs[id_index][0][0] 
+            X = int(tvecs[id_index][0][0]*100) 
             Y = int(tvecs[id_index][0][1]*100)
-            Z = tvecs[id_index][0][2]   
+            Z = int(tvecs[id_index][0][2]*100)
             
             if Y > 0:      # 垂直上下 (X軸) 
                 directions[2] -= adjust_speed * 2           # 飛機位置太低，往上(+)
@@ -224,24 +224,66 @@ class Camera():
 
 
             if Y < 10 and Y > -5:
-                pass
                 # 做其他方向
+                if -10 < main_marker_attitude[0][3] and main_marker_attitude[0][3] < 10:
+                    # 偏航角很小所以只調x距跟z距(即使過程中角度有改變應該也不會差多少)
+                    # 角度小時Z會和dis差不多
+                    if 100 < Z and Z < 150:
+                        directions[1] = 2 * adjust_speed
+                    elif 150 < Z :
+                        directions[1] = 3 * adjust_speed
 
-            
+                    ads_x = abs(X)
+                    if 10 < ads_x and ads_x < 30:
+                        directions[0] = adjust_speed
+                    elif 30 < ads_x and ads_x < 70:
+                        directions[0] = 2 * adjust_speed
+                    elif 70 < ads_x:
+                        directions[0] = 3 * adjust_speed
+                    if X < 0:
+                        directions[0] = -directions[0]
+                    
+                    # if abs(Z - abs(X)) > 20:
+                    #     # 通常是Z遠大於X
+                    #     directions[1] = 2 * adjust_speed
+                    # else:
+                    #     # 差距小用同一個速度調
+                    #     directions[1] = adjust_speed
+
+                # elif 10 < abs(main_marker_attitude[0][3]) and abs(main_marker_attitude[0][3]) < 30:
+                #     # 需要微調角度
+                #     if abs(Z - abs(X)) > 40:
+                #         directions[1] = 2 * adjust_speed
+                #     else:
+                #         directions[1] = 2 * adjust_speed
+
+                #     if 0 < main_marker_attitude[0][3] :
+                #         # 要向左轉
+                #         directions[3] = -adjust_speed
+                #     else :
+                #         # 要向右轉
+                #         directions[3] = adjust_speed
+                #     if X > 0:
+                #         # 向右走
+                #         directions[0] = adjust_speed
+                #     else:
+                #         # 向左走
+                #         directions[0] = -adjust_speed
+                        
 
             self.marker_act_queue.put(directions)
 
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            # if np.all(directions == 0):
-            #     # if x_axis < 235 and x_axis > -235 and y_axis < 175 and y_axis > -175:
-            #         self.adjust_flag = True
+            if np.all(directions == 0):
+                # if x_axis < 235 and x_axis > -235 and y_axis < 175 and y_axis > -175:
+                    self.adjust_flag = True
             # # 裡面有東西不等於0的時候, 需要調整
-            # else : 
-            #     self.marker_act_queue.put(directions)
-            #     self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
+            else : 
+                self.marker_act_queue.put(directions)
+                self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
 
-            # self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
+            self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
 
         # 調整完畢，做標籤動作
         # else:
