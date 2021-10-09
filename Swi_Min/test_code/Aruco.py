@@ -70,7 +70,6 @@ class Camera():
                                 self.marker_size, self.cam_matrix, self.cam_distortion)
 
             # 寫檔看評移矩陣
-            
             # print("%d" % (tvecs), file = self.tvecfile)
             # self.tvecfile.write(str(tvecs))
 
@@ -136,11 +135,13 @@ class Camera():
                 # 判斷是否需要找新 marker， 不找就畫黃色標示線，並且做動作
                 if not self.find_new_marker:
                     if self.main_marker not in sort_id[0:,0:1]:
-                        cv2.putText(frame, "main_marker not in sort_id", (10, (460)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, "main_marker not in sort_id", (10, 460) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         
                         # 當 main_marker 消失2s，再執行 lost_main_marker
                         if time.time() - self.lost_time >= 2: 
-                            self.lost_main_marker()
+                            lost_respond = self.lost_main_marker()
+                            if lost_respond == None:
+                                cv2.putText(frame, "act_record is None", (10, 480), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                     
                     else:
                         # 畫線
@@ -171,7 +172,9 @@ class Camera():
             cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             # 當 main_marker 消失2s，再執行 lost_main_marker
             if time.time() - self.lost_time >= 2: 
-                self.lost_main_marker()
+                lost_respond = self.lost_main_marker()
+                if lost_respond == None:
+                    cv2.putText(frame, "act_record is None", (10, 100), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
         return frame
 
@@ -181,60 +184,58 @@ class Camera():
             change_sign = self.act_record.get_value()
             for i in range(4):
                 change_sign[i] = -change_sign[i]
-
             self.marker_act_queue.put(change_sign)
         else:
-            pass
+            return None
 
 
     def navigation(self, main_marker_attitude, id_list, tvecs):
-        directions = np.array([0, 0, 0, 0])
-        adjust_speed = 30
+        directions = np.array([0, 0, 0, 0]) # 前後、左右、高低、轉向
+        adjust_speed = 5
+
+        distance = main_marker_attitude[0][1] # 距離
+        euler_X = main_marker_attitude[0][2] # 歐拉角 x
+        euler_Y = main_marker_attitude[0][3]
+        euler_Z = main_marker_attitude[0][4]
+        id_index = id_list.index(self.main_marker)
+        tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
+        tvecs_Y = int(tvecs[id_index][0][1] * 100)
+        tvecs_Z = int(tvecs[id_index][0][2] * 100)
+
+        opposite_angle = round(math.degrees(math.asin(tvecs_X / (tvecs_X**2 + tvecs_Z**2)**0.5)), 2)
+        angle_dif = euler_Y - opposite_angle
 
         if not self.adjust_flag:
-            # 這個狀態的切換是否會需要更多的條件才允許切換+++++++++++++++++++++
-            # adjust attitude
-            # if main_marker_attitude[0][1] > 140 :                             # 水平前進後退
-            #     directions[1] += adjust_speed          # 距離大於80，前進(+)                
-            # elif main_marker_attitude[0][1] < 100 :
-            #     directions[1] -= adjust_speed         # 距離小於50，往後(-)  
-
-            # if main_marker_attitude[0][2] > 10 or y_axis > 175:      # 垂直上下 (X軸) 
-            #     directions[2] += adjust_speed * 2           # 飛機位置太低，往上(+)
-            # elif main_marker_attitude[0][2] < -10 or y_axis < -175:
-            #     directions[2] -= adjust_speed * 2          # 飛機位置太高，往下(-)
-
-            # if main_marker_attitude[0][3] > 10 or x_axis > 235:   # 水平角度(Y軸) or marker太靠右
-            #     directions[0] += adjust_speed * 2        # 微向右走(+)
-            #     directions[3] -= adjust_speed * 2      # 飛機向左轉(-)                    
-            # elif main_marker_attitude[0][3] < -10 or x_axis < -235:    # marker太靠右
-            #     directions[0] -= adjust_speed * 2      # 微向左走(-)
-            #     directions[3] += adjust_speed * 2       # 飛機向右轉(+)
-
-            id_index = id_list.index(self.main_marker)  
-            X = tvecs[id_index][0][0] 
-            Y = int(tvecs[id_index][0][1]*100)
-            Z = tvecs[id_index][0][2]   
-            
-            if Y > 0:      # 垂直上下 (X軸) 
+            # 上下對準maeker
+            if tvecs_Y > 0:      # 垂直上下 (X軸) 
                 directions[2] -= adjust_speed * 2           # 飛機位置太低，往上(+)
-            elif Y < 0:
+            elif tvecs_Y < 0:
                 directions[2] += adjust_speed * 2          # 飛機位置太高，往下(-)
+            # 左右對準maeker
+            if angle_dif > 0:
+                directions[3] -= adjust_speed * 2           # 無人機太靠右，左轉(-)
+            elif angle_dif < 0:
+                directions[3] += adjust_speed * 2           # 無人機太靠左，右轉(+)
 
-
-            if Y < 10 and Y > -5:
-                pass
+            if tvecs_Y < 10 and tvecs_Y > -5 and angle_dif < 5 and angle_dif > -5:
                 # 做其他方向
-
-            
+                if distance > 120:
+                    # 向前
+                    directions[0]
+                elif distance < 100:
+                    # 向後
+                    directions[0]
+                if tvecs_X > 0:
+                    directions[1]
+                elif tvecs_X < 0:
+                    directions[1]
 
             self.marker_act_queue.put(directions)
 
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             # if np.all(directions == 0):
-            #     # if x_axis < 235 and x_axis > -235 and y_axis < 175 and y_axis > -175:
-            #         self.adjust_flag = True
+            #     self.adjust_flag = True
             # # 裡面有東西不等於0的時候, 需要調整
             # else : 
             #     self.marker_act_queue.put(directions)

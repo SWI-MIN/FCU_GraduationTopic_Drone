@@ -128,11 +128,6 @@ class ControlTello(Tello):
             if self.video_On:
                 self.video_On = False
             self.end()
-            # print("++++++++++++++++++++++")
-            # if self.is_flying:
-            #     self.land()
-            # if self.stream_on:
-            #     self.streamoff()
             self.control_queue.put("q")
             return
             
@@ -179,8 +174,9 @@ class ControlTello(Tello):
         elif self.getKey("a"): self.yv = -self.speed
 
         self.print_info()
-
-        self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+        
+        if self.lr + self.fb + self.ud + self.yv != 0:
+            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
 
     # def updateMarkerAct(self, directions):
     #     # 用來接收標籤調整, 標籤動作

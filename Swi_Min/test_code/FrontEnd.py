@@ -63,8 +63,6 @@ class FrontEnd():
 
             self.tello.img = self.aruco.aruco(self.tello.img)
 
-            self.tello.getKeyboardInput()
-
             # 導航開以及離開程式
             if not self.control_queue.empty():
                 control = self.control_queue.get()
@@ -92,6 +90,7 @@ class FrontEnd():
             cv2.putText(self.tello.img, "pitch : {}"  .format(self.tello.get_pitch()) , (100, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)        
             cv2.putText(self.tello.img, "yaw : {}"  .format(self.tello.get_yaw()) , (200, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             
+            self.tello.getKeyboardInput()
             self.update_display()
 
             # cv2.imshow("Drone Control Centre1", self.tello.img)

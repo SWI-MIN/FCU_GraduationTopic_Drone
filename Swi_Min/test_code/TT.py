@@ -1,22 +1,12 @@
-class PID(object):
-    def __init__(self, kp, ki, kd):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.error_int = 0
-        self.error_prev = None
+import math 
 
-    def control(self, error):
-        self.error_int += error
-        if self.error_prev is None:
-            self.error_prev = error
-        error_deriv = error - self.error_prev
-        self.error_prev = error
-        return self.kp*error + self.ki*self.error_int + self.kd*error_deriv
+x = 50
+y = 50
 
-    def reset(self):
-        self.error_prev = None
-        self.error_int = 0
+opposite_angle = round(math.degrees(math.asin(x/(x**2+y**2)**0.5)),2)
 
-pid = PID(0.1, 0.00001, 0.0001)
-
+z = x/(x**2+y**2)**0.5
+print(z)
+a = math.asin(z)
+print(a)
+print(round(math.degrees(a),2))
