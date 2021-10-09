@@ -54,7 +54,7 @@ class Camera():
         frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
         x,y,w,h = roi
         frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
-        
+    
 
         # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -212,23 +212,27 @@ class Camera():
             elif tvecs_Y < 0:
                 directions[2] += adjust_speed * 2          # 飛機位置太高，往下(-)
             # 左右對準maeker
-            if angle_dif > 0:
-                directions[3] -= adjust_speed * 2           # 無人機太靠右，左轉(-)
-            elif angle_dif < 0:
-                directions[3] += adjust_speed * 2           # 無人機太靠左，右轉(+)
+            # if angle_dif > 0:
+            #     directions[3] -= adjust_speed * 2           # 無人機太靠右，左轉(-)
+            # elif angle_dif < 0:
+            #     directions[3] += adjust_speed * 2           # 無人機太靠左，右轉(+)
+            if tvecs_X > 0:
+                directions[3] += adjust_speed * 2           # 無人機太靠右，左轉(-)
+            elif tvecs_X < 0:
+                directions[3] -= adjust_speed * 2           # 無人機太靠左，右轉(+)
 
-            if tvecs_Y < 10 and tvecs_Y > -5 and angle_dif < 5 and angle_dif > -5:
-                # 做其他方向
-                if distance > 120:
-                    # 向前
-                    directions[0]
-                elif distance < 100:
-                    # 向後
-                    directions[0]
-                if tvecs_X > 0:
-                    directions[1]
-                elif tvecs_X < 0:
-                    directions[1]
+            # if tvecs_Y < 10 and tvecs_Y > -5 and angle_dif < 5 and angle_dif > -5:
+            #     # 做其他方向
+            #     if distance > 120:
+            #         # 向前
+            #         directions[0]
+            #     elif distance < 100:
+            #         # 向後
+            #         directions[0]
+            #     if tvecs_X > 0:
+            #         directions[1]
+            #     elif tvecs_X < 0:
+            #         directions[1]
 
             self.marker_act_queue.put(directions)
 
