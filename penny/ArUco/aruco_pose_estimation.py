@@ -19,7 +19,7 @@ from djitellopy import Tello
 
 
 #--- Define Tag
-id_to_find  = 1
+id_to_find  = 6
 marker_size  = 10 #- [cm]
 
 #------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ R_flip[2,2] =-1.0
 
 #--- Define the aruco dictionary
 # aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
-aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+aruco_dict  = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_100)
 parameters  = cv2.aruco.DetectorParameters_create()
 
 #-- Font for the text in the image

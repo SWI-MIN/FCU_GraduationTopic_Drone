@@ -179,18 +179,15 @@ class ControlTello(Tello):
         elif self.getKey("a"): self.yv = -self.speed
 
         if self.getKey("1"):
+            self.lr = 30
+            self.fb = 60
+        elif self.getKey("2"):
             self.lr = 40
-            self.fb = 40
-            self.yv = -20
-
-        if self.getKey("2"):
-            self.yv = 20
+            self.fb = 80
         elif self.getKey("3"):
-            self.yv = 30
-        elif self.getKey("4"):
-            self.yv = 40
-        elif self.getKey("6"):
-            self.yv = 60
+            self.lr = 50
+            self.fb = 90
+        
             
 
         self.print_info()
