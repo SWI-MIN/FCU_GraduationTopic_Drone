@@ -46,8 +46,8 @@ class Camera():
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
             calib_path  = ".\\Camera_Correction\\"
-            self.cam_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
-            self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
+            self.cam_matrix   = np.loadtxt(calib_path+'cameraMatrix_cal4.txt', delimiter=',')   
+            self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion_cal4.txt', delimiter=',')   
         
         # 校正失真，去除失真的部分並將畫面進行校正
         h, w = frame.shape[:2]
