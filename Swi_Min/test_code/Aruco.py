@@ -188,9 +188,11 @@ class Camera():
         else:
             return None
 
+        # 如果導航開啟，並且act_record為空，左右尋找
+
 
     def navigation(self, main_marker_attitude, id_list, tvecs):
-        directions = np.array([0, 0, 0, 0]) # 前後、左右、高低、轉向
+        directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
         adjust_speed = 5
 
         distance = main_marker_attitude[0][1] # 距離
@@ -211,31 +213,34 @@ class Camera():
                 directions[2] -= adjust_speed * 2           # 飛機位置太低，往上(+)
             elif tvecs_Y < 0:
                 directions[2] += adjust_speed * 2          # 飛機位置太高，往下(-)
-            # 左右對準maeker
-            # if angle_dif > 0:
-            #     directions[3] -= adjust_speed * 2           # 無人機太靠右，左轉(-)
-            # elif angle_dif < 0:
-            #     directions[3] += adjust_speed * 2           # 無人機太靠左，右轉(+)
             if tvecs_X > 0:
                 directions[3] += adjust_speed * 2           # 無人機太靠右，左轉(-)
             elif tvecs_X < 0:
                 directions[3] -= adjust_speed * 2           # 無人機太靠左，右轉(+)
+            if tvecs_Z > 100:
+                directions[1] += adjust_speed * 2           # 向前(+)
+            elif tvecs_Z < 100:
+                directions[1] -= adjust_speed * 2           # 向後(-)
+            
 
-            # if tvecs_Y < 10 and tvecs_Y > -5 and angle_dif < 5 and angle_dif > -5:
-            #     # 做其他方向
-            #     if distance > 120:
-            #         # 向前
-            #         directions[0]
-            #     elif distance < 100:
-            #         # 向後
-            #         directions[0]
-            #     if tvecs_X > 0:
-            #         directions[1]
-            #     elif tvecs_X < 0:
-            #         directions[1]
+            if tvecs_X < 5 and tvecs_X > -5:  
+                if euler_Y > 10:
+                    directions[0] += adjust_speed * 2  # 向右(+)
+                elif euler_Y < -10:
+                    directions[0] -= adjust_speed * 2   # 向左(-)
 
-            self.marker_act_queue.put(directions)
+            if tvecs_Y > -5 and tvecs_Y < 10 and tvecs_X > -5 and tvecs_X < 5 and tvecs_Z > 90 and tvecs_Z < 110 and euler_Y < 10 and euler_Y > -10:
+                self.adjust_flag = True
 
+
+        else:
+            directions = np.array(self.main_marker_act)
+            
+            print("我調整完了~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            
+
+        self.marker_act_queue.put(directions)
+        self.act_record.replace_act(directions)
 
             # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
             # if np.all(directions == 0):
