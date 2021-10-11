@@ -46,16 +46,20 @@ class Camera():
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
             calib_path  = ".\\Camera_Correction\\"
-            self.cam_matrix   = np.loadtxt(calib_path+'cameraMatrix_cal4.txt', delimiter=',')   
-            self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion_cal4.txt', delimiter=',')   
+            self.cam_matrix   = np.loadtxt(calib_path+'cameraMatrix.txt', delimiter=',')   
+            self.cam_distortion   = np.loadtxt(calib_path+'cameraDistortion.txt', delimiter=',')   
         
         # 校正失真，去除失真的部分並將畫面進行校正
         h, w = frame.shape[:2]
         newcameramtx, roi=cv2.getOptimalNewCameraMatrix(self.cam_matrix,self.cam_distortion,(w,h),1,(w,h))
-        frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
-        x,y,w,h = roi
-        frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
+        # frame = cv2.undistort(frame, self.cam_matrix, self.cam_distortion, None, newcameramtx)        # 校正失真
+        # x,y,w,h = roi
+        # frame = frame[y:y+h, x:x+w]# 去除失真的部分並將畫面進行校正
         
+        mapx, mapy = cv2.initUndistortRectifyMap(self.cam_matrix, self.cam_distortion, None, newcameramtx, (w, h), 5)
+        dst = cv2.remap(frame, mapx, mapy, cv2.INTER_LINEAR)
+        x, y, w, h = roi
+        frame = frame[y:y+h, x:x+w]
 
         # 換成黑白，並取得 id & corners
         gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

@@ -32,7 +32,7 @@ for fname in images:
 
         obj_points.append(objp)
 
-        corners2 = cv2.cornerSubPix(gray, corners, (5, 5), (-1, -1), criteria)  # 在原角点的基础上寻找亚像素角点
+        corners2 = cv2.cornerSubPix(gray, corners, (11,11), (-1, -1), criteria)  # 在原角点的基础上寻找亚像素角点
         #print(corners2)
         if [corners2]:
             img_points.append(corners2)
