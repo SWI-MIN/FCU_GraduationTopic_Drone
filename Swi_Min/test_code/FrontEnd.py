@@ -87,6 +87,8 @@ class FrontEnd():
                 
                 if directions[3] == -1:  # 當最後一個值為-1代表降落，因此在實作中要避開-1
                     self.tello.land()
+                    self.navigation_start.clear()
+                    self.aruco.reset()
                 else:
                     if abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) != 0:
                         self.isZero = False

@@ -41,7 +41,7 @@ class Camera():
         self.act_direction = act_record(5, 1)  # 紀錄動作方向，當相反的動作不足以找回main marker 時轉向之用
 
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
-        self.act_time = 0   # 給飛機做標籤動作的時間
+
         # self.tvecfile = open("tvecfile.txt", "w")
 
         # 取得自己定義的marker，以及參考動作
@@ -263,35 +263,10 @@ class Camera():
             if self.have_new_marker.is_set():
                 self.adjust_flag = False
                 self.find_new_marker = True
-                self.have_new_marker.clear()
 
         self.marker_act_queue.put(directions)
         self.act_record.replace_act(directions)
 
-            # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            # if np.all(directions == 0):
-            #     self.adjust_flag = True
-            # # 裡面有東西不等於0的時候, 需要調整
-            # else : 
-            #     self.marker_act_queue.put(directions)
-            #     self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
-
-            # self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
-
-        # 調整完畢，做標籤動作
-        # else:
-        #     # self.marker_act_queue.put(self.main_marker_act)
-        #     # self.act_record.replace_act(self.main_marker_act)   # 對飛機的做紀錄，當 marker 不見時反向執行
-
-        #     test_act = [0, 0, 0, 40]
-        #     self.marker_act_queue.put(test_act)
-        #     self.act_record.replace_act(test_act)
-
-        #     # 此處可能會有 put 多次的問題++++++++++++++++++++++++++++
-        #     # 給予標籤 2s 時間做動作
-        #     if time.time() - self.act_time >= 10: 
-        #         self.adjust_flag = False
-        #         self.find_new_marker = True
 
         self.lost_time = time.time()  # 每次進來都會更新lost_time，當進不來的時候就相當於計時
 
