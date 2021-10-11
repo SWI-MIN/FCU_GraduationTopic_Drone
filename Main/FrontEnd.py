@@ -40,6 +40,8 @@ class FrontEnd():
         self.marker_act_queue = queue.Queue()
         self.aruco = Camera(self.navigation_start, self.marker_act_queue)
 
+        self.isZero = False
+
     def update_display(self):
         if (self.tello.img.shape[1] != self.tello.width) or (self.tello.img.shape[0] != self.tello.height):
                 self.screen=pygame.display.set_mode((self.tello.img.shape[1], self.tello.img.shape[0]))
@@ -62,14 +64,8 @@ class FrontEnd():
             self.tello.tello_info = np.zeros((720, 480, 3), dtype=np.uint8) # 高 * 寬
 
             self.tello.img = self.aruco.aruco(self.tello.img)
-            if not self.marker_act_queue.empty():
-                directions = self.marker_act_queue.get()
-                self.tello.updateMarkerAct(directions)
             
-            self.tello.getKeyboardInput()
-
-            # 我認為需要做強制接管的程式，以防巡航時出問題
-            # 目前是覺得可以設置一個狀態,當導航開始的時候需要將其設定為某一狀態，當我按下操作飛機的任意按鍵時必須轉換狀態，令導航功能暫停執行
+            # 導航開以及離開程式
             if not self.control_queue.empty():
                 control = self.control_queue.get()
                 if control == "n":
@@ -80,14 +76,29 @@ class FrontEnd():
                     pygame.quit()
                     sys.exit("Quit")
                     
-            # 飛機如果在導航時要判斷是否要接管飛機
-            if self.navigation_start.is_set():
-                if self.take_over.is_set():
-                    self.navigation_start.clear()
-                    self.aruco.reset()
-                else:
-                    pass
+            # 導航關，飛機如果在導航時要判斷是否要接管飛機
+            if self.navigation_start.is_set() and self.take_over.is_set():
+                self.navigation_start.clear()
+                self.aruco.reset()
 
+            # 導航動作
+            if self.navigation_start.is_set() and not self.marker_act_queue.empty():  # 無人機導航開啟並且動作queue不為空
+                directions = self.marker_act_queue.get()
+                # self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+                # self.tello.updateAct(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+                if abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) != 0:
+                    self.isZero = False
+                    self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+                elif abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) == 0 and self.isZero == False:
+                    self.isZero = True
+                    self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+
+            # 無人機本身的姿態roll、pitch、yaw ，yaw正北為0
+            cv2.putText(self.tello.img, "roll : {}"  .format(self.tello.get_roll()) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            cv2.putText(self.tello.img, "pitch : {}"  .format(self.tello.get_pitch()) , (100, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)        
+            cv2.putText(self.tello.img, "yaw : {}"  .format(self.tello.get_yaw()) , (200, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            
+            self.tello.getKeyboardInput()
             self.update_display()
 
             # cv2.imshow("Drone Control Centre1", self.tello.img)

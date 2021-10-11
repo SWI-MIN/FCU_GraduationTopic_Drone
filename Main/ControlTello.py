@@ -32,6 +32,7 @@ class ControlTello(Tello):
         self.img = None
         self.tello_info = np.zeros((720, 960, 3), dtype=np.uint8)
         self.video_On = False 
+        self.isZero = False
 
         # 與 FrontEnd 之間通訊與傳值
         self.control_queue = control_queue
@@ -128,15 +129,9 @@ class ControlTello(Tello):
             if self.video_On:
                 self.video_On = False
             self.end()
-            # print("++++++++++++++++++++++")
-            # if self.is_flying:
-            #     self.land()
-            # if self.stream_on:
-            #     self.streamoff()
             self.control_queue.put("q")
             return
             
-
         if self.getKey("c"): 
             cv2.imwrite(".//Picture//capture-{}.jpg".format(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())),self.img)
 
@@ -180,13 +175,16 @@ class ControlTello(Tello):
 
         self.print_info()
 
-        self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+        self.updateAct()
+        
 
-    def updateMarkerAct(self, directions):
-        # 用來接收標籤調整, 標籤動作
-        # 接收傳送ok，因為還沒寫結束調整的條件，所以還沒飛
-        # 可能改成收queue
-        self.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+    def updateAct(self):
+        if abs(self.lr) + abs(self.fb) + abs(self.ud) + abs(self.yv) != 0:
+            self.isZero = False
+            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
+        elif abs(self.lr) + abs(self.fb) + abs(self.ud) + abs(self.yv) == 0 and self.isZero == False:
+            self.isZero = True
+            self.send_rc_control(self.lr, self.fb, self.ud, self.yv)
 
 
 if __name__ == '__main__':
