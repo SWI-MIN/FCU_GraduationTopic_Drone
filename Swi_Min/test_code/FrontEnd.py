@@ -84,19 +84,16 @@ class FrontEnd():
             # 導航動作
             if self.navigation_start.is_set() and not self.marker_act_queue.empty():  # 無人機導航開啟並且動作queue不為空
                 directions = self.marker_act_queue.get()
-                # self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
-                # self.tello.updateAct(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
-                if abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) != 0:
-                    self.isZero = False
-                    self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
-                elif abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) == 0 and self.isZero == False:
-                    self.isZero = True
-                    self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
-
-            # 無人機本身的姿態roll、pitch、yaw ，yaw正北為0
-            cv2.putText(self.tello.img, "roll : {}"  .format(self.tello.get_roll()) , (10, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-            cv2.putText(self.tello.img, "pitch : {}"  .format(self.tello.get_pitch()) , (100, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)        
-            cv2.putText(self.tello.img, "yaw : {}"  .format(self.tello.get_yaw()) , (200, (380)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                
+                if directions[3] == -1:  # 當最後一個值為-1代表降落，因此在實作中要避開-1
+                    self.tello.land()
+                else:
+                    if abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) != 0:
+                        self.isZero = False
+                        self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
+                    elif abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) == 0 and self.isZero == False:
+                        self.isZero = True
+                        self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
             
             self.tello.getKeyboardInput()
             self.update_display()
