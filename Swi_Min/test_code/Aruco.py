@@ -226,11 +226,11 @@ class Camera():
                     direction = self.act_direction.get_value()
                     act_direction *= direction
 
-            # 如果方向為正，表示上方做尋找動作時，最近5筆資料傾向於向右尋找，方向為負則反之
-            if act_direction > 0:
-                self.marker_act_queue.put([0, 0, 0, 10])
-            elif act_direction < 0:    
-                self.marker_act_queue.put([0, 0, 0, -10])
+                # 如果方向為正，表示上方做尋找動作時，最近5筆資料傾向於向右尋找，方向為負則反之
+                if act_direction > 0:
+                    self.marker_act_queue.put([0, 0, 0, 10])
+                elif act_direction < 0:    
+                    self.marker_act_queue.put([0, 0, 0, -10])
         
 
 
