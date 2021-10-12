@@ -156,8 +156,8 @@ class Camera():
                 cv2.putText(frame, " tvecs_Z : {:.2f}cm " .format(tvecs_Z) , (460, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
                 cv2.putText(frame, " find_new_marker : {} " .format(self.find_new_marker) , (10, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " main_marker : {} " .format(self.main_marker) , (250, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (310, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, " main_marker : {} " .format(self.main_marker) , (225, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (400, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
       
 
                 # 判斷是否需要找新 marker， 不找就畫黃色標示線，並且做動作
