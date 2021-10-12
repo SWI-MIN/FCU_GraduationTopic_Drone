@@ -11,11 +11,22 @@ import math
 # print(a)
 # print(round(math.degrees(a),2))
 
-a = 1
-b = 2
-c = 3
-d = 4
-e = 5
-e%2
 
-print(d%2)
+import numpy as np
+
+a = set(np.random.randint(10, size=5))
+print(a)
+# b = set(np.random.randint(50, size = 10))
+# print(b)
+# a = [1, 2, 3, 4, 5, 1, 2]
+# a = set(a)
+b = [5]
+b = set(b)
+c = b & (a ^ b)
+print(c)
+print(len(c))
+
+if len(c) != 0:
+    print("have something")
+else:
+    print("沒咚咚")

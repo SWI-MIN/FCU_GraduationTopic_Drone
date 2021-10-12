@@ -101,10 +101,18 @@ class Camera():
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
 
             #####################################################################
+            # 感覺這裡這樣寫190好像就沒用了
+
             # 比較 現有 id 與usedid ，確認當前獨到的id中是否有沒用過的
             # 當有尚未使用的id時 self.have_new_marker.is_set()
             # 當沒有尚未使用的id時 clear 
-
+            used_id = set(self.used_marker)           # 已經用過的id
+            now_id = set(id_list)                     # 現在看到的id
+            new_id = now_id & (used_id ^ now_id)      # 算完後還在的表示為新的沒用過的id
+            if len(new_id) != 0:                      # 長度大於0，表示有沒用過的id
+                self.have_new_marker.is_set()         # 設定為 is_set()，當為這個狀態時表示無人機可以切換狀態找新的marker
+            else:
+                self.have_new_marker.clear()
             ######################################################################
 
             for i in range(0, ids.size):
@@ -173,11 +181,6 @@ class Camera():
                     
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
-                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
-                    if self.main_marker_act[3] > 0:
-                        self.marker_act_queue.put([0, 0, 0, 10])
-                    elif self.main_marker_act[3] < 0 and self.main_marker_act[3] != -1:    
-                        self.marker_act_queue.put([0, 0, 0, -10])
                     # 取得非main marker 中最近的一個，並且不能用過
                     for i in range(0, ids.size):
                         new_marker = int(sort_id[i][0])
@@ -186,6 +189,11 @@ class Camera():
                             self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
                             self.find_new_marker = False
                             break
+                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
+                    if self.main_marker_act[3] > 0:
+                        self.marker_act_queue.put([0, 0, 0, 10])
+                    elif self.main_marker_act[3] < 0 and self.main_marker_act[3] != -1:    
+                        self.marker_act_queue.put([0, 0, 0, -10])
             
         else:
             ### No id found
@@ -259,7 +267,6 @@ class Camera():
         else:
             # 目前想到可以用一個開關進行設定，當畫面中有其他的未使用過的marker的時候就將切換狀態開啟，若是沒有其他未使用過的 marker 則持續做當前marker動作
             directions = np.array(self.main_marker_act)
-            print("我調整完了~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             if self.have_new_marker.is_set():
                 self.adjust_flag = False
                 self.find_new_marker = True
