@@ -130,34 +130,7 @@ class Camera():
                     self.main_marker = int(sort_id[0][0])
                     self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
 
-                # 標記 main_marker 在 id_list 的位置
-                id_index = id_list.index(self.main_marker)
-               
-                R_ct    = np.matrix(cv2.Rodrigues(rvecs[id_index][0])[0])
-                R_tc    = R_ct.T
-                # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
-                roll_marker, pitch_marker, yaw_marker = Conversion.rotationMatrixToEulerAngles(self.R_flip*R_tc)
-                # 弧度傳換成角度，並存入 sort_id
-                euler_X = math.degrees(roll_marker)
-                euler_Y = math.degrees(pitch_marker)
-                euler_Z = math.degrees(yaw_marker)
-                tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
-                tvecs_Y = int(tvecs[id_index][0][1] * 100)
-                tvecs_Z = int(tvecs[id_index][0][2] * 100)
-                cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[i][0])), sort_id[i][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
-
-                cv2.putText(frame, " euler_X : {:.2f}   "   .format(euler_X) , (100, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " euler_Y : {:.2f}   "   .format(euler_Y) , (280, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " euler_Z : {:.2f}   "   .format(euler_Z) , (460, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
-                cv2.putText(frame, " tvecs_X : {:.2f}cm " .format(tvecs_X) , (100, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " tvecs_Y : {:.2f}cm " .format(tvecs_Y) , (280, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " tvecs_Z : {:.2f}cm " .format(tvecs_Z) , (460, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
-                cv2.putText(frame, " find_new_marker : {} " .format(self.find_new_marker) , (10, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " main_marker : {} " .format(self.main_marker) , (225, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (400, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                
       
 
                 # 判斷是否需要找新 marker， 不找就畫黃色標示線，並且做動作
@@ -171,10 +144,36 @@ class Camera():
                     
                     else:
                         # 畫線
+                        id_index = id_list.index(self.main_marker)   # 標記 main_marker 在 id_list 的位置
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
+                    
+                        R_ct    = np.matrix(cv2.Rodrigues(rvecs[id_index][0])[0])
+                        R_tc    = R_ct.T
+                        # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
+                        roll_marker, pitch_marker, yaw_marker = Conversion.rotationMatrixToEulerAngles(self.R_flip*R_tc)
+                        # 弧度傳換成角度，並存入 sort_id
+                        euler_X = math.degrees(roll_marker)
+                        euler_Y = math.degrees(pitch_marker)
+                        euler_Z = math.degrees(yaw_marker)
+                        tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
+                        tvecs_Y = int(tvecs[id_index][0][1] * 100)
+                        tvecs_Z = int(tvecs[id_index][0][2] * 100)
+                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[i][0])), sort_id[i][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
+                        cv2.putText(frame, " euler_X : {:.2f}   "   .format(euler_X) , (100, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " euler_Y : {:.2f}   "   .format(euler_Y) , (280, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " euler_Z : {:.2f}   "   .format(euler_Z) , (460, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        cv2.putText(frame, " tvecs_X : {:.2f}cm " .format(tvecs_X) , (100, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " tvecs_Y : {:.2f}cm " .format(tvecs_Y) , (280, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " tvecs_Z : {:.2f}cm " .format(tvecs_Z) , (460, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        cv2.putText(frame, " find_new_marker : {} " .format(self.find_new_marker) , (10, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " main_marker : {} " .format(self.main_marker) , (225, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (400, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        
                         # 取出 sort_id 中 屬於 main_marker 的那一列，並傳入navigation
                         # main_marker_attitude = np.where(sort_id[:,0] == self.main_marker)
                         self.navigation(euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
