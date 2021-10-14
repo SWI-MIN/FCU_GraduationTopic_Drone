@@ -100,20 +100,7 @@ class Camera():
             # 將 sort_id 距離 由短到近優先，id 由小到大次之排序
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
 
-            #####################################################################
-            # 感覺這裡這樣寫192好像就沒用了
-
-            # 比較 現有 id 與usedid ，確認當前獨到的id中是否有沒用過的
-            # 當有尚未使用的id時 self.have_new_marker.is_set()
-            # 當沒有尚未使用的id時 clear 
-            used_id = set(self.used_marker)           # 已經用過的id
-            now_id = set(id_list)                     # 現在看到的id
-            new_id = now_id & (used_id ^ now_id)      # 算完後還在的表示為新的沒用過的id
-            if len(new_id) != 0:                      # 長度大於0，表示有沒用過的id
-                self.have_new_marker.is_set()         # 設定為 is_set()，當為這個狀態時表示無人機可以切換狀態找新的marker
-            else:
-                self.have_new_marker.clear()
-            ######################################################################
+            
 
             for i in range(0, ids.size):
                 cv2.putText(frame, str(int(sort_id[i][0]))               , (10, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -129,7 +116,32 @@ class Camera():
                 else:
                     self.main_marker = int(sort_id[0][0])
                     self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
+                #####################################################################
+                # 感覺這裡這樣寫192好像就沒用了
 
+                # 比較 現有 id 與usedid ，確認當前獨到的id中是否有沒用過的
+                # 當有尚未使用的id時 self.have_new_marker.is_set()
+                # 當沒有尚未使用的id時 clear 
+
+                used_id = set(self.used_marker)           # 已經用過的id
+                now_id = set(id_list)                     # 現在看到的id
+                new_id = now_id & (used_id ^ now_id)      # 算完後還在的表示為新的沒用過的id
+
+                if len(new_id) > 0:                      # 長度大於0，表示有沒用過的id
+                    for i in range(0, ids.size):
+                        if sort_id[i][0] in new_id:
+                            next_id = sort_id[i][0]
+                            break
+                    main_index = id_list.index(self.main_marker)
+                    main_tvecs_X = int(tvecs[main_index][0][0] * 100)
+                    next_index =id_list.index(next_id)
+                    next_tvecs_X = int(tvecs[next_index][0][0] * 100)
+
+                    if abs(main_tvecs_X) > abs(next_tvecs_X):
+                        self.have_new_marker.set()         # 設定為 is_set()，當為這個狀態時表示無人機可以切換狀態找新的marker
+                else:
+                    self.have_new_marker.clear()
+                ######################################################################
                 
       
 
@@ -160,7 +172,7 @@ class Camera():
                         tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
                         tvecs_Y = int(tvecs[id_index][0][1] * 100)
                         tvecs_Z = int(tvecs[id_index][0][2] * 100)
-                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[i][0])), sort_id[i][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[0][0])), sort_id[0][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
                         cv2.putText(frame, " euler_X : {:.2f}   "   .format(euler_X) , (100, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         cv2.putText(frame, " euler_Y : {:.2f}   "   .format(euler_Y) , (280, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
