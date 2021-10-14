@@ -33,34 +33,7 @@ def rotationMatrixToEulerAngles(R):
 #     r = Rotation.from_rotvec(rvec)
 #     return r.as_euler('xyz')
 
-# 計算合適的Speed倍率
-def speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y):
-    speed_adjust = [0, 0, 0, 0]
-    speed_adjust[0] = abs(tvecs_X) / 10 
-    speed_adjust[1] = abs(tvecs_Y) / 5
-    speed_adjust[2] = abs(tvecs_Z-100) / 10 
-    speed_adjust[3] = abs(euler_Y) / 5 
 
-    if(speed_adjust[0] >= 10):
-        speed_adjust[0] = 10
-
-    if(speed_adjust[1] >= 5):
-        speed_adjust[1] = 5
-
-    if(speed_adjust[2] >= 10):
-        speed_adjust[2] = 10
-
-    if(speed_adjust[3] >= 5):
-        speed_adjust[3] = 5
-
-    for i in range(4):
-        if(speed_adjust[i] < 1):
-            speed_adjust[i] = 1
-
-    return np.array(speed_adjust)
-
-a = speed_test(108, 51, 205, 27)
-print(a)
 
 
 

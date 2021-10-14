@@ -31,10 +31,15 @@ import numpy as np
 # else:
 #     print("沒咚咚")
 
-sort_id = [4, 6, 5]
-new_id = [5, 6]
-for i in range(3):
-    if sort_id[i] in new_id:
-        next_id = sort_id[i]
-        break
-print(next_id)
+# sort_id = [4, 6, 5]
+# new_id = [5, 6]
+# for i in range(3):
+#     if sort_id[i] in new_id:
+#         next_id = sort_id[i]
+#         break
+# print(next_id)
+main_marker = 1
+sort = np.array([[2. ,  158.59586556],[1. , 165.28353247]])
+main_dist = np.where(sort[:,0] == main_marker)
+sort[main_dist]
+print(str(int(sort[main_dist][0][0])), sort[main_dist][0][1])

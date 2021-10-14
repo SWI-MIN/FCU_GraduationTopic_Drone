@@ -127,8 +127,9 @@ class Camera():
                 now_id = set(id_list)                     # 現在看到的id
                 new_id = now_id & (used_id ^ now_id)      # 算完後還在的表示為新的沒用過的id
 
-                if len(new_id) > 0:                      # 長度大於0，表示有沒用過的id
-                    for i in range(0, ids.size):
+                self.have_new_marker.clear()
+                if len(new_id) > 0 and self.main_marker in sort_id[0:,0:1]:  # 長度大於0，表示擁有沒用過的id，並且在main marker沒有丟失
+                    for i in range(0, ids.size):          # 在現在讀到的marker中，選出是new_id且距離最近的
                         if sort_id[i][0] in new_id:
                             next_id = sort_id[i][0]
                             break
@@ -139,8 +140,7 @@ class Camera():
 
                     if abs(main_tvecs_X) > abs(next_tvecs_X):
                         self.have_new_marker.set()         # 設定為 is_set()，當為這個狀態時表示無人機可以切換狀態找新的marker
-                else:
-                    self.have_new_marker.clear()
+                    
                 ######################################################################
                 
       
@@ -172,7 +172,9 @@ class Camera():
                         tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
                         tvecs_Y = int(tvecs[id_index][0][1] * 100)
                         tvecs_Z = int(tvecs[id_index][0][2] * 100)
-                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[0][0])), sort_id[0][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        main_dist = np.where(sort_id[:,0] == self.main_marker)
+                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[main_dist][0][0])), sort_id[main_dist][0][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
                         cv2.putText(frame, " euler_X : {:.2f}   "   .format(euler_X) , (100, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         cv2.putText(frame, " euler_Y : {:.2f}   "   .format(euler_Y) , (280, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -187,7 +189,7 @@ class Camera():
                         cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (400, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         
                         # 取出 sort_id 中 屬於 main_marker 的那一列，並傳入navigation
-                        # main_marker_attitude = np.where(sort_id[:,0] == self.main_marker)
+                        
                         self.navigation(euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
                     
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
@@ -246,30 +248,31 @@ class Camera():
 
 
     def navigation(self, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
+        t_X, t_Y, t_Z, eu_Y = Conversion.speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
         directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
         adjust_speed = 5
 
         if not self.adjust_flag:
             # 上下對準maeker
             if tvecs_Y > 0:      # 垂直上下 (X軸) 
-                directions[2] -= adjust_speed * 2           # 飛機位置太低，往上(+)
+                directions[2] -= adjust_speed * t_Y           # 飛機位置太低，往上(+)
             elif tvecs_Y < 0:
-                directions[2] += adjust_speed * 2          # 飛機位置太高，往下(-)
+                directions[2] += adjust_speed * t_Y          # 飛機位置太高，往下(-)
             if tvecs_X > 0:
-                directions[3] += adjust_speed * 2           # 無人機太靠右，左轉(-)
+                directions[3] += adjust_speed * t_X           # 無人機太靠右，左轉(-)
             elif tvecs_X < 0:
-                directions[3] -= adjust_speed * 2           # 無人機太靠左，右轉(+)
+                directions[3] -= adjust_speed * t_X           # 無人機太靠左，右轉(+)
             if tvecs_Z > 100:
-                directions[1] += adjust_speed * 2           # 向前(+)
+                directions[1] += adjust_speed * t_Z           # 向前(+)
             elif tvecs_Z < 100:
-                directions[1] -= adjust_speed * 2           # 向後(-)
+                directions[1] -= adjust_speed * t_Z           # 向後(-)
             
 
             if tvecs_X < 5 and tvecs_X > -5:  
                 if euler_Y > 10:
-                    directions[0] += adjust_speed * 2  # 向右(+)
+                    directions[0] += adjust_speed * eu_Y  # 向右(+)
                 elif euler_Y < -10:
-                    directions[0] -= adjust_speed * 2   # 向左(-)
+                    directions[0] -= adjust_speed * eu_Y   # 向左(-)
 
             if tvecs_Y > -5 and tvecs_Y < 10 and tvecs_X > -5 and tvecs_X < 5 and tvecs_Z > 90 and tvecs_Z < 110 and euler_Y < 10 and euler_Y > -10:
                 self.adjust_flag = True
@@ -278,7 +281,7 @@ class Camera():
         else:
             # 目前想到可以用一個開關進行設定，當畫面中有其他的未使用過的marker的時候就將切換狀態開啟，若是沒有其他未使用過的 marker 則持續做當前marker動作
             directions = np.array(self.main_marker_act)
-            # print(directions, "++++++++++++++++++++++++++++++++++++++++++++")
+            print(directions, "++++++++++++++++++++++++++++++++++++++++++++")
             if self.have_new_marker.is_set():
                 self.adjust_flag = False
                 self.find_new_marker = True
