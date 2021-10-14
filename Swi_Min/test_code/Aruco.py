@@ -267,6 +267,7 @@ class Camera():
         else:
             # 目前想到可以用一個開關進行設定，當畫面中有其他的未使用過的marker的時候就將切換狀態開啟，若是沒有其他未使用過的 marker 則持續做當前marker動作
             directions = np.array(self.main_marker_act)
+            # print(directions, "++++++++++++++++++++++++++++++++++++++++++++")
             if self.have_new_marker.is_set():
                 self.adjust_flag = False
                 self.find_new_marker = True
@@ -286,6 +287,7 @@ class Camera():
         self.used_marker = [] # 存放用過的marker
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
         self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.act_direction = act_record(5, 1)
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
         # self.tvecfile.close()
         
@@ -339,10 +341,10 @@ class MarkerDefine():
                 'Origin':                np.array([[0., 0., 0, 0.]]),            # 0
                 'Right sideways':        np.array([[20., 0., 0, 0.]]),           # 1 - 5 
                 'Left sideways':         np.array([[-20., 0., 0, 0.]]),          # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., 0, -10.]]),          # 11 - 15 
-                'Rotate right corner 2': np.array([[0., 0., 0, -20.]]),          # 16 - 20 
-                'Rotate left corner 1':  np.array([[0., 0., 0, 10.]]),           # 21 - 25 
-                'Rotate left corner 2':  np.array([[0., 0., 0, 20.]]),           # 26 - 30
+                'Rotate right corner 1': np.array([[0., 0., 0, 10.]]),          # 11 - 15 
+                'Rotate right corner 2': np.array([[0., 0., 0, 20.]]),          # 16 - 20 
+                'Rotate left corner 1':  np.array([[0., 0., 0, -10.]]),           # 21 - 25 
+                'Rotate left corner 2':  np.array([[0., 0., 0, -20.]]),           # 26 - 30
                 'Forward':               np.array([[0., 10., 0, 0.]]),           # 31 - 35 ; 72
                 'Backward':              np.array([[0., -10., 0, 0.]]),          # 36 - 40
                 'Up':                    np.array([[0., 0., 10, 0.]]),           # 41 - 45
