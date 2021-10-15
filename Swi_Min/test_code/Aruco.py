@@ -9,7 +9,6 @@ import Conversion
 import queue
 import threading
 
-# self.angles_tof = [pitch, roll, yaw, tof]
 class Camera():
     def __init__(self, navigation_start, marker_act_queue) -> None:
         self.cam_matrix = None
@@ -394,3 +393,9 @@ if __name__ == '__main__':
     main()
 else:
     pass
+
+
+
+# 做出ㄈ字形的飛行路徑，了解 marker 3  軸的演算法 
+# 
+# 具姿態估計與連續目標切換功能之無人機導航系統
