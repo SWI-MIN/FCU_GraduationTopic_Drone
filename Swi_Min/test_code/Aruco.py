@@ -36,8 +36,8 @@ class Camera():
         self.used_marker = [] # 存放用過的marker
         self.marker_act_queue = marker_act_queue  # 要飛機執行的動作陣列放進這個queue中
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
-        self.act_record = act_record(10, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的10條動作
-        self.act_direction = act_record(5, 1)  # 紀錄動作方向，當相反的動作不足以找回main marker 時轉向之用
+        self.act_record = act_record(15, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的 15 條動作
+        self.act_direction = act_record(15, 1)  # 紀錄動作方向，當相反的動作不足以找回main marker 時轉向之用
 
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
 
@@ -78,9 +78,9 @@ class Camera():
             for i in range(0, ids.size):
                 cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 0.1)  # Draw axis
                 ''' sort_id : 
-                        |  id1  |  距離  |
-                        |  id2  |  距離  |
-                        |  id3  |  距離  |
+                        |  id1  |  距離  | tvecs_X | tvecs_Y |
+                        |  id2  |  距離  | tvecs_X | tvecs_Y |
+                        |  id3  |  距離  | tvecs_X | tvecs_Y |
                 '''
                 # 將讀到的 marker id 存到 sort_id 中
                 id_list.append(ids[i][0])
@@ -103,7 +103,7 @@ class Camera():
                         self.used_marker.append(self.main_marker)
                 else:
                     self.main_marker = int(sort_id[0][0])
-                    self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
+                    self.main_marker_act = self.markerdefine.changeMarker(int(self.main_marker))[0]
                 
                 #####################################################################                
                 used_id = set(self.used_marker)           # 已經用過的id
@@ -161,11 +161,13 @@ class Camera():
                     # 取得非main marker 中最近的一個，並且不能用過，並且要跟具當前 main_marker 的方向，確認下一個marker的位置，並做限定
                     for i in range(0, ids.size):
                         new_marker = int(sort_id[i][0])
+                        # 當 new_marker 並未使用過。並且當 new_marker 的位置，符合 main_marker 方向，獲得Ture
                         if new_marker not in self.used_marker:
-                            self.main_marker = new_marker
-                            self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
-                            self.find_new_marker = False
-                            break
+                            if self.marker_direction(sort_id, np.where(sort_id[:,0] == new_marker)):
+                                self.main_marker = new_marker
+                                self.main_marker_act = self.markerdefine.changeMarker(int(self.main_marker))[0]
+                                self.find_new_marker = False
+                                break
             
         else:
             ### No id found
@@ -176,6 +178,41 @@ class Camera():
                     self.lost_main_marker()
 
         return frame
+
+    def marker_direction(self, sort_id, new_marker_index):
+        '''
+            因為我們只實作上下左右所以只判斷 3 and 4
+            因為我們動作只會有一個方向array中只會有一個值，所以第一行我用[0]，取出具體index
+            這裡多加 np.array 是擔心型態錯誤，但是理論上 main_marker_act 本來就是 np.array
+        '''
+        act_direction_index = np.where(np.array(self.main_marker_act) != 0)[0][0]
+        marker_direction = self.main_marker_act[act_direction_index]
+
+        n_tvecs_X = sort_id[new_marker_index][0][2] # n_ means new_marker
+        n_tvecs_Y = sort_id[new_marker_index][0][3]
+
+        if act_direction_index == 2:
+            if marker_direction > 0:
+                if abs(n_tvecs_X) < 10 :  # 如果要上下移動時，下一個 marker 的 n_tvecs_X 應該會與 main_marker 非常接近 main_marker，main_marker在調整後 m_tvecs_X 應該為 +-5，做出可接受範圍所以設定10
+                    return True # means up
+            else:
+                if abs(n_tvecs_X) < 10 :
+                    return True # means down
+        elif act_direction_index ==0 or act_direction_index == 3:
+            if marker_direction > 0:
+                if abs(n_tvecs_Y) < 10 :
+                    return True # means right
+            else:
+                if abs(n_tvecs_Y) < 10 :
+                    return True # means lift
+        return False  
+
+    def draw_sortid(self, frame, sort_id, idsize):
+        for i in range(0, idsize):
+            cv2.putText(frame, str(int(sort_id[i][0]))               , (10, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            cv2.putText(frame, "D : {:.2f} cm".format(sort_id[i][1]) , (60, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            cv2.putText(frame, "tvecs_X : {:.2f} cm".format(sort_id[i][1]) , (150, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            cv2.putText(frame, "tvecs_Y : {:.2f} cm".format(sort_id[i][1]) , (300, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
 
     def draw_line(self, frame, id_index, corners, w, h):
         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
@@ -199,7 +236,6 @@ class Camera():
 
         return euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z
 
-
     def draw_info(self, frame, sort_id, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
         main_dist = np.where(sort_id[:,0] == self.main_marker)
         cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[main_dist][0][0])), sort_id[main_dist][0][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
@@ -218,13 +254,6 @@ class Camera():
         
         return frame
 
-    def draw_sortid(self, frame, sort_id, idsize):
-        for i in range(0, idsize):
-            cv2.putText(frame, str(int(sort_id[i][0]))               , (10, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-            cv2.putText(frame, "D : {:.2f} cm".format(sort_id[i][1]) , (60, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-            cv2.putText(frame, "tvecs_X : {:.2f} cm".format(sort_id[i][1]) , (150, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-            cv2.putText(frame, "tvecs_Y : {:.2f} cm".format(sort_id[i][1]) , (300, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
     def lost_main_marker(self):
         self.adjust_flag = False  # 這裡的想法是將狀態改回調整marker ，等調整完後再重新出發
         # 這裡面的轉向都沒有設定回0，可能在某些極端情況下一直轉向(一直找不回main merker)
@@ -233,27 +262,31 @@ class Camera():
             for i in range(4):
                 change_sign[i] = -change_sign[i]
             self.marker_act_queue.put(change_sign)
+            ''' 以下搜尋方式 : (由此至函式結束)
+                    條件 : 當 main marker 丟失，且 act_record 用完且 act_direction 中資料為奇數
+                    作法 : 將所有 act_direction 中的資料取出並決定轉動方向，並持續轉動尋找
 
-        #     if change_sign[3] > 0:
-        #         self.act_direction.replace_act(1)
-        #     elif change_sign[3] < 0:
-        #         self.act_direction.replace_act(-1)
+                    缺陷 : 只能轉動尋找若高低不符，可能無法找回； 挑選此作法的原因 : 
+                            由於轉動相對其他動作而言較可控，若是使用任意方向移動，可能導致無人機撞牆
+            '''
+            if change_sign[3] > 0:
+                self.act_direction.replace_act(1)
+            elif change_sign[3] < 0:
+                self.act_direction.replace_act(-1)
 
-        # else:   # 如果導航開啟，並且act_record為空，左右尋找
-        #     if self.act_direction.act_list.shape[0]-1 >= 0 and self.act_direction.act_list.shape[0] %2 ==1:       # 如果該空間不為空，並且該空間的值為奇數，則返回第一筆###############################################+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        #         act_direction = self.act_direction.get_value()
-        #         while(self.act_direction.act_list.shape[0]-1 >= 0):   # 如果該空間不為空，將剩下的資料都進行返回，並進行相乘
-        #             direction = self.act_direction.get_value()
-        #             act_direction *= direction
+        else:   # 如果導航開啟，並且act_record為空，左右尋找
+            if self.act_direction.act_list.shape[0]-1 >= 0 and self.act_direction.act_list.shape[0] %2 ==1:       # 如果該空間不為空，並且該空間的值為奇數，則返回第一筆
+                act_direction = self.act_direction.get_value()
+                while(self.act_direction.act_list.shape[0]-1 >= 0):   # 如果該空間不為空，將剩下的資料都進行返回，並進行相乘
+                    direction = self.act_direction.get_value()
+                    act_direction *= direction
 
-        #         # 如果方向為正，表示上方做尋找動作時，最近5筆資料傾向於向右尋找，方向為負則反之###############################################+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        #         if act_direction > 0:
-        #             self.marker_act_queue.put([0, 0, 0, 10])
-        #         elif act_direction < 0:    
-        #             self.marker_act_queue.put([0, 0, 0, -10])
+                # 如果方向為正，表示上方做尋找動作時，最近5筆資料傾向於向右尋找，方向為負則反之
+                if act_direction > 0:
+                    self.marker_act_queue.put([0, 0, 0, 10])
+                elif act_direction < 0:    
+                    self.marker_act_queue.put([0, 0, 0, -10])
         
-
-
     def navigation(self, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
         t_X, t_Y, t_Z, eu_Y = Conversion.speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
         directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
@@ -297,7 +330,6 @@ class Camera():
 
 
         self.lost_time = time.time()  # 每次進來都會更新lost_time，當進不來的時候就相當於計時
-
 
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
@@ -347,7 +379,7 @@ class MarkerDefine():
             reader = csv.reader(f, delimiter=';')
             self.marker_nav = list(reader)
 
-    def changeTarget(self, ID):
+    def changeMarker(self, ID):
         selected = 'Origin'
         for i in self.marker_nav:
             if i[0] == str(ID):
