@@ -371,8 +371,6 @@ class act_record():
         self.act_list = np.delete(self.act_list, self.act_list.shape[0]-1, axis = 0)
         return value
 
-# distance from marker in camera Z coordinates
-DIST = 0.9
 class MarkerDefine():
     def __init__(self):
         with open('MarkerAction/marker_conf.csv', 'rt', encoding='utf-8') as f:
@@ -402,7 +400,6 @@ class MarkerDefine():
                 'Land':                  np.array([[0., 0., 0, -1.]])            # 50
              }
         return switcher.get(selected, "Invalid marker type")
-
 
 def main():
     pygame.display.set_caption("Tello")
