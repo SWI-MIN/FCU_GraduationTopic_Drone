@@ -7,8 +7,8 @@ import pygame
 import csv
 import Conversion
 import queue
+import threading
 
-# self.angles_tof = [pitch, roll, yaw, tof]
 class Camera():
     def __init__(self, navigation_start, marker_act_queue) -> None:
         self.cam_matrix = None
@@ -27,6 +27,8 @@ class Camera():
         self.R_flip[2,2] = -1.0
 
         # about navigation
+        self.have_new_marker = threading.Event()
+        self.have_new_marker.clear()
         self.navigation_start = navigation_start # 這裡需要主程式傳送thread event ，來決定導航狀態是否開啟
         self.main_marker = None # 記錄誰是主要
         self.main_marker_act = None # main_marker 代表的動作
@@ -34,13 +36,15 @@ class Camera():
         self.used_marker = [] # 存放用過的marker
         self.marker_act_queue = marker_act_queue  # 要飛機執行的動作陣列放進這個queue中
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
-        self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.act_record = act_record(10, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的10條動作
+        self.act_direction = act_record(5, 1)  # 紀錄動作方向，當相反的動作不足以找回main marker 時轉向之用
+
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
-        self.act_time = 0   # 給飛機做標籤動作的時間
+
         # self.tvecfile = open("tvecfile.txt", "w")
 
         # 取得自己定義的marker，以及參考動作
-        self.target = TargetDefine()
+        self.markerdefine = MarkerDefine()
 
     def aruco(self, frame):
         if np.all(self.cam_matrix== None) or np.all(self.cam_distortion == None):
@@ -64,7 +68,7 @@ class Camera():
         if np.all(ids != None):
             ### id found
             id_list = [] # 存放原始 id 順序
-            sort_id = np.zeros((ids.size, 5), dtype=np.float_) # 存放已經排序過的  
+            sort_id = np.zeros((ids.size, 2), dtype=np.float_) # 存放已經排序過的  
             # rvec旋转矩阵、tvec位移矩阵
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners,
                                 self.marker_size, self.cam_matrix, self.cam_distortion)
@@ -81,9 +85,9 @@ class Camera():
             for i in range(0, ids.size):
                 cv2.aruco.drawAxis(frame, self.cam_matrix, self.cam_distortion, rvecs[i], tvecs[i], 0.1)  # Draw axis
                 ''' sort_id : 
-                        |  id1  |  距離  |  X  |  Y  |  Z  |
-                        |  id2  |  距離  |  X  |  Y  |  Z  |
-                        |  id3  |  距離  |  X  |  Y  |  Z  |
+                        |  id1  |  距離  |
+                        |  id2  |  距離  |
+                        |  id3  |  距離  |
                 '''
                 # 將讀到的 marker id 存到 sort_id 中
                 id_list.append(ids[i][0])
@@ -91,31 +95,16 @@ class Camera():
 
                 # 求出各別 marker 到飛機的距離
                 sort_id[i][1] = ((tvecs[i][0][0]**2 + tvecs[i][0][1]**2 + tvecs[i][0][2]**2)**0.5)*100
-                cv2.putText(frame, "tvecs_x : {}"  .format(int(tvecs[i][0][0]*100)) , (10, (300)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "tvecs_y : {}"  .format(int(tvecs[i][0][1]*100)) , (10, (320)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "tvecs_z : {}"  .format(int(tvecs[i][0][2]*100)) , (10, (340)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-
-                # 求出各別 marker 與飛機的角度關係
-                # 旋轉矩陣
-                R_ct    = np.matrix(cv2.Rodrigues(rvecs[i][0])[0])
-                R_tc    = R_ct.T
-                # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
-                roll_marker, pitch_marker, yaw_marker = Conversion.rotationMatrixToEulerAngles(self.R_flip*R_tc)
-                
-                # 弧度傳換成角度，並存入 sort_id
-                sort_id[i][2] = math.degrees(roll_marker)
-                sort_id[i][3] = math.degrees(pitch_marker)
-                sort_id[i][4] = math.degrees(yaw_marker)
-
+  
             # 將 sort_id 距離 由短到近優先，id 由小到大次之排序
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
 
+            
+
             for i in range(0, ids.size):
-                cv2.putText(frame, str(int(sort_id[i][0]))               , (10, (i*20+40))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "D : {:.2f} cm".format(sort_id[i][1]) , (60, (i*20+40))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "X : {:+.2f}"  .format(sort_id[i][2]) , (200, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "Y : {:+.2f}"  .format(sort_id[i][3]) , (300, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "Z : {:+.2f}"  .format(sort_id[i][4]) , (400, (i*20+40)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, str(int(sort_id[i][0]))               , (10, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                cv2.putText(frame, "D : {:.2f} cm".format(sort_id[i][1]) , (60, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
 
             if self.navigation_start.is_set():  # 導航開始
                 # 如果 main marker == None，就把最接近飛機的 marker 作為 main
@@ -124,148 +113,181 @@ class Camera():
                     if self.main_marker not in self.used_marker:
                         self.used_marker.append(self.main_marker)
                 else:
-                    self.main_marker = sort_id[0][0]
-                    self.main_marker_act = self.target.changeTarget(int(self.main_marker))[0]
+                    self.main_marker = int(sort_id[0][0])
+                    self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
+                #####################################################################
+                # 感覺這裡這樣寫192好像就沒用了
 
-                cv2.putText(frame, "find_new_marker : {}"  .format(self.find_new_marker) , (10, (400)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "main_marker : {}"  .format(self.main_marker) , (10, (420)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                cv2.putText(frame, "used_marker : {}"  .format(self.used_marker) , (10, (440)) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
-                ############################
+                # 比較 現有 id 與usedid ，確認當前獨到的id中是否有沒用過的
+                # 當有尚未使用的id時 self.have_new_marker.is_set()
+                # 當沒有尚未使用的id時 clear 
+
+                used_id = set(self.used_marker)           # 已經用過的id
+                now_id = set(id_list)                     # 現在看到的id
+                new_id = now_id & (used_id ^ now_id)      # 算完後還在的表示為新的沒用過的id
+
+                self.have_new_marker.clear()
+                if len(new_id) > 0 and self.main_marker in sort_id[0:,0:1]:  # 長度大於0，表示擁有沒用過的id，並且在main marker沒有丟失
+                    for i in range(0, ids.size):          # 在現在讀到的marker中，選出是new_id且距離最近的
+                        if sort_id[i][0] in new_id:
+                            next_id = sort_id[i][0]
+                            break
+                    main_index = id_list.index(self.main_marker)
+                    main_tvecs_X = int(tvecs[main_index][0][0] * 100)
+                    next_index =id_list.index(next_id)
+                    next_tvecs_X = int(tvecs[next_index][0][0] * 100)
+
+                    if abs(main_tvecs_X) > abs(next_tvecs_X):
+                        self.have_new_marker.set()         # 設定為 is_set()，當為這個狀態時表示無人機可以切換狀態找新的marker
+                    
+                ######################################################################
                 
+      
+
                 # 判斷是否需要找新 marker， 不找就畫黃色標示線，並且做動作
                 if not self.find_new_marker:
                     if self.main_marker not in sort_id[0:,0:1]:
-                        cv2.putText(frame, "main_marker not in sort_id", (10, 460) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, "main_marker not in sort_id", (10, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
                         
                         # 當 main_marker 消失2s，再執行 lost_main_marker
                         if time.time() - self.lost_time >= 2: 
-                            lost_respond = self.lost_main_marker()
-                            if lost_respond == None:
-                                cv2.putText(frame, "act_record is None", (10, 480), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                            self.lost_main_marker()
                     
                     else:
                         # 畫線
-                        id_index = id_list.index(self.main_marker)
+                        id_index = id_list.index(self.main_marker)   # 標記 main_marker 在 id_list 的位置
                         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
                         cy = int((corners[id_index][0][0][1]+corners[id_index][0][1][1]+corners[id_index][0][2][1]+corners[id_index][0][3][1])/4)
                         cv2.line(frame, (int(w/2), int(h/2)), (cx, cy), (0,255,255), 3)
+                    
+                        R_ct    = np.matrix(cv2.Rodrigues(rvecs[id_index][0])[0])
+                        R_tc    = R_ct.T
+                        # 橫滾標記(X)、俯仰標記(Y)、偏航標記 繞(Z)軸旋轉的角度
+                        roll_marker, pitch_marker, yaw_marker = Conversion.rotationMatrixToEulerAngles(self.R_flip*R_tc)
+                        # 弧度傳換成角度，並存入 sort_id
+                        euler_X = math.degrees(roll_marker)
+                        euler_Y = math.degrees(pitch_marker)
+                        euler_Z = math.degrees(yaw_marker)
+                        tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
+                        tvecs_Y = int(tvecs[id_index][0][1] * 100)
+                        tvecs_Z = int(tvecs[id_index][0][2] * 100)
 
+                        main_dist = np.where(sort_id[:,0] == self.main_marker)
+                        cv2.putText(frame, "main : {}         D : {:.2f}cm".format(str(int(sort_id[main_dist][0][0])), sort_id[main_dist][0][1]), (10, 40)  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        cv2.putText(frame, " euler_X : {:.2f}   "   .format(euler_X) , (100, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " euler_Y : {:.2f}   "   .format(euler_Y) , (280, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " euler_Z : {:.2f}   "   .format(euler_Z) , (460, 60) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        cv2.putText(frame, " tvecs_X : {:.2f}cm " .format(tvecs_X) , (100, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " tvecs_Y : {:.2f}cm " .format(tvecs_Y) , (280, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " tvecs_Z : {:.2f}cm " .format(tvecs_Z) , (460, 80) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+
+                        cv2.putText(frame, " find_new_marker : {} " .format(self.find_new_marker) , (10, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " main_marker : {} " .format(self.main_marker) , (225, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        cv2.putText(frame, " used_marker : {} " .format(self.used_marker) , (400, 120) , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                        
                         # 取出 sort_id 中 屬於 main_marker 的那一列，並傳入navigation
-                        main_marker_attitude = np.where(sort_id[:,0] == self.main_marker)
-                        self.navigation(sort_id[main_marker_attitude], id_list, tvecs)
+                        
+                        self.navigation(euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
                     
                 # else 是要找新marker，裡面新增找新marker的要求(條件)
                 else:
-                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
-                    
                     # 取得非main marker 中最近的一個，並且不能用過
                     for i in range(0, ids.size):
-                        new_marker = sort_id[i][0]
+                        new_marker = int(sort_id[i][0])
                         if new_marker not in self.used_marker:
                             self.main_marker = new_marker
-                            self.main_marker_act = self.target.changeTarget(int(self.main_marker))[0]
+                            self.main_marker_act = self.markerdefine.changeTarget(int(self.main_marker))[0]
                             self.find_new_marker = False
                             break
+                    # 如果沒有發現新的 marker 就旋轉尋找( 這個部分不一定要擺在這裡，到時候視情況擺放，但是這是必須要有的 )
+                    if self.main_marker_act[3] > 0:
+                        self.marker_act_queue.put([0, 0, 0, 10])
+                    elif self.main_marker_act[3] < 0 and self.main_marker_act[3] != -1:    
+                        self.marker_act_queue.put([0, 0, 0, -10])
             
         else:
             ### No id found
-            cv2.putText(frame, "No Ids", (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+            cv2.putText(frame, "No Ids", (10, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             # 當 main_marker 消失2s，再執行 lost_main_marker
             if time.time() - self.lost_time >= 2: 
-                lost_respond = self.lost_main_marker()
-                if lost_respond == None:
-                    cv2.putText(frame, "act_record is None", (10, 100), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+                if self.navigation_start.is_set():  # 必須在導航開啟時才做此動作
+                    self.lost_main_marker()
 
         return frame
 
 
     def lost_main_marker(self):
+        # 這裡面的轉向都沒有設定回0，可能在某些極端情況下一直轉向(一直找不回main merker)
         if self.act_record.act_list.shape[0]-1 >= 0:
             change_sign = self.act_record.get_value()
             for i in range(4):
                 change_sign[i] = -change_sign[i]
             self.marker_act_queue.put(change_sign)
-        else:
-            return None
 
-        # 如果導航開啟，並且act_record為空，左右尋找
+            if change_sign[3] > 0:
+                self.act_direction.replace_act(1)
+            elif change_sign[3] < 0:
+                self.act_direction.replace_act(-1)
+
+        else:   # 如果導航開啟，並且act_record為空，左右尋找
+            if self.act_direction.act_list.shape[0]-1 >= 0 and self.act_direction.act_list.shape[0] %2 ==1:       # 如果該空間不為空，並且該空間的值為奇數，則返回第一筆
+                act_direction = self.act_direction.get_value()
+                while(self.act_direction.act_list.shape[0]-1 >= 0):   # 如果該空間不為空，將剩下的資料都進行返回，並進行相乘
+                    direction = self.act_direction.get_value()
+                    act_direction *= direction
+
+                # 如果方向為正，表示上方做尋找動作時，最近5筆資料傾向於向右尋找，方向為負則反之
+                if act_direction > 0:
+                    self.marker_act_queue.put([0, 0, 0, 10])
+                elif act_direction < 0:    
+                    self.marker_act_queue.put([0, 0, 0, -10])
+        
 
 
-    def navigation(self, main_marker_attitude, id_list, tvecs):
+    def navigation(self, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
+        t_X, t_Y, t_Z, eu_Y = Conversion.speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
         directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
         adjust_speed = 5
-
-        distance = main_marker_attitude[0][1] # 距離
-        euler_X = main_marker_attitude[0][2] # 歐拉角 x
-        euler_Y = main_marker_attitude[0][3]
-        euler_Z = main_marker_attitude[0][4]
-        id_index = id_list.index(self.main_marker)
-        tvecs_X = int(tvecs[id_index][0][0] * 100) # 位移 x
-        tvecs_Y = int(tvecs[id_index][0][1] * 100)
-        tvecs_Z = int(tvecs[id_index][0][2] * 100)
-
-        opposite_angle = round(math.degrees(math.asin(tvecs_X / (tvecs_X**2 + tvecs_Z**2)**0.5)), 2)
-        angle_dif = euler_Y - opposite_angle
 
         if not self.adjust_flag:
             # 上下對準maeker
             if tvecs_Y > 0:      # 垂直上下 (X軸) 
-                directions[2] -= adjust_speed * 2           # 飛機位置太低，往上(+)
+                directions[2] -= adjust_speed * t_Y           # 飛機位置太低，往上(+)
             elif tvecs_Y < 0:
-                directions[2] += adjust_speed * 2          # 飛機位置太高，往下(-)
+                directions[2] += adjust_speed * t_Y          # 飛機位置太高，往下(-)
             if tvecs_X > 0:
-                directions[3] += adjust_speed * 2           # 無人機太靠右，左轉(-)
+                directions[3] += adjust_speed * t_X           # 無人機太靠右，左轉(-)
             elif tvecs_X < 0:
-                directions[3] -= adjust_speed * 2           # 無人機太靠左，右轉(+)
+                directions[3] -= adjust_speed * t_X           # 無人機太靠左，右轉(+)
             if tvecs_Z > 100:
-                directions[1] += adjust_speed * 2           # 向前(+)
+                directions[1] += adjust_speed * t_Z           # 向前(+)
             elif tvecs_Z < 100:
-                directions[1] -= adjust_speed * 2           # 向後(-)
+                directions[1] -= adjust_speed * t_Z           # 向後(-)
             
 
             if tvecs_X < 5 and tvecs_X > -5:  
                 if euler_Y > 10:
-                    directions[0] += adjust_speed * 2  # 向右(+)
+                    directions[0] += adjust_speed * eu_Y  # 向右(+)
                 elif euler_Y < -10:
-                    directions[0] -= adjust_speed * 2   # 向左(-)
+                    directions[0] -= adjust_speed * eu_Y   # 向左(-)
 
             if tvecs_Y > -5 and tvecs_Y < 10 and tvecs_X > -5 and tvecs_X < 5 and tvecs_Z > 90 and tvecs_Z < 110 and euler_Y < 10 and euler_Y > -10:
                 self.adjust_flag = True
 
 
         else:
+            # 目前想到可以用一個開關進行設定，當畫面中有其他的未使用過的marker的時候就將切換狀態開啟，若是沒有其他未使用過的 marker 則持續做當前marker動作
             directions = np.array(self.main_marker_act)
-            
-            print("我調整完了~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            
+            print(directions, "++++++++++++++++++++++++++++++++++++++++++++")
+            if self.have_new_marker.is_set():
+                self.adjust_flag = False
+                self.find_new_marker = True
 
         self.marker_act_queue.put(directions)
         self.act_record.replace_act(directions)
 
-            # directions 裡面都是0, 代表不需要調整, 準備做標籤動作
-            # if np.all(directions == 0):
-            #     self.adjust_flag = True
-            # # 裡面有東西不等於0的時候, 需要調整
-            # else : 
-            #     self.marker_act_queue.put(directions)
-            #     self.act_record.replace_act(directions)  # 對飛機的做紀錄，當 marker 不見時反向執行
-
-            # self.act_time = time.time()  # 進到這裡就會更新act_time，不進入這裡表示開始計時給飛機做標籤的時間
-
-        # 調整完畢，做標籤動作
-        # else:
-        #     # self.marker_act_queue.put(self.main_marker_act)
-        #     # self.act_record.replace_act(self.main_marker_act)   # 對飛機的做紀錄，當 marker 不見時反向執行
-
-        #     test_act = [0, 0, 0, 40]
-        #     self.marker_act_queue.put(test_act)
-        #     self.act_record.replace_act(test_act)
-
-        #     # 此處可能會有 put 多次的問題++++++++++++++++++++++++++++
-        #     # 給予標籤 2s 時間做動作
-        #     if time.time() - self.act_time >= 10: 
-        #         self.adjust_flag = False
-        #         self.find_new_marker = True
 
         self.lost_time = time.time()  # 每次進來都會更新lost_time，當進不來的時候就相當於計時
 
@@ -278,6 +300,7 @@ class Camera():
         self.used_marker = [] # 存放用過的marker
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
         self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.act_direction = act_record(5, 1)
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
         # self.tvecfile.close()
         
@@ -312,7 +335,7 @@ class act_record():
 
 # distance from marker in camera Z coordinates
 DIST = 0.9
-class TargetDefine():
+class MarkerDefine():
     def __init__(self):
         with open('MarkerAction/marker_conf.csv', 'rt', encoding='utf-8') as f:
             reader = csv.reader(f, delimiter=';')
@@ -331,10 +354,10 @@ class TargetDefine():
                 'Origin':                np.array([[0., 0., 0, 0.]]),            # 0
                 'Right sideways':        np.array([[20., 0., 0, 0.]]),           # 1 - 5 
                 'Left sideways':         np.array([[-20., 0., 0, 0.]]),          # 6 - 10 
-                'Rotate right corner 1': np.array([[0., 0., 0, -10.]]),          # 11 - 15 
-                'Rotate right corner 2': np.array([[0., 0., 0, -20.]]),          # 16 - 20 
-                'Rotate left corner 1':  np.array([[0., 0., 0, 10.]]),           # 21 - 25 
-                'Rotate left corner 2':  np.array([[0., 0., 0, 20.]]),           # 26 - 30
+                'Rotate right corner 1': np.array([[0., 0., 0, 10.]]),          # 11 - 15 
+                'Rotate right corner 2': np.array([[0., 0., 0, 20.]]),          # 16 - 20 
+                'Rotate left corner 1':  np.array([[0., 0., 0, -10.]]),           # 21 - 25 
+                'Rotate left corner 2':  np.array([[0., 0., 0, -20.]]),           # 26 - 30
                 'Forward':               np.array([[0., 10., 0, 0.]]),           # 31 - 35 ; 72
                 'Backward':              np.array([[0., -10., 0, 0.]]),          # 36 - 40
                 'Up':                    np.array([[0., 0., 10, 0.]]),           # 41 - 45
@@ -370,3 +393,9 @@ if __name__ == '__main__':
     main()
 else:
     pass
+
+
+
+# 做出ㄈ字形的飛行路徑，了解 marker 3  軸的演算法 
+# 
+# 具姿態估計與連續目標切換功能之無人機導航系統
