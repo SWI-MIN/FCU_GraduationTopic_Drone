@@ -93,7 +93,7 @@ class Camera():
   
             # 將 sort_id 距離 由短到近優先，id 由小到大次之排序
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
-            self.draw_sortid(self, frame, sort_id, ids.size)
+            frame = self.draw_sortid(self, frame, sort_id, ids.size)
 
             if self.navigation_start.is_set():  # 導航開始
                 # 如果 main marker == None，就把最接近飛機的 marker 作為 main
@@ -205,6 +205,7 @@ class Camera():
             else:
                 if abs(n_tvecs_Y) < 10 :
                     return True # means lift
+        
         return False  
 
     def draw_sortid(self, frame, sort_id, idsize):
@@ -213,6 +214,8 @@ class Camera():
             cv2.putText(frame, "D : {:.2f} cm".format(sort_id[i][1]) , (60, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             cv2.putText(frame, "tvecs_X : {:.2f} cm".format(sort_id[i][1]) , (150, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
             cv2.putText(frame, "tvecs_Y : {:.2f} cm".format(sort_id[i][1]) , (300, (i*20+200))  , cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 170, 255),1,cv2.LINE_AA)
+        
+        return frame
 
     def draw_line(self, frame, id_index, corners, w, h):
         cx = int((corners[id_index][0][0][0]+corners[id_index][0][1][0]+corners[id_index][0][2][0]+corners[id_index][0][3][0])/4)
