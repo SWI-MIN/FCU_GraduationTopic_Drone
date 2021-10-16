@@ -333,13 +333,14 @@ class Camera():
 
     def reset(self):
         # 如果要重新開始導航時功能相關的變數必須重置
+        self.have_new_marker.clear()
         self.main_marker = None # 記錄誰是主要
         self.main_marker_act = None # main_marker 代表的動作
         self.find_new_marker = False # 標記是否需要找尋下一個marker
         self.used_marker = [] # 存放用過的marker
         self.adjust_flag = False  # 判斷微調動作是否執行完，執行完了改變狀態並執行marker動作
-        self.act_record = act_record(5, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
-        self.act_direction = act_record(5, 1)
+        self.act_record = act_record(15, 4)  # 將執行過的動作存放進這個物件中，當 marker 不見時，要做相反的動作以找回 marker，目前只保存最近的5條動作
+        self.act_direction = act_record(15, 1)
         self.lost_time = 0  # 每次執行導航動作完都記錄一次time，當這個值超過2s沒有更新代表 main_marker OR marker 不見了 2s
         
 class act_record():
