@@ -93,7 +93,7 @@ class Camera():
   
             # 將 sort_id 距離 由短到近優先，id 由小到大次之排序
             sort_id = sort_id[np.lexsort((sort_id[:, 0], sort_id[:, 1]))] 
-            frame = self.draw_sortid(self, frame, sort_id, ids.size)
+            frame = self.draw_sortid(frame, sort_id, ids.size)
 
             if self.navigation_start.is_set():  # 導航開始
                 # 如果 main marker == None，就把最接近飛機的 marker 作為 main
@@ -149,10 +149,10 @@ class Camera():
                     else:
                         # 畫線
                         id_index = id_list.index(self.main_marker)   # 標記 main_marker 在 id_list 的位置
-                        frame = self.draw_line(self, frame, id_index, corners, w, h)
+                        frame = self.draw_line(frame, id_index, corners, w, h)
 
-                        euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z = self.euler_and_tvecs(self, id_index, rvecs, tvecs)
-                        frame = self.draw_info(self, frame, sort_id, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
+                        euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z = self.euler_and_tvecs(id_index, rvecs, tvecs)
+                        frame = self.draw_info(frame, sort_id, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
                         
                         self.navigation(euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z)
                     
