@@ -136,10 +136,10 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.sh
 
 # It's very important to transform the matrix to list.
 data = {'camera_matrix': np.asarray(mtx).tolist(), 'dist_coeff': np.asarray(dist).tolist()}
-with open("calibration2.yaml", "w") as f:
+with open("calibration4.yaml", "w") as f:
     yaml.dump(data, f)
 
-with open('calibration2.yaml') as f:
+with open('calibration4.yaml') as f:
     loadeddict = yaml.load(f)
 mtxloaded = loadeddict.get('camera_matrix')
 distloaded = loadeddict.get('dist_coeff')
