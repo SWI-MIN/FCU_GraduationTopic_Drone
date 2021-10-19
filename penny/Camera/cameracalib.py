@@ -29,7 +29,7 @@ nRows = 9
 nCols = 6
 dimension = 25 #- mm
 
-workingFolder   = "./Images1008_50random"
+workingFolder   = "./Images1020_30"
 imageType       = 'jpg'
 #------------------------------------------
 
