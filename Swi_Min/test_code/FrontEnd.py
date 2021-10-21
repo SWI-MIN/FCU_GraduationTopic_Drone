@@ -8,17 +8,16 @@
         wsad --> 升降轉向
     畫面大小 : (960, 720)  寬 * 高 OR (720, 960)  高 * 寬
 '''
-import pygame
-import cv2
-import time, sys
-import numpy as np
-from djitellopy import Tello
-from ControlTello import ControlTello
-from Aruco import Camera
+import sys
 import threading
 import queue
+import pygame
+import cv2
+import numpy as np
+from ControlTello import ControlTello
+from Aruco import Camera
 
-# 這裡其實可以不用繼承 ControlTello
+
 class FrontEnd():
     def __init__(self):
         super().__init__()
@@ -90,6 +89,10 @@ class FrontEnd():
                     self.navigation_start.clear()
                     self.aruco.reset()
                 else:
+                    '''
+                        send_rc_control 是設定飛機速度，若不歸0，會變成一直做動作，但是又不希望一直送0
+                        因此設定 isZero 狀態，只讓他送一次 0
+                    '''
                     if abs(int(directions[0])) + abs(int(directions[1])) + abs(int(directions[2])) + abs(int(directions[3])) != 0:
                         self.isZero = False
                         self.tello.send_rc_control(int(directions[0]), int(directions[1]), int(directions[2]), int(directions[3]))
@@ -100,8 +103,7 @@ class FrontEnd():
             self.tello.getKeyboardInput()
             self.update_display()
 
-            # cv2.imshow("Drone Control Centre1", self.tello.img)
-            cv2.imshow("Drone Control Centre2", self.tello.tello_info)
+            cv2.imshow("Drone information", self.tello.tello_info)
             cv2.waitKey(1)
 
 def main():

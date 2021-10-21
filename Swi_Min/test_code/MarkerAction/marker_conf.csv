@@ -1,5 +1,12 @@
-1;Rotate right corner 1
-2;Rotate right corner 1
-3;Rotate right corner 1
-4;Rotate right corner 1
-5;Land
+8;Down
+7;Down
+6;Rotate left corner
+9;Rotate left corner
+10;Up
+11;Up
+12;Rotate left corner
+13;Rotate left corner
+14;Down
+15;Down
+16;Rotate right corner
+17;Land

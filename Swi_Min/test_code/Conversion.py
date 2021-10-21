@@ -1,6 +1,5 @@
 import numpy as np
 import math
-# from scipy.spatial.transform import Rotation
 
 # 檢查矩陣是否是有效的旋轉矩陣
 def isRotationMatrix(R):
@@ -28,10 +27,6 @@ def rotationMatrixToEulerAngles(R):
         z = 0
 
     return np.array([x, y, z])
-
-# def rotationVectorToEulerAngles(rvec):
-#     r = Rotation.from_rotvec(rvec)
-#     return r.as_euler('xyz')
 
 # 計算合適的Speed倍率
 def speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y):
