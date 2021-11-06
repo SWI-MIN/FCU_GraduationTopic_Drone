@@ -298,7 +298,7 @@ class Camera():
                     self.marker_act_queue.put([0, 0, 0, -10])
         
     def navigation(self, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
-        t_X, t_Y, t_Z, eu_Y = Conversion.speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
+        t_X, t_Y, t_Z, eu_Y = Conversion.speedMagnification(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
         directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
         adjust_speed = 5
 

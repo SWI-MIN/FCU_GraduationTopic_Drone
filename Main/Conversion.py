@@ -29,7 +29,7 @@ def rotationMatrixToEulerAngles(R):
     return np.array([x, y, z])
 
 # 計算合適的Speed倍率
-def speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y):
+def speedMagnification(tvecs_X,tvecs_Y,tvecs_Z,euler_Y):
     speed_adjust = [0, 0, 0, 0]
     speed_adjust[0] = abs(tvecs_X) / 3          # speed_max = 15
     speed_adjust[1] = abs(tvecs_Y) / 3          # speed_max = 25
@@ -54,5 +54,5 @@ def speed_test(tvecs_X,tvecs_Y,tvecs_Z,euler_Y):
 
     return np.array(speed_adjust)
 
-a = speed_test(108, 51, 205, 27)
+a = speedMagnification(108, 51, 205, 27)
 print(a)
