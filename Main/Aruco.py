@@ -298,11 +298,11 @@ class Camera():
                     self.marker_act_queue.put([0, 0, 0, -10])
         
     def navigation(self, euler_X, euler_Y, euler_Z, tvecs_X, tvecs_Y, tvecs_Z):
-        t_X, t_Y, t_Z, eu_Y = Conversion.speedMagnification(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
         directions = np.array([0, 0, 0, 0]) # 左右、前後、高低、轉向
-        adjust_speed = 5
 
         if not self.adjust_flag:
+            t_X, t_Y, t_Z, eu_Y = Conversion.speedMagnification(tvecs_X,tvecs_Y,tvecs_Z,euler_Y)
+            adjust_speed = 5
             # 上下對準maeker
             if tvecs_Y > 0:      # 垂直上下 (X軸) 
                 directions[2] -= adjust_speed * t_Y           # 飛機位置太高，往下(-) 
@@ -316,7 +316,6 @@ class Camera():
                 directions[1] += adjust_speed * t_Z           # 向前(+)
             elif tvecs_Z < 100:
                 directions[1] -= adjust_speed * t_Z           # 向後(-)
-            
 
             if tvecs_X < 5 and tvecs_X > -5:  
                 if euler_Y > 10:
@@ -327,7 +326,6 @@ class Camera():
             if tvecs_Y > -5 and tvecs_Y < 10 and tvecs_X > -5 and tvecs_X < 5 and tvecs_Z > 90 and tvecs_Z < 110 and euler_Y < 10 and euler_Y > -10:
                 self.adjust_flag = True
 
-
         else:
             # 目前想到可以用一個開關進行設定，當畫面中有其他的未使用過的marker的時候就將切換狀態開啟，若是沒有其他未使用過的 marker 則持續做當前marker動作
             directions = np.array(self.main_marker_act)
@@ -337,7 +335,6 @@ class Camera():
 
         self.marker_act_queue.put(directions)
         self.act_record.replace_act(directions)
-
 
         self.lost_time = time.time()  # 每次進來都會更新lost_time，當進不來的時候就相當於計時
 
