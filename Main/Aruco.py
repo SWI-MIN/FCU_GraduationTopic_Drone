@@ -198,10 +198,10 @@ class Camera():
 
         if act_direction_index == 2:
             if marker_direction > 0:
-                if abs(n_tvecs_X) < 15 and n_tvecs_Y < 0:  # 如果要上下移動時，下一個 marker 的 n_tvecs_X 應該會與 main_marker 非常接近 main_marker，main_marker在調整後 m_tvecs_X 應該為 +-5，做出可接受範圍所以設定10
+                if abs(n_tvecs_X) < 12 and n_tvecs_Y < 0:  # 如果要上下移動時，下一個 marker 的 n_tvecs_X 應該會與 main_marker 非常接近 main_marker，main_marker在調整後 m_tvecs_X 應該為 +-5，做出可接受範圍所以設定10
                     return True # means up
             else:
-                if abs(n_tvecs_X) < 15 and n_tvecs_Y > 0:
+                if abs(n_tvecs_X) < 12 and n_tvecs_Y > 0:
                     return True # means down
         elif act_direction_index ==0 or act_direction_index == 3:
             if marker_direction > 0:
